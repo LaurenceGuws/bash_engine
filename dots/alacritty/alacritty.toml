@@ -1,0 +1,3 @@
+[window]
+opacity = 0.8  # Set background transparency (0.0 = fully transparent, 1.0 = fully opaque)
+blur = true    # Enable blur (works on macOS/KDE Wayland only)

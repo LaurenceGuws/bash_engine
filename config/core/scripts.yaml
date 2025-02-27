@@ -1,0 +1,38 @@
+###
+# Description:
+# - This file lists the scripts to source in the specified order.
+# - Main configuration file for this repo and is used by add-to-profile.sh
+###
+scripts:
+  - src/core/loaders/env_vars.sh
+  - src/core/harden/permissions.sh
+  # - src/core/installers/dependencies.sh
+  - src/core/loaders/aliases.sh
+  - src/core/loaders/dotfiles.sh
+  - src/core/loaders/path.sh
+  - src/modules/config/bash_history_settings.sh
+  - src/modules/config/py-activate.sh
+  - src/modules/config/edit_config.sh
+  - src/modules/apps/docker/browsh_docker.sh
+  - src/modules/apps/docker/dsp.sh
+  - src/modules/apps/docker/docker_tag_search.sh
+  - src/modules/apps/posh/load_custom_posh.sh
+  - src/modules/apps/posh/posh.sh
+  - src/modules/apps/posh/posh-theme-helper.sh
+  - src/modules/apps/1pass/1doc.sh
+  - src/modules/apps/1pass/1kube.sh
+  # - src/modules/apps/1pass/1value.sh
+  # - src/modules/apps/helm-drift/drifter.sh
+  - src/modules/utils/arch_story.sh
+  - src/modules/tui/fzf/fzf_bash_completion.sh
+  - src/modules/tui/fzf/rg_fzf.sh
+  - src/modules/utils/banner.sh
+  # - src/modules/utils/network_logger.sh
+  - src/modules/tui/dots.sh
+  # - src/modules/tui/spinner/spinner.sh
+  # - src/modules/apps/git/check_repos.sh
+  - src/modules/apps/git/update.sh
+  # - src/modules/ai/bassist.sh
+  # - src/modules/ai/piper/piper_wrapper.sh
+  - src/modules/utils/format/clog.sh
+

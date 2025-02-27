@@ -1,0 +1,25 @@
+###
+# Description:
+# - Define bash session Aliases in yaml key/value format
+# - These will be loaded into your bash session via ./init/load_aliases.sh
+###
+bot: "ollama run $ACTIVE_BOT"
+bat: "bat --paging=never -n"
+b: ${BROWSER}
+e: ${EDITOR}
+r: "source ~/.bashrc"
+l: "ls"
+ll: "ls -la"
+allow: "sudo chmod +x"
+own: "sudo chown"
+yt: "invidious_instance='https://vid.puffyan.us' ytfzf -t"
+tree: "tree -CAS --hyperlink"
+ls: "lsd"
+ln: 'nnn -deaH'
+############
+# libvirtd, qemu-kvm, virtlockd, virtlogd stack
+############
+vmon: "sudo systemctl start libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
+vmoff: "sudo systemctl stop libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
+vmen: "sudo systemctl enable libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
+vmdis: "sudo systemctl disable libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"

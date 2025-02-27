@@ -1,0 +1,73 @@
+#!/usr/bin/env sh
+
+# Description: 'cd' to a directory using CDPATH or default bookmarks.
+#
+# Details: If the CDPATH environment variable is not set, the default value of
+#          ${XDG_CONFIG_HOME:-$HOME/.config}/nnn/bookmarks will be used.
+#          You can create this directory and fill it with symbolic links to your
+#          favorite directories. Adding it to CDPATH is optional but useful.
+#
+#          This plugin supports additional personal and work directories.
+#          It uses fzf to interactively select a directory.
+#
+# Shell: POSIX compliant
+# Author: Yuri Kloubakov
+#
+# Dependencies: fzf
+
+# Load nnn plugin helper
+. "$(dirname "$0")"/.nnn-plugin-helper || {
+    echo "Error: Unable to load .nnn-plugin-helper."
+    exit 1
+}
+
+# Set default BOOKMARKS_DIR if CDPATH is not set
+BOOKMARKS_DIR="${CDPATH:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/bookmarks}"
+
+# Extend BOOKMARKS_DIR to include personal and work paths
+BOOKMARKS_DIRS="$BOOKMARKS_DIR:$HOME/personal:$HOME/work"
+
+# Function: Get directories from BOOKMARKS_DIRS
+get_dirs() {
+    IFS=':'
+    for path in $BOOKMARKS_DIRS; do
+        for entry in "$path"/*; do
+            if [ -d "$entry" ]; then
+                name=$(basename "$entry" | grep -o '^.\{1,24\}') # Limit to 24 chars
+                if [ -h "$entry" ]; then # If symbolic link
+                    slink=$(ls -dl -- "$entry")
+                    entry=${slink#*" $entry -> "} # Resolve symlink
+                fi
+                printf "%-24s :%s\n" "${name}" "$entry"
+            fi
+        done
+    done
+}
+
+# Abort with a message
+abort() {
+    echo "$1"
+    read -r _
+    exit 1
+}
+
+# Check if CDPATH or BOOKMARKS_DIR exists
+if [ -z "$CDPATH" ]; then
+    CDPATH="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/bookmarks"
+    [ -d "$CDPATH" ] || abort "CDPATH is not set and there is no \"$CDPATH\" directory."
+fi
+
+# Get directory list
+dir_list=$(get_dirs)
+[ -n "$dir_list" ] || abort "There are no directories to choose from. Check \"$BOOKMARKS_DIRS\"."
+
+# Use fzf to select a directory
+dir=$(echo "$dir_list" | fzf --nth=1 --delimiter=':' | awk -F: 'END { print $2 }')
+if [ -n "$dir" ]; then
+    nnn_cd "$dir" 0 # Change to the selected directory
+else
+    echo "No directory selected."
+    exit 1
+fi
+
+

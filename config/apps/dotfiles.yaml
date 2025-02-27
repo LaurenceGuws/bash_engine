@@ -1,0 +1,19 @@
+###
+# dotfiles.yaml
+#
+# Description:
+# - This file contains list of dotfile/config folders to update.
+###
+applications:
+  kitty: "${HOME}/.config/kitty/"
+  ghostty: "${HOME}/.config/ghostty/"
+  nvim: "${HOME}/.config/nvim/"
+  zellij: "${HOME}/.config/zellij/"
+  ytfzf: "${HOME}/.config/ytfzf/"
+  hypr: "${HOME}/.config/hypr/"
+  yazi: "${HOME}/.config/yazi/"
+  nnn: "${HOME}/.config/nnn/"
+  neofetch: "${HOME}/.config/neofetch/"
+  nushell: "${HOME}/.config/nushell/"
+  waybar: "${HOME}/.config/waybar/"
+

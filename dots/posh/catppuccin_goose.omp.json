@@ -1,0 +1,224 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "palette": {
+    "os_color": "#89ebe3",
+    "host_color": "#F5BDE6",
+    "path_color": "#dddddd",
+    "git_color": "#B4BEFE",
+    "node_color": "#89DCEB",
+    "python_color": "#b66cbd",
+    "java_color": "#f3ac8b",
+    "dotnet_color": "#89B4FA",
+    "go_color": "#89DCEB",
+    "rust_color": "#EBA0AC",
+    "aws_color": "#FAB387",
+    "kubectl_color": "#9ea8ff",
+    "helm_color": "#7ea2b4",
+    "bash_color": "#dddddd",
+    "lua_color": "#51A0CF",
+    "text_primary": "#000000",
+    "text_secondary": "#ffffff",
+    "status_text": "#B4BEFE",
+    "background_base": "#1E1E2E",
+    "background_mantle": "#181825",
+    "background_crust": "#11111B",
+    "background_surface0": "#1E1E2E",
+    "background_surface1": "#313244",
+    "background_surface2": "#45475A",
+    "overlay0": "#585B70",
+    "overlay1": "#6C7086",
+    "overlay2": "#7F849C",
+    "subtext0": "#89DCEB",
+    "subtext1": "#A6ADC8",
+    "powerline_symbol_color": "#F5E0DC",
+    "prompt_symbol_color": "#dddddd"
+  },
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "p:os_color",
+          "foreground": "p:text_primary",
+          "powerline_symbol": "\ue0b4",
+          "leading_diamond": "\ue0b6",
+          "style": "diamond",
+          "template": "{{.Icon}} ",
+          "type": "os"
+        },
+        {
+          "background": "p:os_color",
+          "foreground": "p:text_primary",
+          "powerline_symbol": "\ue0b4",
+          "style": "diamond",
+          "template": "@{{ .HostName }}",
+          "type": "session"
+        },
+        {
+          "background": "p:path_color",
+          "foreground": "p:text_primary",
+          "properties": {
+            "folder_icon": "\ue5fe",
+            "home_icon": "~",
+            "style": "agnoster_short"
+          },
+          "powerline_symbol": "\ue0b4",
+          "style": "powerline",
+          "template": " {{ .Path }}",
+          "type": "path"
+        },
+        {
+          "background": "p:git_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "properties": {
+            "branch_icon": " ",
+            "cherry_pick_icon": "\ue29b ",
+            "commit_icon": "\uf417 ",
+            "fetch_status": false,
+            "fetch_upstream_icon": false,
+            "merge_icon": "\ue727 ",
+            "no_commits_icon": "\uf0c3 ",
+            "rebase_icon": "\ue728 ",
+            "revert_icon": "\uf0e2 ",
+            "tag_icon": "\uf412 "
+          },
+          "powerline_symbol": "\ue0b4",
+          "template": " {{ .HEAD }}",
+          "type": "git"
+        },
+        {
+          "background": "p:node_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "template": "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }}",
+          "type": "node"
+        },
+        {
+          "background": "p:python_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "template": "  {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}",
+          "type": "python"
+        },
+        {
+          "background": "p:java_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "template": "  {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}",
+          "type": "java"
+        },
+        {
+          "background": "p:dotnet_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "template": "  {{ if .Unsupported }}\uf071{{ else }}{{ .Full }}{{ end }}",
+          "type": "dotnet"
+        },
+        {
+          "background": "p:go_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "template": " 󰟓 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}",
+          "type": "go"
+        },
+        {
+          "background": "p:rust_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "template": " 󱘗 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}",
+          "type": "rust"
+        },
+        {
+          "background": "p:kubectl_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "template": "  {{.Context}}{{if .Namespace}} 󰠳 {{.Namespace}}{{end}}",
+          "type": "kubectl"
+        },
+        {
+          "background": "p:helm_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "type": "command",
+          "properties": {
+            "shell": "bash",
+            "command": "if [ -f values.yaml ]; then helm version --short | sed 's/\"//g'; fi"
+          },
+          "template": " 󱃾 {{ .Output }}"
+        },
+        {
+          "background": "p:aws_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "type": "command",
+          "properties": {
+            "shell": "bash",
+            "command": "if [ -f Dockerfile ]; then docker --version | awk '{print $3}' | sed 's/,//'; fi"
+          },
+          "template": " 󰡨 {{ .Output }}"
+        },        
+        {
+          "background": "p:bash_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "type": "command",
+          "properties": {
+            "shell": "bash",
+            "command": "if ls *.sh 2>/dev/null | grep -q .sh; then if grep -q '/bash' *.sh 2>/dev/null; then echo \"$(basename $SHELL) $($SHELL --version | head -n1 | awk '{print $4}')\"; else echo 'Script Detected'; fi; fi"
+          },
+          "template": "{{ if .Output }}  {{ .Output }}{{ end }}"
+        },
+        {
+          "background": "p:lua_color",
+          "foreground": "p:text_primary",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b4",
+          "template": "  {{ .Full }}",
+          "type": "lua"
+        },
+        {
+          "background": "p:os_color",
+          "foreground": "p:text_primary",
+          "powerline_symbol": "\ue0b4",
+          "style": "powerline",
+          "type": "executiontime",
+          "properties": {
+            "always_enabled": true,
+            "style": "austin"
+          },
+          "template": " ⏱ {{ .FormattedMs }}"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "p:prompt_symbol_color",
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "plain",
+          "template": "❯",
+          "type": "status"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "final_space": false,
+  "version": 3
+}

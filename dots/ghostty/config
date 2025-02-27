@@ -1,0 +1,10 @@
+# Main Ghostty Configuration
+
+# Load general settings
+config-file = general/base_settings
+
+# Load keybindings
+config-file = keybindings/base_config
+
+# Load theme
+config-file = themes/base_theme

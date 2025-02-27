@@ -1,0 +1,13 @@
+###
+# dependencies.yaml
+#
+# Description:
+# - This file lists the dependencies required for the project.
+# - It Ensures all dependencies are installed and up-to-date.
+###
+dependencies:
+  - yq
+  - common
+  - 1password
+  - kubectl
+  - k9s
