@@ -16,23 +16,35 @@ scripts:
   - src/modules/apps/docker/browsh_docker.sh
   - src/modules/apps/docker/dsp.sh
   - src/modules/apps/docker/docker_tag_search.sh
-  - src/modules/apps/posh/load_custom_posh.sh
-  - src/modules/apps/posh/posh.sh
-  - src/modules/apps/posh/posh-theme-helper.sh
+  - src/modules/prompt/load_custom_posh.sh
+  - src/modules/prompt/posh.sh
+  - src/modules/prompt/posh-theme-helper.sh
   - src/modules/apps/1pass/1doc.sh
   - src/modules/apps/1pass/1kube.sh
   # - src/modules/apps/1pass/1value.sh
-  # - src/modules/apps/helm-drift/drifter.sh
-  - src/modules/utils/arch_story.sh
-  - src/modules/tui/fzf/fzf_bash_completion.sh
-  - src/modules/tui/fzf/rg_fzf.sh
-  - src/modules/utils/banner.sh
-  # - src/modules/utils/network_logger.sh
-  - src/modules/tui/dots.sh
-  # - src/modules/tui/spinner/spinner.sh
+  # - src/modules/apps/helm/drifter.sh
+  - src/modules/fun/arch_story.sh
+  - src/modules/apps/fzf/fzf_bash_completion.sh
+  - src/modules/apps/fzf/rg_fzf.sh
+  - src/modules/fun/banner.sh
+  # - src/modules/fun/network_logger.sh
+  - src/modules/config/dots.sh
+  # - src/modules/fun/spinner/spinner.sh
   # - src/modules/apps/git/check_repos.sh
   - src/modules/apps/git/update.sh
   # - src/modules/ai/bassist.sh
   # - src/modules/ai/piper/piper_wrapper.sh
-  - src/modules/utils/format/clog.sh
+  - src/modules/logging/clog.sh
+  # - src/core/core_init.sh
+  # - src/core/installers/1password.sh
+  # - src/core/installers/common.sh
+  # - src/core/installers/k9s.sh
+  # - src/core/installers/kubectl.sh
+  # - src/core/installers/yq.sh
+  # - src/modules/logging/blog.sh
+  # - src/core/profile_loader.sh
+  # - src/modules/apps/1pass/1env.sh
+  # - src/modules/apps/vault/load_secrets.sh
+  # - src/modules/apps/git/http2ssh.sh
+  # - src/modules/fun/random_imgcat.sh
 

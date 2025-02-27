@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path to the .env.yaml file
-YAML_FILE="$PROFILE_DIR/config/env/env.yaml"
+YAML_FILE="$PROFILE_DIR/config/env.yaml"
 
 # Function to parse and export environment variables from the YAML file
 export_env_variables() {

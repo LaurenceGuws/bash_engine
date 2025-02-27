@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the path to the YAML file
-yaml_file="$PROFILE_DIR/config/env/path.yaml"
+yaml_file="$PROFILE_DIR/config/path.yaml"
 
 # Ensure the YAML file exists
 if [[ ! -f $yaml_file ]]; then

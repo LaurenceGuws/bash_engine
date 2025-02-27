@@ -67,8 +67,8 @@ check_and_install() {
 # =============================
 
 # Read dependencies.yaml and install each dependency if missing
-echo "Reading dependencies from $PROFILE_DIR/config/core/dependencies.yaml..."
-dependencies=$(yq e '.dependencies[]' "$PROFILE_DIR/config/core/dependencies.yaml")
+echo "Reading dependencies from $PROFILE_DIR/config/dependencies.yaml..."
+dependencies=$(yq e '.dependencies[]' "$PROFILE_DIR/config/dependencies.yaml")
 
 # Loop through each dependency entry and check/install
 echo "Processing dependencies..."

@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 dots_interactive() {
-  CONFIG_FILE="${PROFILE_DIR}/config/apps/dotfiles.yaml"
+  CONFIG_FILE="${PROFILE_DIR}/config/modules/dotfiles.yaml"
   APP_CONFIG_DIR="${PROFILE_DIR}/dots"
   SCRIPT_NAME=$(basename "$0")
 

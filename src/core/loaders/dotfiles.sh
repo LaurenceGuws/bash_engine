@@ -1,6 +1,6 @@
 #!/bin/bash
 load_dots() {
-  CONFIG_FILE="$PROFILE_DIR/config/apps/dotfiles.yaml"
+  CONFIG_FILE="$PROFILE_DIR/config/dotfiles.yaml"
   APP_CONFIG_DIR="$PROFILE_DIR/dots"
   SCRIPT_NAME=$(basename "$0")
   # Load mappings from the YAML file

@@ -7,8 +7,8 @@ add_to_bashrc() {
     local MARKER_END="# <<< add-to-profile.sh END <<<"
 
     if ! grep -Fq "$MARKER_START" "$BASHRC"; then
-        echo -e "\n$MARKER_START\nexport PROFILE_DIR=\"$PROFILE_DIR\"\nsource \"\$PROFILE_DIR/src/core/timer.sh\"\n$MARKER_END" >>"$BASHRC"
-        echo "Added sourcing of add-to-profile.sh to $BASHRC"
+        echo -e "\n$MARKER_START\nexport PROFILE_DIR=\"$PROFILE_DIR\"\nsource \"\$PROFILE_DIR/src/core/core_init.sh\"\n$MARKER_END" >>"$BASHRC"
+        echo "Added sourcing of core_init.sh to $BASHRC"
     else
         echo "Sourcing section already exists in $BASHRC"
     fi

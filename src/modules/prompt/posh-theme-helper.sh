@@ -4,7 +4,7 @@ theme() {
     if [[ -z "$1" ]]; then
         return
     fi
-    ENV_FILE="$PROFILE_DIR/config/env/env.yaml"
+    ENV_FILE="$PROFILE_DIR/config/env.yaml"
     case "$1" in
         list)
             ls "$THEME_DIR" 2>/dev/null | sed 's/\.[^.]*$//' | sed 's/\.omp$//'

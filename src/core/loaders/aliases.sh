@@ -2,7 +2,7 @@
 
 # Function to parse YAML and set aliases using yq
 set_aliases_from_yaml() {
-  yaml_file="$PROFILE_DIR/config/env/aliases.yaml"  # Ensure this path is correct
+  yaml_file="$PROFILE_DIR/config/aliases.yaml"  # Ensure this path is correct
 
   # Ensure the YAML file exists
   if [[ ! -f $yaml_file ]]; then
