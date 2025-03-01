@@ -5,6 +5,7 @@ return {
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
+    local builtin = require("telescope.builtin")
 
     telescope.setup({
       defaults = {
@@ -23,9 +24,16 @@ return {
         live_grep = { theme = "dropdown" },
         buffers = { theme = "dropdown" },
         help_tags = { theme = "dropdown" },
+        current_buffer_fuzzy_find = { theme = "ivy" }, -- Fancy in-buffer search
       },
     })
 
+    -- Keymap for searching inside the current buffer with a fancy popup
+    vim.keymap.set("n", "<leader>fbc", function()
+      builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+        previewer = false,
+      }))
+    end, { desc = "Fuzzy search in current buffer" })
+
   end,
 }
-
