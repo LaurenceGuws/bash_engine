@@ -7,8 +7,13 @@ return {
     local actions = require("telescope.actions")
     local builtin = require("telescope.builtin")
 
+    -- Telescope Setup
     telescope.setup({
       defaults = {
+        prompt_prefix = "🔍 ",
+        selection_caret = "➜ ",
+        sorting_strategy = "ascending",
+        layout_config = { prompt_position = "top" },
         mappings = {
           i = {
             ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
@@ -24,16 +29,20 @@ return {
         live_grep = { theme = "dropdown" },
         buffers = { theme = "dropdown" },
         help_tags = { theme = "dropdown" },
-        current_buffer_fuzzy_find = { theme = "ivy" }, -- Fancy in-buffer search
       },
     })
 
-    -- Keymap for searching inside the current buffer with a fancy popup
-    vim.keymap.set("n", "<leader>fbc", function()
+    -- Keymaps
+    local keymap = vim.keymap.set
+    local opts = { noremap = true, silent = true, desc = "Telescope Search" }
+
+    -- Custom: Search occurrences in the current buffer
+    keymap("n", "<leader>fbc", function()
       builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
         previewer = false,
+        prompt_title = "Find in Current Buffer",
       }))
-    end, { desc = "Fuzzy search in current buffer" })
+    end, { desc = "Search occurrences in current buffer" })
 
   end,
 }

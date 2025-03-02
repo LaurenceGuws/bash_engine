@@ -14,7 +14,6 @@ allow: "sudo chmod +x"
 own: "sudo chown"
 yt: "invidious_instance='https://vid.puffyan.us' ytfzf -t"
 tree: "tree -CAS --hyperlink"
-ls: "lsd"
 ln: 'nnn -deaH'
 ############
 # libvirtd, qemu-kvm, virtlockd, virtlogd stack

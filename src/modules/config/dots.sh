@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 dots_interactive() {
   CONFIG_FILE="${PROFILE_DIR}/config/dotfiles.yaml"

@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 1env() {
   while [[ -z "$OP_SERVICE_ACCOUNT_TOKEN" ]]; do

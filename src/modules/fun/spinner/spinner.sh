@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 spinner(){
     jbang --quiet "$PROFILE_DIR/src/modules/tui/jbang/spinner/Spinner.java" "$@"

@@ -28,9 +28,6 @@ vim.api.nvim_set_keymap('n', '<leader>t1d', ':lua OpenTerminalBuffer("bash -i -c
 vim.api.nvim_set_keymap('n', '<leader>t1v', ':lua OpenTerminalBuffer("bash -i -c 1value", "1Value Viewer")<CR>', { noremap = true, silent = true, desc = "1Value Viewer (Structured Data)" })
 vim.api.nvim_set_keymap('n', '<leader>tw', ':lua OpenTerminalBuffer("bash -i -c wiki_life", "Personal Wiki")<CR>', { noremap = true, silent = true, desc = "Personal Wiki (wiki_life)" })
 
--- Git Diff (Hunks)
-vim.api.nvim_set_keymap('n', '<leader>tgd', ':lua Snacks.picker.git_diff()<CR>', { noremap = true, silent = true, desc = "Git Diff (Hunks)" })
-
 -- Database UI (DBUI) Key Mappings (with Toggle on <leader>dt)
 vim.api.nvim_set_keymap('n', '<leader>tdt', ':DBUIToggle<CR>', { noremap = true, silent = true, desc = "Toggle Database UI" })
 vim.api.nvim_set_keymap('n', '<leader>tdu', ':DBUI<CR>', { noremap = true, silent = true, desc = "Open Database UI" })

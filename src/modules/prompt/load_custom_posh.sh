@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # Normalize paths to avoid double slashes
 normalize_path() {

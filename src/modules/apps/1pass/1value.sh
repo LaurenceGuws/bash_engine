@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 1value() {
   while [[ -z "$OP_SERVICE_ACCOUNT_TOKEN" ]]; do

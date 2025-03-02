@@ -2,8 +2,6 @@ local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
 -- 🔹 General
-map({ "n", "v" }, "<leader>]", "<cmd>Gen<CR>", opts) -- AI Generation
-map("v", "<leader>]", "<cmd>Gen Enhance_Grammar_Spelling<CR>", opts)
 
 -- 🔹 Command Mode
 map("n", ";", ":", { desc = "Enter Command Mode" })
@@ -20,6 +18,7 @@ map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code 
 map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next Buffer" })
 map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous Buffer" })
 map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
+map({ "n", "v" }, "<leader>e", "<cmd>Explore<CR>", { desc = "Explorer" })
 
 -- 🔹 Save File
 map({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", { desc = "Save File" })
