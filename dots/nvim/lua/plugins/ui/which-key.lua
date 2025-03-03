@@ -28,12 +28,9 @@ return {
         separator = "➜",
         group = "+",
       },
-      -- Updated to use 'win' instead of 'window'
+      -- Simplified window configuration to avoid unsupported properties
       win = {
         border = "rounded",
-        position = "bottom",
-        margin = { 1, 0, 1, 0 },
-        padding = { 1, 2, 1, 2 },
       },
       layout = {
         height = { min = 4, max = 25 },
@@ -81,6 +78,9 @@ return {
       { "<leader>fgg", "<cmd>FzfLua live_grep<CR>", desc = "Live Grep (FZF)" },
       { "<leader>fgf", "<cmd>Telescope git_files<cr>", desc = "Find Git Files" },
       { "<leader>fgw", "<cmd>FzfLua grep_cword<CR>", desc = "Grep Current Word" },
+      
+      -- Toggle options
+      { "<leader>tgb", desc = "Toggle Git Blame" },
       
       -- Markdown
       { "<leader>md", "<cmd>RenderMarkdownToggle<CR>", desc = "Toggle Markdown Rendering" },

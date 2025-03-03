@@ -1,10 +1,10 @@
 return {
   require("plugins.ui.colors"),        -- Previously theme.catppuccin
-  require("plugins.editor.which-key"), -- Previously toolbox.which-key
+  require("plugins.ui.which-key"),     -- Previously editor.which-key
   require("plugins.ui.bufferline"),    -- Previously theme.bufferline
   require("plugins.ui.statusline"),    -- Previously theme.bar
   require("plugins.integrations.kubectl"), -- Previously toolbox.kubectl
-  require("plugins.editor.fuzzy"),     -- Previously theme.telescope
+  require("plugins.ui.fuzzy"),         -- Previously editor.fuzzy
   require("plugins.integrations.dadbod"), -- Previously toolbox.dadbod
   require("plugins.coding.lsp.init"),  -- Previously toolbox.lsp.init
   require("plugins.coding.git"),       -- Previously toolbox.git
@@ -13,7 +13,7 @@ return {
   require("plugins.ui.ui-components"), -- Previously ui.noice
   require("plugins.ui.notify"),
   require("plugins.ui.icons"),         -- Previously ui.mini-icons
-  require("plugins.editor.explorer"),  -- Previously ui.filetree 
+  require("plugins.ui.explorer"),      -- Previously editor.explorer 
   
   -- Replace the require with the proper spec
   {

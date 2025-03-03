@@ -9,6 +9,7 @@ return {
   },
   lazy = false,
   config = function()
+    -- Setup Mason
     require("mason").setup({
       ui = {
         border = "rounded",
@@ -29,6 +30,39 @@ return {
         },
       },
     })
+    
+    -- Directly suppress health check warnings for unused languages
+    do
+      -- Get the health check functions with fallbacks for Neovim version differences
+      local health_warn = vim.health.warn or vim.health.report_warn
+      
+      -- Store the original health check function
+      local orig_health_warn = health_warn
+      
+      -- Create a pattern list of warnings to suppress
+      local suppress_patterns = {
+        "perl", "ruby", "node", "python2", "python3.10"
+      }
+      
+      -- Override the warn function to filter out certain provider warnings
+      vim.health.warn = function(msg, ...)
+        if msg then
+          for _, pattern in ipairs(suppress_patterns) do
+            if msg:match(pattern) then
+              -- Don't report this warning
+              return
+            end
+          end
+        end
+        -- Pass through to original function for all other warnings
+        orig_health_warn(msg, ...)
+      end
+      
+      -- Ensure the report_warn alias works too
+      if vim.health.report_warn then
+        vim.health.report_warn = vim.health.warn
+      end
+    end
 
     -- Essential LSPs for integration development
     local mason_lspconfig = require("mason-lspconfig")

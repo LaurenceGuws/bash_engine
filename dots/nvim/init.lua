@@ -1,5 +1,13 @@
--- Load core options first
-pcall(require, "core.options")
+-- Essential early-loading settings
+-- These must be set before plugins or core modules load
+
+-- 1. Disable netrw (required by nvim-tree to be set before it loads)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- 2. Disable unused language providers before they're checked
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 
 -- Lazy.nvim Bootstrap
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -15,17 +23,11 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load plugins
-require("lazy").setup({ import = "plugins" })
-
--- Load core modules 
+-- Load core modules
+pcall(require, "core.options")  -- Load all non-essential options
 pcall(require, "core.autocmds")
 pcall(require, "core.keymaps")
 pcall(require, "core.terminal")
 
--- Load utils
-local utils = require("core.utils")
-
--- Add a command to reload configuration
-vim.api.nvim_create_user_command("ConfigReload", utils.reload_config, { desc = "Reload nvim configuration" })
-
+-- Load plugins
+require("lazy").setup({ import = "plugins" })
