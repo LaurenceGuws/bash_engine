@@ -1,15 +1,7 @@
--- Essential early-loading settings
--- These must be set before plugins or core modules load
+-- Minimal initialization file
+-- Only responsible for setting up Lazy.nvim and loading core modules
 
--- 1. Disable netrw (required by nvim-tree to be set before it loads)
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
--- 2. Disable unused language providers before they're checked
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
-
--- Lazy.nvim Bootstrap
+-- Bootstrap Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -23,11 +15,5 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load core modules
-pcall(require, "core.options")  -- Load all non-essential options
-pcall(require, "core.autocmds")
-pcall(require, "core.keymaps")
-pcall(require, "core.terminal")
-
--- Load plugins
-require("lazy").setup({ import = "plugins" })
+-- Load core initialization (handles early settings and core modules)
+require("core.init")
