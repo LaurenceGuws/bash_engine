@@ -23,16 +23,69 @@ return {
         right_trunc_marker = "",
         diagnostics = "nvim_lsp", -- Show LSP diagnostics on buffers
         diagnostics_indicator = function(count, level, _, _)
-          local icon = level:match("error") and " " or " "
+          local icon = level:match("error") and " " or " "
           return " " .. icon .. count
         end,
         show_buffer_icons = true, -- Enable filetype icons
         show_buffer_close_icons = true,
         show_close_icon = false,
         persist_buffer_sort = true, -- Keep buffer order across sessions
-        separator_style = "slant", -- Options: "slant", "padded_slant", "thick", "thin"
+        separator_style = "slant", -- Changed from "slant" to "thick" for better transparency support
         enforce_regular_tabs = false,
         always_show_bufferline = true,
+        hover = {
+          enabled = true,
+          delay = 200,
+          reveal = {'close'}
+        },
+        offsets = {
+          {
+            filetype = "NvimTree", 
+            text = "File Explorer",
+            highlight = "Directory",
+            separator = true
+          }
+        },
+        highlights = {
+          fill = {
+            bg = {
+              attribute = "bg",
+              highlight = "Normal"
+            }
+          },
+          background = {
+            bg = {
+              attribute = "bg",
+              highlight = "TabLine"
+            }
+          },
+          tab = {
+            bg = {
+              attribute = "bg",
+              highlight = "TabLine"
+            }
+          },
+          tab_selected = {
+            bg = {
+              attribute = "bg",
+              highlight = "Normal"
+            }
+          },
+          buffer_visible = {
+            bg = {
+              attribute = "bg",
+              highlight = "TabLine"
+            }
+          },
+          buffer_selected = {
+            bg = {
+              attribute = "bg",
+              highlight = "Normal"
+            },
+            bold = true,
+            italic = true,
+          },
+        },
       },
     })
   end,

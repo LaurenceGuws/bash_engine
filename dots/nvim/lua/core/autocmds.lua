@@ -74,4 +74,23 @@ autocmd("BufWritePre", {
   end,
 })
 
+-- Detect Helm template files
+autocmd({"BufRead", "BufNewFile"}, {
+  group = augroup("helm_template_detection", { clear = true }),
+  pattern = {
+    "*/templates/*.yaml",
+    "*/templates/*.yml",
+    "*/templates/*.tpl",
+    "helmfile*.yaml",
+    "helmfile*.yml",
+    "Chart.yaml",
+    "Chart.yml",
+    "values.yaml",
+    "values.yml",
+  },
+  callback = function()
+    vim.bo.filetype = "helm"
+  end,
+})
+
 return { augroup = augroup, autocmd = autocmd } 

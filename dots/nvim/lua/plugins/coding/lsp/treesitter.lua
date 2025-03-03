@@ -2,7 +2,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   opts = {
     ensure_installed = {
-      "vim", "lua", "html", "css", "java", "python", "dockerfile", "yaml", "json", "markdown", "sql", "markdown_inline", "latex", "zig", "regex", "bash"
+      "vim", "lua", "html", "css", "java", "python", "dockerfile", "yaml", "json", "markdown", "sql", "markdown_inline", "latex", "zig", "regex", "bash", "go", "gomod", "gosum"
     },
     highlight = { 
       enable = true,

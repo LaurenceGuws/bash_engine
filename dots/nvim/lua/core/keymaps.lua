@@ -17,7 +17,7 @@ map("i", "<C-_>", "<Esc><Plug>(comment_toggle_linewise_current)i", opts)
 map("i", "<C-/>", "<Esc><Plug>(comment_toggle_linewise_current)i", opts)
 
 -- 🔹 LSP Completions
-map("i", "<C-Space>", "<cmd>lua require('cmp').complete()<CR>", { desc = "Show Completions" })
+map("i", "<C-Space>", "<cmd>lua require('cmp').complete()<CR>", { desc = "Toggle Completions" })
 
 -- 🔹 Ctrl + Movement for Fast Navigation
 -- Arrow keys
@@ -147,3 +147,29 @@ map("n", "<leader>md", "<cmd>RenderMarkdownToggle<CR>", { desc = "Toggle Markdow
 map("n", "<leader>mr", "<cmd>RenderMarkdownToggle<CR>", { desc = "Render Markdown" })
 
 
+-- Key mappings for launching commands with descriptions
+map('n', '<leader>tk9', ':lua OpenTerminalBuffer("k9s", "K9s Dashboard")<CR>', { noremap = true, silent = true, desc = "K9s Dashboard (Kubernetes)" })
+map('n', '<leader>tbt', ':lua OpenTerminalBuffer("btop", "Btop System Monitor")<CR>', { noremap = true, silent = true, desc = "Btop System Monitor" })
+map('n', '<leader>tpa', ':lua OpenTerminalBuffer("pacseek", "Pacseek Package Manager")<CR>', { noremap = true, silent = true, desc = "Pacseek Package Manager (Arch Linux)" })
+map('n', '<leader>tm', ':lua OpenTerminalBuffer("cmatrix", "Matrix Rain")<CR>', { noremap = true, silent = true, desc = "Matrix Rain (cmatrix)" })
+map('n', '<leader>tbs', ':lua OpenTerminalBuffer("bash -i -c browsh", "Browsh Web Browser")<CR>', { noremap = true, silent = true, desc = "Browsh Web Browser (Text-Based)" })
+map('n', '<leader>tgk', ':lua OpenTerminalBuffer("gk launchpad", "Game Launchpad")<CR>', { noremap = true, silent = true, desc = "Game Launchpad (gk)" })
+map('n', '<leader>tgl', ':lua OpenTerminalBuffer("lazygit", "LazyGit Interface")<CR>', { noremap = true, silent = true, desc = "LazyGit Interface (Git TUI)" })
+map('n', '<leader>t1d', ':lua OpenTerminalBuffer("bash -i -c 1doc", "1Doc Documentation")<CR>', { noremap = true, silent = true, desc = "1Doc Documentation" })
+map('n', '<leader>t1v', ':lua OpenTerminalBuffer("bash -i -c 1value", "1Value Viewer")<CR>', { noremap = true, silent = true, desc = "1Value Viewer (Structured Data)" })
+map('n', '<leader>tw', ':lua OpenTerminalBuffer("bash -i -c wiki_life", "Personal Wiki")<CR>', { noremap = true, silent = true, desc = "Personal Wiki (wiki_life)" })
+map('n', '<leader>tps', ':lua OpenTerminalBuffer("bash -i -c posting", "Posting (like Postman)")<CR>', { noremap = true, silent = true, desc = "Posting (like Postman)" })
+
+-- Database UI (DBUI) Key Mappings (with Toggle on <leader>dt)
+map('n', '<leader>dt', ':DBUIToggle<CR>', { noremap = true, silent = true, desc = "Toggle Database UI" })
+map('n', '<leader>du', ':DBUI<CR>', { noremap = true, silent = true, desc = "Open Database UI" })
+map('n', '<leader>da', ':DBUIAddConnection<CR>', { noremap = true, silent = true, desc = "Add New Database Connection" })
+map('n', '<leader>df', ':DBUIFindBuffer<CR>', { noremap = true, silent = true, desc = "Find Database Buffer" })
+
+-- 🔹 Diagnostic Toggles
+map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Toggle Trouble Panel" })
+map("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", { desc = "Toggle Document Diagnostics" })
+map("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = "Toggle Workspace Diagnostics" })
+map("n", "<leader>tdi", "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>", { desc = "Toggle Inline Diagnostics" })
+map("n", "<leader>tds", "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>", { desc = "Toggle Diagnostic Signs" })
+map("n", "<leader>tdu", "<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>", { desc = "Toggle Diagnostic Underlines" })

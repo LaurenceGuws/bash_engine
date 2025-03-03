@@ -108,11 +108,8 @@ return {
     -- Setup cmp with enhanced configuration
     cmp.setup({
       completion = {
-        -- Enable automatic completion popup
-        autocomplete = { 
-          require('cmp.types').cmp.TriggerEvent.TextChanged,
-          require('cmp.types').cmp.TriggerEvent.InsertEnter 
-        },
+        -- Disable automatic completion popup
+        autocomplete = false,
         completeopt = "menu,menuone,noselect,noinsert",
         keyword_length = 1,  -- Show completion after 1 character
       },

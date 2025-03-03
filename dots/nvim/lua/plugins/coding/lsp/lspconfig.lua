@@ -223,6 +223,12 @@ return {
       
       -- DevOps-related
       dockerls = { capabilities = capabilities, on_attach = on_attach },
+      helm_ls = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        filetypes = {"helm"},
+        cmd = {"helm_ls", "serve"},
+      },
       yamlls = { 
         capabilities = capabilities, 
         on_attach = on_attach,
@@ -233,12 +239,27 @@ return {
               ["https://raw.githubusercontent.com/aws/serverless-application-model/develop/samtranslator/schema/schema.json"] = "template.yaml",
               ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.yml",
               ["kubernetes"] = "/*.k8s.yaml",
+              ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.22.0-standalone/all.json"] = ["/*.yaml", "/*.yml"],
+              ["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/helmfile.json"] = "helmfile*.{yaml,yml}",
+              ["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/chart.json"] = "Chart.{yaml,yml}",
+              ["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/kustomization.json"] = "kustomization.{yaml,yml}",
+            },
+            format = {
+              enable = true,
             },
             validate = true,
             completion = true,
             hover = true,
+            customTags = [
+              "!include scalar",
+              "!reference sequence",
+              "!helm-template sequence",
+              "!helm-include scalar"
+            ],
+            disableDefaultProperties = true,
           }
-        }
+        },
+        filetypes = {"yaml", "yml", "helm"},
       },
       
       -- Data Integration

@@ -16,28 +16,32 @@ function OpenTerminalBuffer(cmd, bufname)
   vim.cmd("startinsert")  -- Enter insert mode for terminal
 end
 
--- Key mappings for launching commands with descriptions
-vim.api.nvim_set_keymap('n', '<leader>tk9', ':lua OpenTerminalBuffer("k9s", "K9s Dashboard")<CR>', { noremap = true, silent = true, desc = "K9s Dashboard (Kubernetes)" })
-vim.api.nvim_set_keymap('n', '<leader>tbt', ':lua OpenTerminalBuffer("btop", "Btop System Monitor")<CR>', { noremap = true, silent = true, desc = "Btop System Monitor" })
-vim.api.nvim_set_keymap('n', '<leader>tp', ':lua OpenTerminalBuffer("pacseek", "Pacseek Package Manager")<CR>', { noremap = true, silent = true, desc = "Pacseek Package Manager (Arch Linux)" })
-vim.api.nvim_set_keymap('n', '<leader>tm', ':lua OpenTerminalBuffer("cmatrix", "Matrix Rain")<CR>', { noremap = true, silent = true, desc = "Matrix Rain (cmatrix)" })
-vim.api.nvim_set_keymap('n', '<leader>tbs', ':lua OpenTerminalBuffer("bash -i -c browsh", "Browsh Web Browser")<CR>', { noremap = true, silent = true, desc = "Browsh Web Browser (Text-Based)" })
-vim.api.nvim_set_keymap('n', '<leader>tgk', ':lua OpenTerminalBuffer("gk launchpad", "Game Launchpad")<CR>', { noremap = true, silent = true, desc = "Game Launchpad (gk)" })
-vim.api.nvim_set_keymap('n', '<leader>tgl', ':lua OpenTerminalBuffer("lazygit", "LazyGit Interface")<CR>', { noremap = true, silent = true, desc = "LazyGit Interface (Git TUI)" })
-vim.api.nvim_set_keymap('n', '<leader>t1d', ':lua OpenTerminalBuffer("bash -i -c 1doc", "1Doc Documentation")<CR>', { noremap = true, silent = true, desc = "1Doc Documentation" })
-vim.api.nvim_set_keymap('n', '<leader>t1v', ':lua OpenTerminalBuffer("bash -i -c 1value", "1Value Viewer")<CR>', { noremap = true, silent = true, desc = "1Value Viewer (Structured Data)" })
-vim.api.nvim_set_keymap('n', '<leader>tw', ':lua OpenTerminalBuffer("bash -i -c wiki_life", "Personal Wiki")<CR>', { noremap = true, silent = true, desc = "Personal Wiki (wiki_life)" })
+-- Create autocommands for terminal buffers
+local termgroup = vim.api.nvim_create_augroup("TerminalSettings", { clear = true })
 
--- Database UI (DBUI) Key Mappings (with Toggle on <leader>dt)
-vim.api.nvim_set_keymap('n', '<leader>dt', ':DBUIToggle<CR>', { noremap = true, silent = true, desc = "Toggle Database UI" })
-vim.api.nvim_set_keymap('n', '<leader>du', ':DBUI<CR>', { noremap = true, silent = true, desc = "Open Database UI" })
-vim.api.nvim_set_keymap('n', '<leader>da', ':DBUIAddConnection<CR>', { noremap = true, silent = true, desc = "Add New Database Connection" })
-vim.api.nvim_set_keymap('n', '<leader>df', ':DBUIFindBuffer<CR>', { noremap = true, silent = true, desc = "Find Database Buffer" })
+-- Remove line numbers in terminal buffers
+vim.api.nvim_create_autocmd({"TermOpen"}, {
+  group = termgroup,
+  callback = function()
+    -- Disable line numbers
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+    
+    -- Additional terminal-specific settings
+    vim.opt_local.signcolumn = "no"
+    vim.opt_local.cursorline = false
+    
+    -- Automatically enter insert mode when entering a terminal buffer
+    vim.cmd("startinsert")
+  end
+})
 
--- 🔹 Diagnostic Toggles
-map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Toggle Trouble Panel" })
-map("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", { desc = "Toggle Document Diagnostics" })
-map("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = "Toggle Workspace Diagnostics" })
-map("n", "<leader>tdi", "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>", { desc = "Toggle Inline Diagnostics" })
-map("n", "<leader>tds", "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>", { desc = "Toggle Diagnostic Signs" })
-map("n", "<leader>tdu", "<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>", { desc = "Toggle Diagnostic Underlines" })
+-- When entering a terminal buffer, start insert mode
+vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+  pattern = "term://*",
+  group = termgroup,
+  callback = function()
+    vim.cmd("startinsert")
+  end
+})
+

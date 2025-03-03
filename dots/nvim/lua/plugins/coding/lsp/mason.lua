@@ -96,6 +96,7 @@ return {
         "dockerls",         -- Docker
         "ansiblels",        -- Ansible
         "terraformls",      -- Terraform
+        "helm_ls",          -- Helm
       },
       automatic_installation = true,
     })
