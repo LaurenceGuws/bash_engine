@@ -13,7 +13,7 @@ CARGO_PATH: /${HOME}/.cargo/bin
 LOCAL_BIN_PATH: ${HOME}/.local/bin     
 NODE_PATH: ${HOME}/.nvm/versions/node/v20.18.1/bin
 GO_PATH: "/usr/local/go/bin:${HOME}/go/bin"
-BUN_PATH: "${HOME}/.bun/bin:${HOME}/node_modules/.bin:${HOME}/.cache/.bun/bin:$PATH"
+BUN_PATH: "${HOME}/.bun/bin:${HOME}/node_modules/.bin:${HOME}/.cache/.bun/bin:/${HOME}/.cache/.bun/install/global/bin"
 SNAP_PATH: "/var/lib/snapd/snap/bin"
 JAVA_LSP: "${HOME}/.local/share"
 KREW: "${HOME}/.krew/bin"
