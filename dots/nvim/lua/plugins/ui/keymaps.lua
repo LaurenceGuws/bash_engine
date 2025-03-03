@@ -1,6 +1,24 @@
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
+-- Configure which-key at the top level
+local which_key_ok, which_key = pcall(require, "which-key")
+if which_key_ok then
+  which_key.setup({
+    plugins = {
+      presets = {
+        operators = true,
+        motions = true,
+        text_objects = true,
+        windows = true,
+        nav = true,
+        z = true,
+        g = true,
+      },
+    },
+  })
+end
+
 -- 🔹 General
 
 -- 🔹 Command Mode
@@ -153,5 +171,4 @@ map("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = 
 map("n", "<leader>tdi", "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>", { desc = "Toggle Inline Diagnostics" })
 map("n", "<leader>tds", "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>", { desc = "Toggle Diagnostic Signs" })
 map("n", "<leader>tdu", "<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>", { desc = "Toggle Diagnostic Underlines" })
-"folke/which-key.nvim",
-
+-- needs which key

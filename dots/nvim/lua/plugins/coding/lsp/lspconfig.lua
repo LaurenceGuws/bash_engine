@@ -7,9 +7,19 @@ return {
     "b0o/schemastore.nvim", -- JSON schema support
     "folke/trouble.nvim", -- Better diagnostics display
   },
+  lazy = false, -- Load LSP config immediately
+  priority = 90, -- Lower than Mason but still high
   config = function()
     local lspconfig = require("lspconfig")
     local util = require("lspconfig.util")
+
+    -- Command to show LSP logs
+    vim.api.nvim_create_user_command("LspLog", function()
+      vim.cmd("edit " .. vim.lsp.get_log_path())
+    end, { desc = "Open LSP log file" })
+
+    -- Print to emphasize LSP config is loading
+    vim.notify("LSP configuration loading...", vim.log.levels.INFO)
 
     -- Setup neodev for better Lua development
     require("neodev").setup({
@@ -124,8 +134,17 @@ return {
         prefix = "●", -- Use a simple dot as prefix
         source = "if_many", -- Show source only if multiple
         severity = {
-          min = vim.diagnostic.severity.HINT,
+          min = vim.diagnostic.severity.HINT, -- Show all diagnostics including hints
         },
+        spacing = 4, -- Add more space before the diagnostic text
+        format = function(diagnostic)
+          if diagnostic.severity == vim.diagnostic.severity.ERROR then
+            return string.format("ERROR: %s", diagnostic.message)
+          elseif diagnostic.severity == vim.diagnostic.severity.WARN then
+            return string.format("WARNING: %s", diagnostic.message)
+          end
+          return diagnostic.message
+        end,
       },
       float = {
         source = "always", -- Always show source in float window

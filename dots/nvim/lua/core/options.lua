@@ -1,5 +1,16 @@
 local opt = vim.opt
 
+-- 1. Essential early-loading settings
+-- These must be set before plugins load
+
+-- Disable netrw (required by nvim-tree to be set before it loads)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- Disable unused language providers before they're checked
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- Set leader key
 vim.g.mapleader = " "
 

@@ -34,15 +34,7 @@ return {
     vim.lsp.handlers["textDocument/hover"] = require("noice").hover
     vim.lsp.handlers["textDocument/signatureHelp"] = require("noice").signature
 
-    -- Improved `vim.notify` override
-    vim.notify = function(msg, level, opts)
-      if level == vim.log.levels.ERROR then
-        vim.api.nvim_echo({ { "⚠ " .. msg, "ErrorMsg" } }, true, {})
-      elseif level == vim.log.levels.WARN then
-        vim.api.nvim_echo({ { " " .. msg, "WarningMsg" } }, true, {})
-      else
-        vim.api.nvim_echo({ { msg, "Normal" } }, true, {})
-      end
-    end
+    -- Remove the custom vim.notify override as it might interfere with diagnostics
+    -- Let the notification system from nvim-notify handle this instead
   end,
 }

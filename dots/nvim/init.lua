@@ -1,6 +1,3 @@
--- Minimal initialization file
--- Only responsible for setting up Lazy.nvim and loading core modules
-
 -- Bootstrap Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -14,6 +11,5 @@ if not vim.loop.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
-
--- Load core initialization (handles early settings and core modules)
 require("core.init")
+

@@ -8,6 +8,7 @@ return {
     "nvimtools/none-ls.nvim",           -- None-LS (formerly Null-LS)
   },
   lazy = false,
+  priority = 100,
   config = function()
     -- Setup Mason
     require("mason").setup({
@@ -29,6 +30,7 @@ return {
           cancel_installation = "<C-c>",
         },
       },
+      log_level = vim.log.levels.DEBUG,
     })
     
     -- Directly suppress health check warnings for unused languages
