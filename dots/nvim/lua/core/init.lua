@@ -1,10 +1,10 @@
-
 -- Load core modules
 local function load_core()
   pcall(require, "core.options")  
   pcall(require, "core.autocmds")
   pcall(require, "core.keymaps")
   pcall(require, "core.terminal")
+  pcall(require, "core.highlights")
 end
 
 load_core()
