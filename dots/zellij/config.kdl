@@ -17,7 +17,6 @@ keybinds clear-defaults=true {
         bind "j" { MoveFocus "down"; }
         bind "k" { MoveFocus "up"; }
         bind "l" { MoveFocus "right"; }
-        bind "n" { NewPane; SwitchToMode "normal"; }
         bind "p" { SwitchFocus; }
         bind "Alt p" { SwitchToMode "normal"; }  // Changed from Ctrl p
         bind "r" { NewPane "right"; SwitchToMode "normal"; }
@@ -183,10 +182,13 @@ keybinds clear-defaults=true {
         bind "Alt p" { SwitchToMode "pane"; }  // Changed from Ctrl p
     }
     shared_except "locked" "resize" {
-        bind "Alt n" { SwitchToMode "resize"; }  // Changed from Ctrl n
+        bind "Alt Space" { SwitchToMode "resize"; }  // Changed from Ctrl n
     }
     shared_except "normal" "locked" "entersearch" {
         bind "enter" { SwitchToMode "normal"; }
+    }
+    shared_except "normal" "locked" "entersearch" {
+        bind "alt Space" { SwitchToMode "normal"; }
     }
     shared_except "normal" "locked" "entersearch" "renametab" "renamepane" {
         bind "esc" { SwitchToMode "normal"; }

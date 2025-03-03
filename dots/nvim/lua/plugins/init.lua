@@ -8,5 +8,7 @@ return {
   require("plugins.toolbox.dadbod"),
   require("plugins.toolbox.lsp.init"),
   require("plugins.toolbox.git"),
+  require("plugins.toolbox.ai.avante"),
+
 }
 
