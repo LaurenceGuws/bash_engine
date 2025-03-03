@@ -11,6 +11,7 @@ load_core()
 
 -- Load plugins through Lazy.nvim
 require("lazy").setup({ import = "plugins" })
+
 return {
   -- Export functions if we need to access them elsewhere
   load_core = load_core,

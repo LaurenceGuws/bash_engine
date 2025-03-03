@@ -29,8 +29,15 @@ vim.api.nvim_set_keymap('n', '<leader>t1v', ':lua OpenTerminalBuffer("bash -i -c
 vim.api.nvim_set_keymap('n', '<leader>tw', ':lua OpenTerminalBuffer("bash -i -c wiki_life", "Personal Wiki")<CR>', { noremap = true, silent = true, desc = "Personal Wiki (wiki_life)" })
 
 -- Database UI (DBUI) Key Mappings (with Toggle on <leader>dt)
-vim.api.nvim_set_keymap('n', '<leader>tdt', ':DBUIToggle<CR>', { noremap = true, silent = true, desc = "Toggle Database UI" })
-vim.api.nvim_set_keymap('n', '<leader>tdu', ':DBUI<CR>', { noremap = true, silent = true, desc = "Open Database UI" })
-vim.api.nvim_set_keymap('n', '<leader>tda', ':DBUIAddConnection<CR>', { noremap = true, silent = true, desc = "Add New Database Connection" })
-vim.api.nvim_set_keymap('n', '<leader>tdf', ':DBUIFindBuffer<CR>', { noremap = true, silent = true, desc = "Find Database Buffer" })
+vim.api.nvim_set_keymap('n', '<leader>dt', ':DBUIToggle<CR>', { noremap = true, silent = true, desc = "Toggle Database UI" })
+vim.api.nvim_set_keymap('n', '<leader>du', ':DBUI<CR>', { noremap = true, silent = true, desc = "Open Database UI" })
+vim.api.nvim_set_keymap('n', '<leader>da', ':DBUIAddConnection<CR>', { noremap = true, silent = true, desc = "Add New Database Connection" })
+vim.api.nvim_set_keymap('n', '<leader>df', ':DBUIFindBuffer<CR>', { noremap = true, silent = true, desc = "Find Database Buffer" })
 
+-- 🔹 Diagnostic Toggles
+map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Toggle Trouble Panel" })
+map("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", { desc = "Toggle Document Diagnostics" })
+map("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = "Toggle Workspace Diagnostics" })
+map("n", "<leader>tdi", "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>", { desc = "Toggle Inline Diagnostics" })
+map("n", "<leader>tds", "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>", { desc = "Toggle Diagnostic Signs" })
+map("n", "<leader>tdu", "<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>", { desc = "Toggle Diagnostic Underlines" })

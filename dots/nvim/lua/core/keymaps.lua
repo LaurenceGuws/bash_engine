@@ -146,12 +146,4 @@ map("n", "<leader>fgf", "<cmd>Telescope git_files<cr>", { desc = "Find Git Files
 map("n", "<leader>md", "<cmd>RenderMarkdownToggle<CR>", { desc = "Toggle Markdown Rendering" })
 map("n", "<leader>mr", "<cmd>RenderMarkdownToggle<CR>", { desc = "Render Markdown" })
 
--- 🔹 Diagnostic Toggles
-map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Toggle Trouble Panel" })
-map("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", { desc = "Toggle Document Diagnostics" })
-map("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = "Toggle Workspace Diagnostics" })
-map("n", "<leader>tdi", "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>", { desc = "Toggle Inline Diagnostics" })
-map("n", "<leader>tds", "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>", { desc = "Toggle Diagnostic Signs" })
-map("n", "<leader>tdu", "<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>", { desc = "Toggle Diagnostic Underlines" })
-"folke/which-key.nvim",
 

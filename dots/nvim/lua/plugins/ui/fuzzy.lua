@@ -9,6 +9,18 @@ return {
     { "<leader>fr", "<cmd>FzfLua oldfiles<CR>", desc = "Recent Files (FZF)" },
     { "<leader>fm", "<cmd>FzfLua marks<CR>", desc = "Marks (FZF)" },
   },
+  dependencies = {
+    { 
+      "nvim-telescope/telescope.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim"
+      }
+    },
+    { 
+      "benfowler/telescope-luasnip.nvim",
+      dependencies = { "nvim-telescope/telescope.nvim" }
+    }
+  },
   opts = {
     "telescope",
     winopts = {

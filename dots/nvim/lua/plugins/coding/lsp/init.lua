@@ -30,6 +30,10 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "hrsh7th/cmp-nvim-lsp",
+      "folke/neodev.nvim",
+      "b0o/schemastore.nvim",
+      "folke/trouble.nvim",
+      "nvimtools/none-ls.nvim",
     },
     config = function()
       local servers = {

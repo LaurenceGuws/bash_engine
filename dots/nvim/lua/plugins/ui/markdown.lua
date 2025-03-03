@@ -1,11 +1,12 @@
+-- Markdown rendering plugin
 return {
   "MeanderingProgrammer/render-markdown.nvim",
+  ft = { "markdown" },
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
-    "nvim-web-devicons", -- Using correct name for web-devicons
+    "nvim-tree/nvim-web-devicons",
   },
-  -- Use opts pattern for lazy.nvim
-  opts = {},
+  opts = { latex = { enabled = false } },
   config = function(_, opts)
     require("render-markdown").setup(opts)
     
