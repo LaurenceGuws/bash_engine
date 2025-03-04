@@ -32,8 +32,8 @@ scripts:
   # - src/modules/fun/spinner/spinner.sh
   # - src/modules/apps/git/check_repos.sh
   - src/modules/apps/git/update.sh
-  # - src/modules/ai/bassist.sh
-  # - src/modules/ai/piper/piper_wrapper.sh
+  - src/modules/ai/bassist.sh
+  - src/modules/ai/piper/piper_wrapper.sh
   - src/modules/logging/clog.sh
   # - src/core/core_init.sh
   # - src/core/installers/1password.sh

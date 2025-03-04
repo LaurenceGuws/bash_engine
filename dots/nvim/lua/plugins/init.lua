@@ -11,16 +11,16 @@ return {
   require("plugins.ui.fuzzy"),
   require("plugins.ui.markdown"),
   require("plugins.ui.which_key"),
-  
+  require("plugins.ui.zen-mode"),
   -- Coding
   require("plugins.coding.comment"),
   require("plugins.coding.git"),
   require("plugins.coding.lsp.init"),
   require("plugins.coding.completion"),
-  
   -- Integrations
   require("plugins.integrations.kubectl"),
   require("plugins.integrations.dadbod"),
+  -- require("plugins.integrations.docker"),
   require("plugins.integrations.ai.avante"),
 }
 

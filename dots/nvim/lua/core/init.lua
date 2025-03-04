@@ -5,4 +5,4 @@ return {
   pcall(require, "core.keymaps"),
   pcall(require, "core.terminal"),
   pcall(require, "core.highlights")
-} 
+}
