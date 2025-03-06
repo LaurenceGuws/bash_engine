@@ -34,6 +34,8 @@ scripts:
   - src/modules/apps/git/update.sh
   - src/modules/ai/bassist.sh
   - src/modules/ai/piper/piper_wrapper.sh
+  - src/modules/ai/piper/piper_file.sh
+
   - src/modules/logging/clog.sh
   # - src/core/core_init.sh
   # - src/core/installers/1password.sh
@@ -45,6 +47,6 @@ scripts:
   # - src/core/profile_loader.sh
   # - src/modules/apps/1pass/1env.sh
   # - src/modules/apps/vault/load_secrets.sh
-  # - src/modules/apps/git/http2ssh.sh
+  - src/modules/apps/git/http2ssh.sh
   # - src/modules/fun/random_imgcat.sh
 

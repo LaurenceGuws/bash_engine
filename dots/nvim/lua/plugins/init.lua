@@ -17,6 +17,7 @@ return {
   require("plugins.coding.git"),
   require("plugins.coding.lsp.init"),
   require("plugins.coding.completion"),
+  require("plugins.coding.dap_config"),
   -- Integrations
   require("plugins.integrations.kubectl"),
   require("plugins.integrations.dadbod"),

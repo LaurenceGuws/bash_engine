@@ -163,9 +163,8 @@ return {
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-g>u', true, true, true), 'n', true)
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
-          elseif has_words_before() then
-            cmp.complete()
           else
+            -- Pass through to insert a normal tab
             fallback()
           end
         end, { "i", "s" }),
