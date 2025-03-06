@@ -10,6 +10,6 @@ http2ssh(){
                 echo "Updated $remote in $(pwd)"
             fi
         done
-    ' 
+    ' \; 
 }
 

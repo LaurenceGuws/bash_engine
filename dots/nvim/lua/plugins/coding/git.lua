@@ -14,6 +14,52 @@ return {
       local git_blame_enabled = {}  -- Track enabled state per buffer
       local ns_id = vim.api.nvim_create_namespace("git_blame_hints")
 
+      -- Track state for gitsigns toggleable features
+      local gitlens_features = {
+        current_line_blame = false,
+        word_diff = false,
+        linehl = false,
+        numhl = false,
+      }
+
+      -- Track git detective mode state
+      local git_detective_mode = false
+
+      -- Function to update gitsigns configuration
+      local function update_gitsigns_config()
+        require("gitsigns").setup({
+          signs = {
+            add = { text = "│" },
+            change = { text = "│" },
+            delete = { text = "_" },
+            topdelete = { text = "‾" },
+            changedelete = { text = "~" },
+            untracked = { text = "┆" },
+          },
+          signcolumn = true,
+          numhl = gitlens_features.numhl,
+          linehl = gitlens_features.linehl,
+          word_diff = gitlens_features.word_diff,
+          watch_gitdir = {
+            interval = 1000,
+            follow_files = true,
+          },
+          attach_to_untracked = true,
+          current_line_blame = gitlens_features.current_line_blame,
+          current_line_blame_opts = {
+            virt_text = true,
+            virt_text_pos = 'eol',
+            delay = 300,
+            ignore_whitespace = false,
+            virt_text_priority = 100,
+          },
+          on_attach = function(bufnr)
+            -- Gitsigns-specific functionality can be added here
+            -- The git blame toggle is now global and not tied to on_attach
+          end,
+        })
+      end
+
       local function show_git_blame()
         local bufnr = vim.api.nvim_get_current_buf()
         if not git_blame_enabled[bufnr] then
@@ -149,6 +195,75 @@ return {
         end
       end, { desc = "Toggle Git Blame Hints" })
 
+      -- GitLens-like feature toggles
+      vim.keymap.set("n", "<leader>tgc", function()
+        gitlens_features.current_line_blame = not gitlens_features.current_line_blame
+        update_gitsigns_config()
+        if gitlens_features.current_line_blame then
+          vim.notify("Git Current Line Blame Enabled", vim.log.levels.INFO)
+        else
+          vim.notify("Git Current Line Blame Disabled", vim.log.levels.WARN)
+        end
+      end, { desc = "Toggle Git Current Line Blame" })
+
+      vim.keymap.set("n", "<leader>tgw", function()
+        gitlens_features.word_diff = not gitlens_features.word_diff
+        update_gitsigns_config()
+        if gitlens_features.word_diff then
+          vim.notify("Git Word Diff Enabled", vim.log.levels.INFO)
+        else
+          vim.notify("Git Word Diff Disabled", vim.log.levels.WARN)
+        end
+      end, { desc = "Toggle Git Word Diff" })
+
+      vim.keymap.set("n", "<leader>tgl", function()
+        gitlens_features.linehl = not gitlens_features.linehl
+        update_gitsigns_config()
+        if gitlens_features.linehl then
+          vim.notify("Git Line Highlight Enabled", vim.log.levels.INFO)
+        else
+          vim.notify("Git Line Highlight Disabled", vim.log.levels.WARN)
+        end
+      end, { desc = "Toggle Git Line Highlight" })
+
+      vim.keymap.set("n", "<leader>tgn", function()
+        gitlens_features.numhl = not gitlens_features.numhl
+        update_gitsigns_config()
+        if gitlens_features.numhl then
+          vim.notify("Git Number Highlight Enabled", vim.log.levels.INFO)
+        else
+          vim.notify("Git Number Highlight Disabled", vim.log.levels.WARN)
+        end
+      end, { desc = "Toggle Git Number Highlight" })
+
+      -- Git Detective Mode toggle (enables/disables all git features)
+      vim.keymap.set("n", "<leader>tgd", function()
+        -- Toggle detective mode state
+        git_detective_mode = not git_detective_mode
+        
+        -- Update all git feature states based on detective mode
+        local bufnr = vim.api.nvim_get_current_buf()
+        git_blame_enabled[bufnr] = git_detective_mode
+        gitlens_features.current_line_blame = git_detective_mode
+        gitlens_features.word_diff = git_detective_mode
+        gitlens_features.linehl = git_detective_mode
+        gitlens_features.numhl = git_detective_mode
+        
+        -- Apply changes
+        update_gitsigns_config()
+        
+        -- Show or clear git blame information
+        if git_detective_mode then
+          show_git_blame()
+          vim.notify("🕵️ Git Detective Mode Activated 🕵️", vim.log.levels.INFO)
+        else
+          vim.schedule(function()
+            vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
+          end)
+          vim.notify("Git Detective Mode Deactivated", vim.log.levels.WARN)
+        end
+      end, { desc = "Toggle Git Detective Mode (All Features)" })
+
       -- Create the autocmd outside of on_attach to ensure it's always available
       vim.api.nvim_create_autocmd({ "CursorMoved" }, {
         pattern = "*",
@@ -160,31 +275,8 @@ return {
         end,
       })
 
-      -- Setup gitsigns
-      require("gitsigns").setup({
-        signs = {
-          add = { text = "│" },
-          change = { text = "│" },
-          delete = { text = "_" },
-          topdelete = { text = "‾" },
-          changedelete = { text = "~" },
-          untracked = { text = "┆" },
-        },
-        signcolumn = true,
-        numhl = false,
-        linehl = false,
-        word_diff = false,
-        watch_gitdir = {
-          interval = 1000,
-          follow_files = true,
-        },
-        attach_to_untracked = true,
-        current_line_blame = false,
-        on_attach = function(bufnr)
-          -- Gitsigns-specific functionality can be added here
-          -- The git blame toggle is now global and not tied to on_attach
-        end,
-      })
+      -- Initialize gitsigns with default settings
+      update_gitsigns_config()
     end,
   }
 }
