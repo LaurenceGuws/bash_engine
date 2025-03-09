@@ -1,3 +1,32 @@
 [window]
-opacity = 0.8  # Set background transparency (0.0 = fully transparent, 1.0 = fully opaque)
-blur = true    # Enable blur (works on macOS/KDE Wayland only)
+opacity = 1  # Set background transparency (0.0 = fully transparent, 1.0 = fully opaque)
+# blur = true    # Enable blur (works on macOS/KDE Wayland only)
+
+[env]
+TERM = "xterm-256color"
+
+[scrolling]
+history = 100000
+multiplier = 3
+
+[font]
+normal = { family = "MesloLGL Nerd Font", style = "Regular" }
+bold = { family = "MesloLGL Nerd Font", style = "Bold" }
+italic = { family = "MesloLGL Nerd Font", style = "Italic" }
+bold_italic = { family = "MesloLGL Nerd Font", style = "Bold Italic" }
+size = 11.25
+offset = { x = 0, y = 0 }
+# glyph_offset = { x = <integer>, y = <integer> }
+builtin_box_drawing = true
+
+[general]
+import = [
+  # uncomment the flavour you want below:
+  # "~/.config/alacritty/catppuccin-latte.toml"
+  # "~/.config/alacritty/catppuccin-frappe.toml"
+  # "~/.config/alacritty/catppuccin-macchiato.toml"
+  "~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+[colors.primary]
+background = "#141414"

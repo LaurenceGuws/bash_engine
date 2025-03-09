@@ -17,4 +17,6 @@ applications:
   nushell: "${HOME}/.config/nushell/"
   waybar: "${HOME}/.config/waybar/"
   wofi: "${HOME}/.config/wofi/"
+  btop: "${HOME}/.config/btop/"
+  alacritty: "${HOME}/.config/alacritty/"
 

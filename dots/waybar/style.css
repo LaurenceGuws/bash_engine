@@ -1,396 +1,317 @@
-/* Catppuccin Mocha - Hyprland Flashy Glassy Theme for Waybar */
 
-/**
- * Nerd Font Icons Reference
- * 󰈹 - Terminal/Code
- * 󰨞 - Browser
- * 󰙯 - Email/Message
- * 󰤄 - Media/Entertainment
- * 󰚩 - Document/File
- * 󰨇 - Design/Art
- * 󰒓 - Game
- * 󱓾 - Settings
- * 󰙆 - Chat/Social
- */
-
-@keyframes border-glow {
-    0% { border-color: rgba(245, 194, 231, 0.7); }
-    33% { border-color: rgba(203, 166, 247, 0.7); }
-    66% { border-color: rgba(137, 180, 250, 0.7); }
-    100% { border-color: rgba(245, 194, 231, 0.7); }
-}
-
-@keyframes pulse-shadow {
-    0% { box-shadow: 0 0 5px 2px rgba(203, 166, 247, 0.3), 0 5px 10px rgba(0, 0, 0, 0.4); }
-    50% { box-shadow: 0 0 12px 5px rgba(180, 190, 254, 0.4), 0 5px 10px rgba(0, 0, 0, 0.4); }
-    100% { box-shadow: 0 0 5px 2px rgba(203, 166, 247, 0.3), 0 5px 10px rgba(0, 0, 0, 0.4); }
-}
-
-@keyframes blink {
-    to {
-        background-color: #cdd6f4; /* Catppuccin Mocha text */
-        color: #1e1e2e;           /* Catppuccin Mocha base */
-    }
-}
-
-@keyframes fade-in {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-@keyframes icon-pulse {
-    0% { text-shadow: 0 0 5px rgba(203, 166, 247, 0.5); }
-    50% { text-shadow: 0 0 12px rgba(203, 166, 247, 0.9); }
-    100% { text-shadow: 0 0 5px rgba(203, 166, 247, 0.5); }
-}
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+/* Catppuccin Mocha */
 
 * {
-    font-family: "MesloLGL Nerd Font", "Font Awesome 6 Free";
-    font-size: 14px;
-    min-height: 0;
-    transition: all 0.2s ease;
-    animation: fade-in 0.3s ease-out;
+	font-family: "JetBrainsMono Nerd Font";
+	font-weight: bold;
+	min-height: 0;
+	/* set font-size to 100% if font scaling is set to 1.00 using nwg-look */
+	font-size: 97%;
+	font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
 }
+
+@import "../waybar/style/catppuccin-themes/mocha.css";
 
 window#waybar {
-    background: linear-gradient(135deg, 
-                rgba(30, 30, 46, 0.65) 0%, 
-                rgba(30, 30, 46, 0.75) 100%);
-    color: #cdd6f4;      /* Catppuccin Mocha text */
-    border: 2px solid rgba(203, 166, 247, 0.7);
-    border-radius: 12px;
-    box-shadow: 0 0 15px 5px rgba(203, 166, 247, 0.3), 
-                0 10px 20px rgba(0, 0, 0, 0.4);
-    animation: pulse-shadow 4s infinite ease-in-out, 
-               border-glow 8s infinite ease-in-out;
+  	transition-property: background-color;
+  	transition-duration: 0.5s;
+  	background: transparent;
+  	border-radius: 10px;
 }
 
-/* This fixes the background issues with rounded corners */
-#waybar > box {
-    border-radius: 10px;
-    margin: 0;
-    padding: 0;
+window#waybar.hidden {
+  	opacity: 0.2;
 }
 
+window#waybar.empty,
+window#waybar.empty #window {
+    background-color: transparent;
+    padding: 0px;
+    border: 0px;
+}
+
+#taskbar button,
 #workspaces button {
-    padding: 0 8px;
-    background: rgba(49, 50, 68, 0.5);
-    color: #cdd6f4;      /* Catppuccin Mocha text */
-    border-radius: 8px;
-    margin: 4px 2px;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-    font-size: 16px; /* Larger icons for workspaces */
+	color: @overlay1;
+    box-shadow: none;
+	text-shadow: none;
+    padding: 0px;
+    border-radius: 9px;
+    padding-left: 4px;
+    padding-right: 4px;
+    animation: gradient_f 20s ease-in infinite;
+    transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.682);
 }
 
+#taskbar button:hover,
+#workspaces button:hover {
+	border-radius: 10px;
+	color: @peach;
+	background-color: @surface0;
+ 	padding-left: 2px;
+    padding-right: 2px;
+    animation: gradient_f 20s ease-in infinite;
+    transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
+}
+
+#workspaces button.persistent {
+	color: @surface1;
+	border-radius: 10px;
+}
+
+#taskbar button.active,
 #workspaces button.active {
-    background: linear-gradient(45deg, 
-                rgba(245, 194, 231, 0.7) 0%,
-                rgba(203, 166, 247, 0.7) 50%,
-                rgba(137, 180, 250, 0.7) 100%);
-    color: #1e1e2e;      /* Catppuccin Mocha base */
-    font-weight: bold;
-    text-shadow: 0 0 3px rgba(30, 30, 46, 0.5);
-    box-shadow: 0 0 8px rgba(203, 166, 247, 0.5);
+	color: @mauve;
+  	border-radius: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    animation: gradient_f 20s ease-in infinite;
+    transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
 }
 
 #workspaces button.urgent {
-    background-color: #f38ba8;      /* Catppuccin Mocha red */
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    border: 1px solid rgba(245, 194, 231, 0.7);
-    font-weight: bold;
-    animation: blink 0.5s infinite alternate;
+	color: @red;
+ 	border-radius: 0px;
 }
 
-#workspaces button:hover {
-    background-color: rgba(69, 71, 90, 0.5);
-    border: 1px solid rgba(203, 166, 247, 0.4);
-    box-shadow: 0 0 5px rgba(203, 166, 247, 0.2);
-}
+/* This section can be use if you want to separate waybar modules */
+.modules-left, .modules-center, .modules-right {
+	background: @theme_base_color; 
+ 	border: 0.5px solid @overlay0;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-right: 4px;
+	padding-left: 4px;
+	border-radius: 10px;
 
-#clock,
-#battery,
-#cpu,
-#memory,
-#network,
-#pulseaudio,
-#temperature,
-#custom-gpu,
-#custom-disk,
+} 
+
+.modules-left, .modules-right {
+  	border: 1px solid @blue;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-right: 4px;
+	padding-left: 4px;
+} 
+
 #backlight,
-#tray {
-    padding: 0 12px;
-    margin: 4px 2px;
-    border-radius: 10px;
-    transition: all 0.2s ease;
-    background: rgba(49, 50, 68, 0.5);
-    color: #cdd6f4;      /* Catppuccin Mocha text */
-    border: 1px solid transparent;
+#backlight-slider,
+#battery,
+#bluetooth,
+#clock,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#memory,
+#mode,
+#mpris,
+#network,
+#power-profiles-daemon,
+#pulseaudio,
+#pulseaudio-slider,
+#taskbar button,
+#taskbar,
+#temperature,
+#tray,
+#window,
+#wireplumber,
+#workspaces,
+#custom-backlight,
+#custom-browser,
+#custom-cava_mviz,
+#custom-cycle_wall,
+#custom-file_manager,
+#custom-keybinds,
+#custom-keyboard,
+#custom-light_dark,
+#custom-lock,
+#custom-hint,
+#custom-hypridle,
+#custom-menu,
+#custom-power_vertical,
+#custom-power,
+#custom-settings,
+#custom-spotify,
+#custom-swaync,
+#custom-tty,
+#custom-updater,
+#custom-weather,
+#custom-weather.clearNight,
+#custom-weather.cloudyFoggyDay,
+#custom-weather.cloudyFoggyNight,
+#custom-weather.default, 
+#custom-weather.rainyDay,
+#custom-weather.rainyNight,
+#custom-weather.severe,
+#custom-weather.showyIcyDay,
+#custom-weather.snowyIcyNight,
+#custom-weather.sunnyDay {
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-right: 6px;
+	padding-left: 6px;
+}
+/*-----Indicators----*/
+#custom-hypridle.notactive,
+#idle_inhibitor.activated {
+	color: #39FF14;
 }
 
-/* Create a nice glowing effect for module icons */
-#cpu > label,
-#memory > label,
-#network > label,
-#pulseaudio > label,
-#custom-disk > label,
-#clock > label {
-    text-shadow: 0 0 5px rgba(203, 166, 247, 0.5);
-}
-
-/* Animate icons on hover with pulse effect */
-#cpu:hover > label,
-#memory:hover > label,
-#network:hover > label,
-#pulseaudio:hover > label,
-#custom-disk:hover > label,
-#clock:hover > label {
-    animation: icon-pulse 1.5s ease infinite;
-}
-
-#window {
-    margin-left: 8px;
-    background: linear-gradient(to right, 
-                rgba(49, 50, 68, 0.5),
-                rgba(88, 91, 112, 0.5));
-    border-left: 1px solid rgba(203, 166, 247, 0.4);
-    font-weight: bold;
-    padding: 0 12px;
-    border-radius: 10px;
-}
-
-#clock {
-    background: linear-gradient(45deg, 
-                rgba(166, 227, 161, 0.7) 0%, 
-                rgba(148, 226, 213, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(166, 227, 161, 0.3);
-}
-
-#clock:hover {
-    box-shadow: 0 0 10px rgba(166, 227, 161, 0.5);
+#bluetooth,
+#backlight {
+  color: @blue;
 }
 
 #battery {
-    background: linear-gradient(45deg, 
-                rgba(250, 179, 135, 0.7) 0%, 
-                rgba(249, 226, 175, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(250, 179, 135, 0.3);
+  color: @green;
 }
 
-#battery:hover {
-    box-shadow: 0 0 10px rgba(250, 179, 135, 0.5);
-}
-
-#battery.charging {
-    background: linear-gradient(45deg, 
-                rgba(166, 227, 161, 0.7) 0%, 
-                rgba(148, 226, 213, 0.7) 100%);
-    box-shadow: 0 0 5px rgba(166, 227, 161, 0.3);
-}
-
-#battery.warning:not(.charging) {
-    background: linear-gradient(45deg, 
-                rgba(249, 226, 175, 0.7) 0%, 
-                rgba(250, 179, 135, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    box-shadow: 0 0 5px rgba(249, 226, 175, 0.3);
+@keyframes blink {
+  to {
+    color: @surface0;
+  }
 }
 
 #battery.critical:not(.charging) {
-    background: linear-gradient(45deg, 
-                rgba(243, 139, 168, 0.7) 0%, 
-                rgba(235, 160, 172, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    box-shadow: 0 0 8px rgba(243, 139, 168, 0.5);
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  background-color: @red;
+  color: @theme_text_color;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  box-shadow: inset 0 -3px transparent;
+}
+
+#clock {
+  color: @yellow;
 }
 
 #cpu {
-    background: linear-gradient(45deg, 
-                rgba(137, 180, 250, 0.7) 0%, 
-                rgba(116, 199, 236, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(137, 180, 250, 0.3);
+  color: @green;
 }
 
-#cpu:hover {
-    box-shadow: 0 0 10px rgba(137, 180, 250, 0.5);
-}
-
-#cpu.warning {
-    background: linear-gradient(45deg, 
-                rgba(249, 226, 175, 0.7) 0%, 
-                rgba(250, 179, 135, 0.7) 100%);
-}
-
-#cpu.critical {
-    background: linear-gradient(45deg, 
-                rgba(243, 139, 168, 0.7) 0%, 
-                rgba(235, 160, 172, 0.7) 100%);
-}
-
+#custom-keyboard,
 #memory {
-    background: linear-gradient(45deg, 
-                rgba(203, 166, 247, 0.7) 0%, 
-                rgba(180, 190, 254, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(203, 166, 247, 0.3);
+  color: @sky;
 }
 
-#memory:hover {
-    box-shadow: 0 0 10px rgba(203, 166, 247, 0.5);
-}
-
-#memory.warning {
-    background: linear-gradient(45deg, 
-                rgba(249, 226, 175, 0.7) 0%, 
-                rgba(250, 179, 135, 0.7) 100%);
-}
-
-#memory.critical {
-    background: linear-gradient(45deg, 
-                rgba(243, 139, 168, 0.7) 0%, 
-                rgba(235, 160, 172, 0.7) 100%);
-}
-
-#network {
-    background: linear-gradient(45deg, 
-                rgba(116, 199, 236, 0.7) 0%, 
-                rgba(137, 180, 250, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(116, 199, 236, 0.3);
-}
-
-#network:hover {
-    box-shadow: 0 0 10px rgba(116, 199, 236, 0.5);
-}
-
-#network.disconnected {
-    background: linear-gradient(45deg, 
-                rgba(243, 139, 168, 0.7) 0%, 
-                rgba(235, 160, 172, 0.7) 100%);
-    box-shadow: 0 0 8px rgba(243, 139, 168, 0.5);
-}
-
-#pulseaudio {
-    background: linear-gradient(45deg, 
-                rgba(148, 226, 213, 0.7) 0%, 
-                rgba(137, 220, 235, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(148, 226, 213, 0.3);
-}
-
-#pulseaudio:hover {
-    box-shadow: 0 0 10px rgba(148, 226, 213, 0.5);
-}
-
-#pulseaudio.muted {
-    background: linear-gradient(45deg, 
-                rgba(243, 139, 168, 0.7) 0%, 
-                rgba(235, 160, 172, 0.7) 100%);
-    box-shadow: 0 0 8px rgba(243, 139, 168, 0.5);
+#disk {
+  color: @sapphire;
 }
 
 #temperature {
-    background: linear-gradient(45deg, 
-                rgba(249, 226, 175, 0.7) 0%, 
-                rgba(250, 179, 135, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(249, 226, 175, 0.3);
-}
-
-#temperature:hover {
-    box-shadow: 0 0 10px rgba(249, 226, 175, 0.5);
+  color: @teal;
 }
 
 #temperature.critical {
-    background: linear-gradient(45deg, 
-                rgba(243, 139, 168, 0.7) 0%, 
-                rgba(235, 160, 172, 0.7) 100%);
-    box-shadow: 0 0 8px rgba(243, 139, 168, 0.5);
-}
-
-#custom-gpu {
-    background: linear-gradient(45deg, 
-                rgba(235, 160, 172, 0.7) 0%, 
-                rgba(243, 139, 168, 0.7) 100%);
-    color: #1e1e2e;
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(243, 139, 168, 0.3);
-}
-
-#custom-gpu:hover {
-    box-shadow: 0 0 10px rgba(243, 139, 168, 0.5);
-}
-
-#custom-disk {
-    background: linear-gradient(45deg, 
-                rgba(138, 173, 244, 0.7) 0%, 
-                rgba(145, 215, 227, 0.7) 100%);
-    color: #1e1e2e;
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(145, 215, 227, 0.3);
-}
-
-#custom-disk:hover {
-    box-shadow: 0 0 10px rgba(145, 215, 227, 0.5);
-}
-
-#backlight {
-    background: linear-gradient(45deg, 
-                rgba(249, 226, 175, 0.7) 0%, 
-                rgba(250, 179, 135, 0.7) 100%);
-    color: #1e1e2e;
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(249, 226, 175, 0.3);
-}
-
-#backlight:hover {
-    box-shadow: 0 0 10px rgba(249, 226, 175, 0.5);
-}
-
-#tray {
-    background: linear-gradient(45deg, 
-                rgba(180, 190, 254, 0.7) 0%, 
-                rgba(203, 166, 247, 0.7) 100%);
-    color: #1e1e2e;           /* Catppuccin Mocha base */
-    font-weight: bold;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(180, 190, 254, 0.3);
-}
-
-#tray:hover {
-    box-shadow: 0 0 10px rgba(180, 190, 254, 0.5);
+  background-color: @red;
 }
 
 #tray > .passive {
-    -gtk-icon-effect: dim;
+  -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
 }
 
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: #f38ba8;
-} 
+#keyboard-state {
+  color: @flamingo;
+}
+
+#custom-cava_mviz {
+	color: @pink;
+}
+
+#custom-menu {
+  color: @rosewater;
+}
+
+#custom-power {
+  color: @red;
+}
+
+#custom-updater {
+  color: @red;
+}
+
+#custom-light_dark {
+  color: @blue;
+}
+
+#custom-weather {
+  color: @lavender;
+}
+
+#custom-lock {
+  color: @maroon;
+}
+
+#pulseaudio {
+  color: @sapphire;
+}
+
+#pulseaudio.bluetooth {
+  color: @pink;
+}
+#pulseaudio.muted {
+  color: @red;
+}
+
+#window {
+  color: @mauve;
+}
+
+#mpris {
+  color:@lavender;
+}
+
+#network {
+  color: @teal;
+}
+#network.disconnected,
+#network.disabled {
+  background-color: @surface0;
+  color: @text;
+}
+#pulseaudio-slider slider {
+	min-width: 0px;
+	min-height: 0px;
+	opacity: 0;
+	background-image: none;
+	border: none;
+	box-shadow: none;
+}
+
+#pulseaudio-slider trough {
+	min-width: 80px;
+	min-height: 5px;
+	border-radius: 5px;
+}
+
+#pulseaudio-slider highlight {
+	min-height: 10px;
+	border-radius: 5px;
+}
+
+#backlight-slider slider {
+	min-width: 0px;
+	min-height: 0px;
+	opacity: 0;
+	background-image: none;
+	border: none;
+	box-shadow: none;
+}
+
+#backlight-slider trough {
+	min-width: 80px;
+	min-height: 10px;
+	border-radius: 5px;
+}
+
+#backlight-slider highlight {
+	min-width: 10px;
+	border-radius: 5px;
+}

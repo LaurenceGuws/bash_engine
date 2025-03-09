@@ -156,18 +156,6 @@
           "template": " 󱃾 {{ .Output }}"
         },
         {
-          "background": "p:aws_color",
-          "foreground": "p:text_primary",
-          "style": "powerline",
-          "powerline_symbol": "\ue0b4",
-          "type": "command",
-          "properties": {
-            "shell": "bash",
-            "command": "if [ -f Dockerfile ]; then docker --version | awk '{print $3}' | sed 's/,//'; fi"
-          },
-          "template": " 󰡨 {{ .Output }}"
-        },        
-        {
           "background": "p:bash_color",
           "foreground": "p:text_primary",
           "style": "powerline",

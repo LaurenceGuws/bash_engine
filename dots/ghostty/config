@@ -1,10 +1,7 @@
-# Main Ghostty Configuration
+cursor-style = bar
+cursor-style-blink = false
+font-family = "MesloLGL Nerd Font"
 
-# Load general settings
-config-file = general/base_settings
 
-# Load keybindings
-config-file = keybindings/base_config
-
-# Load theme
-config-file = themes/base_theme
+theme = catppuccin-mocha.conf
+background = 141414

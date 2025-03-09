@@ -1,120 +1,45 @@
+
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+// Sleek
+
 {
-    "layer": "top",
-    "position": "top",
-    "height": 34,
-    "spacing": 6,
-    "margin-top": 8,
-    "margin-left": 10,
-    "margin-right": 10,
-    "padding-top": 4,
-    "padding-bottom": 4,
-    "padding-left": 6,
-    "padding-right": 6,
-    "border-width": 2,
-    "border-color": "rgba(203, 166, 247, 0.7)",
-    "border-radius": 12,
-    
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock"],
-    "modules-right": ["tray", "network", "custom/disk", "memory", "cpu", "pulseaudio"],
-    
-    "hyprland/workspaces": {
-        "all-outputs": true,
-        "format": "{icon}",
-        "format-icons": {
-            "1": "1",
-            "2": "2",
-            "3": "3",
-            "4": "4",
-            "5": "5",
-            "6": "6",
-            "7": "7",
-            "8": "8",
-            "9": "9",
-            "urgent": "⚠",
-            "focused": "",
-            "default": ""
-        },
-        "persistent-workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": []
-        }
-    },
-    
-    "hyprland/window": {
-        "format": "󱂬 {}",
-        "max-length": 50,
-        "separate-outputs": true
-    },
-    
-    "clock": {
-        "format": "󰃰 {:%H:%M}",
-        "format-alt": "󰃮 {:%Y-%m-%d %H:%M:%S}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "interval": 1
-    },
-    
-    "cpu": {
-        "interval": 1,
-        "format": "󰘚 {usage}%",
-        "format-alt": "󰓅 {load}",
-        "states": {
-            "warning": 70,
-            "critical": 90
-        },
-        "tooltip": true
-    },
-    
-    "memory": {
-        "interval": 1,
-        "format": "󰍛 {percentage}%",
-        "format-alt": "󰆼 {used:0.1f}GB",
-        "states": {
-            "warning": 70,
-            "critical": 90
-        },
-        "tooltip": true
-    },
-    
-    "network": {
-        "interval": 1,
-        "format-wifi": "󰖩 {essid}",
-        "format-ethernet": "󰈀 Connected",
-        "format-linked": "󰈀 Connecting",
-        "format-disconnected": "󰖪 Disconnected",
-        "format-alt": "󱦳 {bandwidthUpBits}  󱦲 {bandwidthDownBits}",
-        "tooltip-format": "󰖩 {signalStrength}%\n󱦳 {bandwidthUpBits}  󱦲 {bandwidthDownBits}"
-    },
-    
-    "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "format-bluetooth": "󰂰 {volume}% ",
-        "format-bluetooth-muted": "󰂲 󰖁 ",
-        "format-muted": "󰖁",
-        "format-icons": {
-            "headphone": "󰋋",
-            "hands-free": "󱡏",
-            "headset": "󰋎",
-            "phone": "󰏲",
-            "portable": "󰏴",
-            "car": "󰄋",
-            "default": ["󰕿", "󰖀", "󰕾"]
-        },
-        "on-click": "pavucontrol"
-    },
-    
-    "tray": {
-        "icon-size": 21,
-        "spacing": 10
-    },
-    
-    "custom/disk": {
-        "exec": "df -h / | awk 'NR==2 {print $5}'",
-        "interval": 30,
-        "format": "󰋊 {}",
-        "tooltip": true
-    }
-} 
+"include": [
+  "$HOME/.config/waybar/Modules",
+  "$HOME/.config/waybar/ModulesWorkspaces",
+  "$HOME/.config/waybar/ModulesCustom",
+  "$HOME/.config/waybar/ModulesGroups",
+  ],
+"layer": "top",
+"position": "top",
+"height": 35,
+"margin-left": 10,
+"margin-right": 10,
+"margin-top": 2,
+	
+"modules-left": [
+	"custom/menu",
+	"custom/separator#blank_2",
+	"hyprland/workspaces",
+	"custom/separator#blank_2",
+	"mpris",
+	"tray"
+],
+
+"modules-center": [
+	"idle_inhibitor",
+	"custom/separator#blank",
+	"clock#3",
+	"custom/separator#blank",
+	"custom/swaync"
+],
+		
+"modules-right": [
+	"hyprland/window",
+	"custom/separator#blank_2",
+	"pulseaudio",
+	"custom/separator#blank",
+	"custom/power",					
+	],
+}
+
+style/wallust/colors-waybar.css
