@@ -1,0 +1,24 @@
+# Wofi Configuration - Hyprland Style
+
+# General
+show=drun
+mode=drun
+prompt=Applications
+width=30%
+height=40%
+orientation=vertical
+insensitive=true
+filter_rate=100
+matching=fuzzy
+location=center
+allow_images=true
+allow_markup=true
+hide_scroll=false
+line_wrap=word
+no_actions=true
+gtk_dark=true
+dynamic_lines=true
+layer=overlay
+
+# Style
+style=/home/home/.config/wofi/styles.css

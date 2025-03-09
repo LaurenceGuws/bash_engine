@@ -18,10 +18,10 @@ return {
   require("plugins.coding.lsp.init"),
   require("plugins.coding.completion"),
   require("plugins.coding.dap_config"),
+  require("plugins.coding.ansi"),
   -- Integrations
   require("plugins.integrations.kubectl"),
   require("plugins.integrations.dadbod"),
   -- require("plugins.integrations.docker"),
   require("plugins.integrations.ai.avante"),
 }
-

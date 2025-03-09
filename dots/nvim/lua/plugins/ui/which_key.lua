@@ -77,6 +77,7 @@ return {
       ["<leader>tb"] = { name = "+Terminal/System" },
       ["<leader>tg"] = { name = "+Terminal/Git/Games" },
       ["<leader>t1"] = { name = "+Terminal/Tools" },
+      ["<leader>ta"] = { name = "+ANSI/Terminal" },
       ["<leader>d"] = { name = "+Database" },
       ["<leader>c"] = { name = "+Code" },
       ["<leader>g"] = { name = "+Git" },

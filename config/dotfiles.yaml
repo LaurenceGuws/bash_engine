@@ -16,4 +16,5 @@ applications:
   neofetch: "${HOME}/.config/neofetch/"
   nushell: "${HOME}/.config/nushell/"
   waybar: "${HOME}/.config/waybar/"
+  wofi: "${HOME}/.config/wofi/"
 
