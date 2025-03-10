@@ -19,4 +19,5 @@ applications:
   wofi: "${HOME}/.config/wofi/"
   btop: "${HOME}/.config/btop/"
   alacritty: "${HOME}/.config/alacritty/"
+  posting: "${HOME}/.config/posting/"
 
