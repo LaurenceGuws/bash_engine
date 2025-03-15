@@ -8,7 +8,7 @@ return {
     "folke/trouble.nvim", -- Better diagnostics display
   },
   lazy = false, -- Load LSP config immediately
-  priority = 90, -- Lower than Mason but still high
+  priority = 700, -- Updated from 90 to 700 to match init.lua
   config = function()
     local lspconfig = require("lspconfig")
     local util = require("lspconfig.util")
@@ -239,27 +239,27 @@ return {
               ["https://raw.githubusercontent.com/aws/serverless-application-model/develop/samtranslator/schema/schema.json"] = "template.yaml",
               ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.yml",
               ["kubernetes"] = "/*.k8s.yaml",
-              ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.22.0-standalone/all.json"] = ["/*.yaml", "/*.yml"],
+              ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.22.0-standalone/all.json"] = { "/*.yaml", "/*.yml" },
               ["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/helmfile.json"] = "helmfile*.{yaml,yml}",
               ["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/chart.json"] = "Chart.{yaml,yml}",
-              ["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/kustomization.json"] = "kustomization.{yaml,yml}",
+              ["https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/kustomization.json"] = "kustomization.{yaml,yml}"
             },
             format = {
-              enable = true,
+              enable = true
             },
             validate = true,
             completion = true,
             hover = true,
-            customTags = [
+            customTags = {
               "!include scalar",
               "!reference sequence",
               "!helm-template sequence",
               "!helm-include scalar"
-            ],
-            disableDefaultProperties = true,
+            },
+            disableDefaultProperties = true
           }
         },
-        filetypes = {"yaml", "yml", "helm"},
+        filetypes = {"yaml", "yml", "helm"}
       },
       
       -- Data Integration
@@ -269,7 +269,7 @@ return {
         settings = {
           json = {
             schemas = json_schemas,
-            validate = { enable = true },
+            validate = { enable = true }
           }
         }
       },
@@ -285,10 +285,10 @@ return {
             diagnostics = { globals = { "vim" } },
             workspace = { 
               library = vim.api.nvim_get_runtime_file("", true),
-              checkThirdParty = false,
+              checkThirdParty = false
             },
             telemetry = { enable = false },
-            hint = { enable = true },
+            hint = { enable = true }
           }
         }
       },
@@ -302,7 +302,7 @@ return {
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               autoImportCompletions = true,
-              diagnosticMode = "workspace",
+              diagnosticMode = "workspace"
             }
           }
         }
@@ -320,9 +320,9 @@ return {
           zls = {
             enable_autofix = true,
             enable_inlay_hints = true,
-            warn_style = true,
-          },
-        },
+            warn_style = true
+          }
+        }
       },
       rust_analyzer = { 
         capabilities = capabilities, 
@@ -334,8 +334,8 @@ return {
             inlayHints = {
               chainingHints = { enable = true },
               parameterHints = { enable = true },
-              typeHints = { enable = true },
-            },
+              typeHints = { enable = true }
+            }
           }
         }
       },

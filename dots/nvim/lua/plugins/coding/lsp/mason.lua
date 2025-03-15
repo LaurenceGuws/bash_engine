@@ -1,14 +1,23 @@
 return {
   "williamboman/mason.nvim",
   dependencies = {
-    "williamboman/mason-lspconfig.nvim", -- LSP
+    {
+      "williamboman/mason-lspconfig.nvim", -- LSP
+      lazy = false,
+      priority = 800,
+      dependencies = {
+        "folke/neodev.nvim", 
+        "b0o/schemastore.nvim",
+        "folke/trouble.nvim",
+        "nvimtools/none-ls.nvim",
+      },
+    },
     "jay-babu/mason-null-ls.nvim",      -- Linters & Formatters
     "mfussenegger/nvim-dap",            -- Debug Adapter Protocol (DAP)
     "jay-babu/mason-nvim-dap.nvim",     -- Mason DAP Support
-    "nvimtools/none-ls.nvim",           -- None-LS (formerly Null-LS)
   },
   lazy = false,
-  priority = 100,
+  priority = 900,
   config = function()
     -- Setup Mason
     require("mason").setup({
@@ -68,37 +77,84 @@ return {
 
     -- Essential LSPs for integration development
     local mason_lspconfig = require("mason-lspconfig")
-    mason_lspconfig.setup({
-      ensure_installed = {
-        -- Programming languages
-        "lua_ls",           -- Lua
-        "pyright",          -- Python
-        "bashls",           -- Bash
-        "rust_analyzer",    -- Rust
-        "gopls",            -- Go
-        "clangd",           -- C/C++
-        "zls",              -- Zig
-        "jdtls",            -- Java
-
-        -- Web/API development
-        "tsserver",         -- TypeScript/JavaScript
-        "html",             -- HTML
-        "cssls",            -- CSS
-        "jsonls",           -- JSON
-        "yamlls",           -- YAML
-        "graphql",          -- GraphQL
-        "lemminx",          -- XML
-
-        -- Database/SQL
-        "sqlls",            -- SQL
-        
-        -- DevOps/Infrastructure
-        "dockerls",         -- Docker
-        "ansiblels",        -- Ansible
-        "terraformls",      -- Terraform
-        "helm_ls",          -- Helm
+    
+    -- Adding servers configuration from init.lua
+    -- These server settings will be used in setup_handlers
+    local servers = {
+      lua_ls = {
+        settings = {
+          Lua = {
+            diagnostics = { globals = { "vim" } },
+            workspace = { checkThirdParty = false },
+            telemetry = { enable = false },
+          },
+        },
       },
+      pyright = {},
+      jdtls = {},
+      bashls = {},
+      html = {},
+      cssls = {},
+      jsonls = {},
+      yamlls = {},
+      zls = {},
+    }
+    
+    mason_lspconfig.setup({
+      ensure_installed = vim.tbl_keys(servers), -- Use the servers from init.lua
       automatic_installation = true,
+    })
+
+    -- Add this configuration from init.lua
+    -- Set up cmp_nvim_lsp for autocompletion capabilities
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    
+    -- Setup all servers - added from init.lua
+    mason_lspconfig.setup_handlers({
+      function(server_name)
+        require("lspconfig")[server_name].setup({
+          capabilities = capabilities,
+          -- Use existing settings if available
+          on_attach = function(client, bufnr)
+            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr })
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
+            vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr })
+            
+            -- Log that the LSP attached
+            vim.notify("LSP " .. client.name .. " attached to buffer", vim.log.levels.INFO)
+            
+            -- Force showing diagnostics
+            vim.diagnostic.show()
+          end,
+        })
+      end,
+    })
+    
+    -- Setup diagnostic display from init.lua
+    vim.diagnostic.config({
+      virtual_text = {
+        prefix = "●",
+        spacing = 4,
+        source = "if_many",
+        format = function(diagnostic)
+          local severity = diagnostic.severity
+          local msg = diagnostic.message
+          if severity == vim.diagnostic.severity.ERROR then
+            return "ERROR: " .. msg
+          elseif severity == vim.diagnostic.severity.WARN then
+            return "WARNING: " .. msg
+          elseif severity == vim.diagnostic.severity.INFO then
+            return "INFO: " .. msg
+          else
+            return msg
+          end
+        end,
+      },
+      signs = true,
+      underline = true,
+      update_in_insert = false,
+      severity_sort = true,
     })
 
     -- Essential linters & formatters for integration code quality

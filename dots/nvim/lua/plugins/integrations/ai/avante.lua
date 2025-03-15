@@ -15,16 +15,11 @@ return {
         --     max_tokens = 4096,
         --     reasoning_effort = "high" -- only supported for "o" models
         -- },
-        provider = "ollama",
-        vendors = {
-            ollama = {
-                __inherited_from = "openai",
-                api_key_name = "",
-                endpoint = "http://127.0.0.1:11434/v1",
-                model = "deepseek-r1",
-                disable_tools = true,
-            }
-        }
+    provider = "ollama",
+    ollama = {
+      endpoint = "http://127.0.0.1:11434", -- Note that there is no /v1 at the end.
+      model = "phi4",
+    },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",

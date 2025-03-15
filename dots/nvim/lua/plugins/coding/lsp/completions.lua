@@ -1,7 +1,11 @@
 return {
   "hrsh7th/nvim-cmp",
   dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
+    {
+      "hrsh7th/cmp-nvim-lsp",
+      lazy = false,
+      priority = 1000, -- Load before everything else
+    },
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-cmdline",
