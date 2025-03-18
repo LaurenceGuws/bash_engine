@@ -63,21 +63,11 @@ map("i", "<C-S-Left>", "<Esc>vB", { desc = "Select to beginning of word" })
 map("v", "<C-S-Right>", "E", { desc = "Extend selection to end of word" })
 map("v", "<C-S-Left>", "B", { desc = "Extend selection to beginning of word" })
 
--- 🔹 LSP Keybindings
-map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to Definition" })
-map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Show References" })
-map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", { desc = "Hover Documentation" })
-map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename Symbol" })
-map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code Actions" })
-
 -- 🔹 Buffer Navigation (now under leader+b prefix)
 map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next Buffer" })
 map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous Buffer" })
 map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
 
--- 🔹 File Explorer (consistent with which-key)
-map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle Explorer" })
-map("n", "<leader>fe", "<cmd>NvimTreeFocus<CR>", { desc = "Focus Explorer" })
 
 -- 🔹 Save File
 map({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", { desc = "Save File" })

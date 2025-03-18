@@ -7,11 +7,13 @@ return {
   require("plugins.ui.noice"),
   require("plugins.ui.notify"),
   require("plugins.ui.icons"),
-  require("plugins.ui.exp.init"),
+  require("plugins.ui.exp.explorer"),
+  -- require("plugins.ui.exp.neo_explorer"),
   require("plugins.ui.fuzzy"),
   require("plugins.ui.markdown"),
   require("plugins.ui.which_key"),
   require("plugins.ui.zen-mode"),
+  -- require("plugins.ui.snacks.init"),
 
   -- Coding
   require("plugins.coding.comment"),
