@@ -7,11 +7,13 @@ return {
   require("plugins.ui.noice"),
   require("plugins.ui.notify"),
   require("plugins.ui.icons"),
-  require("plugins.ui.exp.init"),
+  -- Explorer config is a special case
+  require("plugins.ui.exp.nvim-tree"),
   require("plugins.ui.fuzzy"),
   require("plugins.ui.markdown"),
   require("plugins.ui.which_key"),
   require("plugins.ui.zen-mode"),
+  require("plugins.ui.block_focus"),
 
   -- Coding
   require("plugins.coding.comment"),
