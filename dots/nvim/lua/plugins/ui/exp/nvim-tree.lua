@@ -5,6 +5,7 @@ return {
     "catppuccin/nvim", -- ensure theme integration
     "ibhagwan/fzf-lua", -- Add direct dependency for context menu
     "nvim-lua/plenary.nvim", -- required by fzf-lua
+    "MunifTanjim/nui.nvim", -- UI components for menus
   },
   version = "*", -- Use latest release
   lazy = false,  -- Load at startup

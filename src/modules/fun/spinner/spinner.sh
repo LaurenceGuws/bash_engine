@@ -1,7 +1,7 @@
 #!/bin/bash
 
 spinner(){
-    jbang --quiet "$PROFILE_DIR/src/modules/tui/jbang/spinner/Spinner.java" "$@"
+    jbang --quiet "$PROFILE_DIR/src/modules/fun/spinner/Spinner.java" "$@"
 }
 
 _spinner_completions() {

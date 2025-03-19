@@ -29,7 +29,7 @@ scripts:
   - src/modules/fun/banner.sh
   # - src/modules/fun/network_logger.sh
   - src/modules/config/dots.sh
-  # - src/modules/fun/spinner/spinner.sh
+  - src/modules/fun/spinner/spinner.sh
   # - src/modules/apps/git/check_repos.sh
   - src/modules/apps/git/update.sh
   - src/modules/ai/bassist.sh

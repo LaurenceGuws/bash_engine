@@ -3,6 +3,9 @@
 
 local M = {}
 
+-- Import the copy operations module for the Copy Path functionality
+local copy_operations = require("plugins.ui.exp.menus.modules.copy_operations")
+
 -- Main function to create the basic context menu
 function M.create_basic_menu(node, is_folder, is_symlink, is_git_repo, api, fzf_lua)
   local menu_items = {}
@@ -62,9 +65,9 @@ function M.create_basic_menu(node, is_folder, is_symlink, is_git_repo, api, fzf_
   
   -- File specific options
   if not is_folder then
+    -- Use copy_operations module for path copying
     table.insert(menu_items, { "Copy Path", function()
-      vim.fn.setreg("+", node.absolute_path)
-      vim.notify("Copied path to clipboard: " .. node.absolute_path, vim.log.levels.INFO)
+      copy_operations.copy_absolute_path(node)
     end })
     
     -- Preview based on file type
