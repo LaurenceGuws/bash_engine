@@ -1,0 +1,9 @@
+
+==============================================================================
+provider.clipboard: require("provider.clipboard.health").check()
+
+Clipboard (optional) ~
+- WARNING No clipboard tool found. Clipboard registers (`"+` and `"*`) will not work.
+  - ADVICE:
+    - :help |clipboard|
+
