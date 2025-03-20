@@ -1,40 +1,54 @@
 return {
-  "folke/noice.nvim",
+  "hrsh7th/nvim-cmp",
   dependencies = { "MunifTanjim/nui.nvim" },
   event = "VeryLazy",
   config = function()
-    require("noice").setup({
-      presets = {
-        command_palette = true,  -- Keep enhanced command UI
-        lsp_doc_border = true,   -- Keep borders around LSP popups
+    -- Use standard LSP configuration since noice.nvim is removed
+    local cmp = require("cmp")
+    
+    -- Setup completion
+    cmp.setup({
+      snippet = {
+        expand = function(args)
+          require("luasnip").lsp_expand(args.body)
+        end,
       },
-      cmdline = {
-        view = "cmdline_popup",
-        format = {
-          cmdline = { icon = "" },
-          search_down = { icon = "🔍⌄" },
-          search_up = { icon = "🔍⌃" },
-          filter = { icon = "🌐" },
-          lua = { icon = "" },
+      window = {
+        completion = {
+          border = "rounded",
+          winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual",
+        },
+        documentation = {
+          border = "rounded",
+          winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
         },
       },
-      messages = { enabled = true },
-      popupmenu = { enabled = true },
-      lsp = {
-        progress = { enabled = false },
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
-        },
-      },
+      mapping = cmp.mapping.preset.insert({
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.abort(),
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<Tab>"] = cmp.mapping.select_next_item(),
+        ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+      }),
+      sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
+        { name = "buffer" },
+        { name = "path" },
+      }),
     })
 
-    -- Set Noice as the handler for LSP popups
-    vim.lsp.handlers["textDocument/hover"] = require("noice").hover
-    vim.lsp.handlers["textDocument/signatureHelp"] = require("noice").signature
-
-    -- Remove the custom vim.notify override as it might interfere with diagnostics
-    -- Let the notification system from nvim-notify handle this instead
+    -- Set up standard LSP handlers with borders
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+      vim.lsp.handlers.hover, {
+        border = "rounded",
+      }
+    )
+    
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+      vim.lsp.handlers.signature_help, {
+        border = "rounded",
+      }
+    )
   end,
 }

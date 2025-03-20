@@ -48,11 +48,10 @@ return {
     },
     previewers = {
       -- Configure media previewer to use installed tools
-      -- Since chafa is installed, it will be used by default
+      -- Use viu for image previews since it's now installed
       image = {
         enabled = true,
-        -- Try using chafa first, which we know is installed
-        render_method = "chafa", -- default to chafa since it's installed
+        render_method = "viu", -- use viu for better image previews
       },
     },
   },
@@ -63,20 +62,21 @@ return {
     vim.defer_fn(function()
       local missing_tools = {}
       
-      -- Check for viu
-      if vim.fn.executable("viu") == 0 then
-        table.insert(missing_tools, "viu")
-      end
-      
       -- Check for ueberzugpp
       if vim.fn.executable("ueberzugpp") == 0 then
         table.insert(missing_tools, "ueberzugpp")
       end
       
-      if #missing_tools > 0 and vim.fn.executable("chafa") == 1 then
+      if #missing_tools > 0 then
         vim.notify(
-          "FZF-Lua is using chafa for image previews. For enhanced preview capabilities, consider installing: " 
+          "FZF-Lua is using viu for image previews. For even more enhanced preview capabilities, consider installing: " 
           .. table.concat(missing_tools, ", "),
+          vim.log.levels.INFO,
+          { title = "FZF-Lua Media Previews" }
+        )
+      else
+        vim.notify(
+          "FZF-Lua is configured with optimal image preview settings using viu.",
           vim.log.levels.INFO,
           { title = "FZF-Lua Media Previews" }
         )

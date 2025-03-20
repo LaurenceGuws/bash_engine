@@ -1,20 +1,15 @@
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
-    "catppuccin/nvim",
+    "nvim-tree/nvim-web-devicons",
   },
   config = function()
-    -- Add error handling for theme loading
+    -- Use auto theme to adapt to current colorscheme
     local theme = "auto"
-    local catppuccin_ok, _ = pcall(require, "catppuccin")
-    if catppuccin_ok then
-      -- Try to use catppuccin theme, fallback to auto if not found
-      theme = "catppuccin"
-    end
 
     require("lualine").setup({
       options = {
-        theme = "catppuccin",
+        theme = theme,
         section_separators = { left = '', right = '' },
         component_separators = { left = '', right = '' },
         icons_enabled = true,
@@ -48,8 +43,7 @@ return {
       },
       -- Add tabline configuration if needed
       tabline = {},
-      extensions = { "fugitive", "quickfix", "lazy" }, -- Add extensions support
     })
-  end
+  end,
 }
 

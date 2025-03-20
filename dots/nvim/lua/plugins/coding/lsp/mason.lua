@@ -96,6 +96,7 @@ return {
       jsonls = {},
       yamlls = {},
       zls = {},
+      clangd = {},
     }
     
     mason_lspconfig.setup({

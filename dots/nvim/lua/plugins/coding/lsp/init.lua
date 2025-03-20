@@ -8,7 +8,7 @@ return {
   
   require("plugins.coding.lsp.completions"), -- Includes cmp-nvim-lsp with priority 1000
   require("plugins.coding.lsp.mason"),       -- Includes mason.nvim (900) and mason-lspconfig.nvim (800)
-  require("plugins.coding.lsp.lspconfig"),   -- Includes nvim-lspconfig with priority 700
-  require("plugins.coding.lsp.cmp"),         -- Includes noice.nvim for UI enhancements
+  require("plugins.coding.lsp.lspconfig"),   -- Core LSP configuration 
+  require("plugins.coding.lsp.cmp"),          -- Completion system
   require("plugins.coding.lsp.treesitter")   -- Includes treesitter for syntax highlighting
 }

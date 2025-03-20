@@ -4,8 +4,6 @@ return {
   require("plugins.ui.colors"),
   require("plugins.ui.bufferline"),
   require("plugins.ui.statusline"),
-  require("plugins.ui.noice"),
-  require("plugins.ui.notify"),
   require("plugins.ui.icons"),
   -- Explorer config is a special case
   require("plugins.ui.exp.nvim-tree"),
@@ -14,6 +12,8 @@ return {
   require("plugins.ui.which_key"),
   require("plugins.ui.zen-mode"),
   require("plugins.ui.block_focus"),
+  -- Load notification_log module separately
+  -- require("plugins.ui.notification_log"),
 
   -- Coding
   require("plugins.coding.comment"),

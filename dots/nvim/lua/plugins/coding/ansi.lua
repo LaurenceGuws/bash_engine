@@ -8,7 +8,7 @@ return {
       local baleia = require("baleia").setup({
         -- Style customization options (optional)
         colors = {
-          background = "#1E1E2E", -- Match your theme's background
+          background = "NONE", -- Use transparent background to match any theme
         },
         line_starts_at = 1, -- Process from first line
         -- Control how aggressively to strip ANSI codes

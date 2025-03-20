@@ -6,15 +6,11 @@ return {
   config = function()
     local indentscope = require("mini.indentscope")
     
-    -- Use catppuccin colors for highlighting
-    local catppuccin_colors = {
-      purple = "#cba6f7",
+    -- Use theme-agnostic colors for highlighting
+    local colors = {
       blue = "#89b4fa",
-      pink = "#f5c2e7",
-      green = "#a6e3a1",
-      yellow = "#f9e2af",
-      peach = "#fab387",
       lavender = "#b4befe",
+      green = "#a6e3a1",
     }
     
     -- Setup indentscope with simplest animation config
@@ -62,12 +58,12 @@ return {
     })
     
     -- Create custom highlights for current scope
-    vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", { fg = catppuccin_colors.blue, bold = true })
-    vim.api.nvim_set_hl(0, "MiniIndentscopeSymbolOff", { fg = catppuccin_colors.lavender, bold = false })
+    vim.api.nvim_set_hl(0, "MiniIndentscopeSymbol", { fg = colors.blue, bold = true })
+    vim.api.nvim_set_hl(0, "MiniIndentscopeSymbolOff", { fg = colors.lavender, bold = false })
     
     -- Make special symbols for start and end of scope
-    vim.api.nvim_set_hl(0, "MiniIndentscopeStart", { fg = catppuccin_colors.green, bold = true, underline = true })
-    vim.api.nvim_set_hl(0, "MiniIndentscopeEnd", { fg = catppuccin_colors.green, bold = true, underline = true })
+    vim.api.nvim_set_hl(0, "MiniIndentscopeStart", { fg = colors.green, bold = true, underline = true })
+    vim.api.nvim_set_hl(0, "MiniIndentscopeEnd", { fg = colors.green, bold = true, underline = true })
     
     -- Set which filetypes to exclude
     vim.api.nvim_create_autocmd("FileType", {

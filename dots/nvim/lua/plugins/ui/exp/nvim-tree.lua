@@ -2,7 +2,6 @@ return {
   "nvim-tree/nvim-tree.lua",
   dependencies = {
     "nvim-tree/nvim-web-devicons", -- for file icons
-    "catppuccin/nvim", -- ensure theme integration
     "ibhagwan/fzf-lua", -- Add direct dependency for context menu
     "nvim-lua/plenary.nvim", -- required by fzf-lua
     "MunifTanjim/nui.nvim", -- UI components for menus

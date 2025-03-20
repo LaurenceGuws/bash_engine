@@ -18,19 +18,19 @@ return {
     provider = "ollama",
     ollama = {
       endpoint = "http://127.0.0.1:11434", -- Note that there is no /v1 at the end.
-      model = "phi4",
+      model = "phi4-mini",
     },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {"stevearc/dressing.nvim", "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim",
-    --- The below dependencies are optional,
+                    --- The below dependencies are optional,
                     "echasnovski/mini.pick", -- for file_selector provider mini.pick
-    "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-    "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-    "ibhagwan/fzf-lua", -- for file_selector provider fzf
-    "zbirenbaum/copilot.lua", -- for providers='copilot'
+                    "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+                    "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+                    "ibhagwan/fzf-lua", -- for file_selector provider fzf
+                    "zbirenbaum/copilot.lua", -- for providers='copilot'
     {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",

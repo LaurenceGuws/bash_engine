@@ -8,6 +8,7 @@ bat: "bat --paging=never -n"
 b: ${BROWSER}
 e: ${EDITOR}
 r: "source ~/.bashrc"
+ls: "ls --color=auto"
 l: "ls"
 ll: "ls -la"
 allow: "sudo chmod +x"

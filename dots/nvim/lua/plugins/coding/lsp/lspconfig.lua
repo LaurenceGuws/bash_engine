@@ -324,6 +324,22 @@ return {
           }
         }
       },
+      clangd = {
+        autostart = true,
+        on_attach = on_attach,
+        capabilities = capabilities,
+        cmd = { "clangd" },
+        filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+        root_dir = util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
+        settings = {
+          clangd = {
+            checkUpdates = true,
+            fallbackFlags = { "-std=c11" },
+            suggestMissingIncludes = true,
+            headerInsertion = "iwyu"
+          }
+        }
+      },
       rust_analyzer = { 
         capabilities = capabilities, 
         on_attach = on_attach,

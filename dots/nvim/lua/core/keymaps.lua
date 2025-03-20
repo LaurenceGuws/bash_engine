@@ -138,6 +138,9 @@ map('n', '<leader>t1v', ':lua OpenTerminalBuffer("bash -i -c 1value", "1Value Vi
 map('n', '<leader>tw', ':lua OpenTerminalBuffer("bash -i -c wiki_life", "Personal Wiki")<CR>', { noremap = true, silent = true, desc = "Personal Wiki (wiki_life)" })
 map('n', '<leader>tps', ':lua OpenTerminalBuffer("bash -i -c posting", "Posting (like Postman)")<CR>', { noremap = true, silent = true, desc = "Posting (like Postman)" })
 
+-- Add notification log toggle
+map("n", "<leader>tn", "<cmd>NotificationLogToggle<CR>", { desc = "Toggle Notification Log" })
+
 -- Database UI (DBUI) Key Mappings (with Toggle on <leader>dt)
 map('n', '<leader>dt', ':DBUIToggle<CR>', { noremap = true, silent = true, desc = "Toggle Database UI" })
 map('n', '<leader>du', ':DBUI<CR>', { noremap = true, silent = true, desc = "Open Database UI" })
@@ -153,3 +156,7 @@ map("n", "<leader>tds", "<cmd>lua vim.diagnostic.config({signs = not vim.diagnos
 map("n", "<leader>tdu", "<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>", { desc = "Toggle Diagnostic Underlines" })
 map("n", "<leader>tf", "<cmd>lua vim.lsp.buf.format({async = true})<CR>", { desc = "Format Current Buffer" })
 map("n", "<leader>tfs", "<cmd>ToggleFormatOnSave<CR>", { desc = "Toggle Format on Save" })
+
+-- 🔹 Theme Picker
+map("n", "<leader>tc", "<cmd>ThemePicker<CR>", { desc = "Theme Picker" })
+map("n", "<leader>td", "<cmd>ThemeDebug<CR>", { desc = "Toggle Theme Debug Mode" })
