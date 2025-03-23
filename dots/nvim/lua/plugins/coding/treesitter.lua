@@ -21,6 +21,13 @@ return {
 			"go",
 			"gomod",
 			"gosum",
+			"javascript",
+			"scss",
+			"svelte",
+			"tsx",
+			"typst",
+			"vue",
+			"norg",
 		},
 		highlight = {
 			enable = true,

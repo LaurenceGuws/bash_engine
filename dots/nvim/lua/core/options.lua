@@ -4,7 +4,6 @@ local opt = vim.opt
 -- These must be set before plugins load
 
 -- Disable netrw (required by nvim-tree to be set before it loads)
--- Disable netrw (required by file explorers like nvim-tree/neo-tree)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -37,11 +36,5 @@ opt.fillchars:append({ eob = " " }) -- Replace `~` with blank space
 -- Enable persistent undo
 opt.undofile = true -- Keep undo history across sessions
 opt.undodir = vim.fn.stdpath("data") .. "/undo" -- Set undo directory
-vim.api.nvim_create_autocmd("BufRead", {
-	pattern = "*.zig",
-	callback = function()
-		vim.bo.filetype = "zig"
-	end,
-})
 
 return {}

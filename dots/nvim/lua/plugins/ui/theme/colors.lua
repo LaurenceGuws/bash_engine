@@ -5,6 +5,13 @@ return {
 		lazy = false,
 		priority = 1001, -- Highest priority to ensure it loads last
 		config = function()
+			-- Get path to persistence file
+			local function get_persistence_path()
+				local data_path = vim.fn.stdpath("data")
+				return data_path .. "/theme.lua"
+			end
+
+			-- Setup tokyonight
 			require("tokyonight").setup({
 				style = "night", -- Choose between 'storm', 'moon', 'night', and 'day'
 				transparent = false, -- Enable this for transparent background
@@ -24,11 +31,40 @@ return {
 				lualine_bold = false,
 			})
 
-			-- Set Tokyo Night as the default theme
-			vim.cmd("colorscheme tokyonight-night")
+			-- Load theme in a non-blocking way, after UI has initialized
+			vim.defer_fn(function()
+				-- Set Tokyo Night as default first to avoid any flashing
+				vim.cmd("colorscheme tokyonight-night")
+				vim.g.selected_theme = "tokyonight-night"
 
-			-- Save it as the selected theme for theme_picker
-			vim.g.selected_theme = "tokyonight:night"
+				-- Try to load saved theme (in the background)
+				vim.defer_fn(function()
+					local theme_file = get_persistence_path()
+					local ok, theme = pcall(loadfile, theme_file)
+					if ok and theme then
+						local theme_name = theme()
+						pcall(vim.cmd, "colorscheme " .. theme_name)
+						vim.g.selected_theme = theme_name
+					end
+
+					-- Setup ColorScheme event to save theme changes
+					vim.api.nvim_create_autocmd("ColorScheme", {
+						callback = function()
+							local theme = vim.api.nvim_exec("colorscheme", true)
+							vim.g.selected_theme = theme
+					
+							-- Save to file (async)
+							vim.defer_fn(function()
+								local file = io.open(get_persistence_path(), "w")
+								if file then
+									file:write("return '" .. theme .. "'")
+									file:close()
+								end
+							end, 10) -- Small delay to not block
+						end,
+					})
+				end, 100) -- Delay theme loading slightly
+			end, 10) -- Small delay for initial theme setup
 		end,
 	},
 
