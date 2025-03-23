@@ -33,8 +33,16 @@ M.init = function()
             return
         end
 
-        -- We don't use the picker, but we do use the input module
-        -- Don't register picker UI handler - we're using Telescope directly
+        -- Set up the Dashboard command
+        vim.api.nvim_create_user_command("Dashboard", function()
+            if snacks.dashboard then
+                snacks.dashboard()
+            else
+                vim.notify("Dashboard is not available", vim.log.levels.ERROR)
+            end
+        end, {})
+
+        -- Input module
         local ok_input, input = pcall(require, "snacks.input")
         if ok_input then
             vim.ui.input = input
