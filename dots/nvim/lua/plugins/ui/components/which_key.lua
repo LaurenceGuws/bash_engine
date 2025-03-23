@@ -82,11 +82,22 @@ return {
 			["<leader>t1"] = { name = "+Terminal/Tools" },
 			["<leader>ta"] = { name = "+ANSI/Terminal" },
 			["<leader>tn"] = { desc = "Toggle Notification Log" },
+			["<leader>tx"] = { name = "+Test Pickers" },
 			["<leader>d"] = { name = "+Database" },
 			["<leader>c"] = { name = "+Code" },
 			["<leader>g"] = { name = "+Git" },
 			["<leader>b"] = {
 				name = "+Buffers",
+				n = { desc = "Next Buffer" },
+				p = { desc = "Previous Buffer" },
+				c = { desc = "Close Buffer" },
+				f = { desc = "Pick Buffer" },
+				s = { desc = "Sort Buffers by Directory" },
+				["1"] = { desc = "Buffer 1" },
+				["2"] = { desc = "Buffer 2" },
+				["3"] = { desc = "Buffer 3" },
+				["4"] = { desc = "Buffer 4" },
+				["5"] = { desc = "Buffer 5" },
 				expand = function()
 					return require("which-key.extras").expand.buf()
 				end,

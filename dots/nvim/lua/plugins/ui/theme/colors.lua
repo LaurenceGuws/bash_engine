@@ -52,7 +52,7 @@ return {
 						callback = function()
 							local theme = vim.api.nvim_exec("colorscheme", true)
 							vim.g.selected_theme = theme
-					
+
 							-- Save to file (async)
 							vim.defer_fn(function()
 								local file = io.open(get_persistence_path(), "w")

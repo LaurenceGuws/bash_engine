@@ -109,96 +109,86 @@ map("v", "<C-f>", "<Esc>/", opts)
 -- Leader Key Mappings
 -- ----------------------------------------------------------------
 
--- Buffer Navigation
-map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next Buffer" })
-map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous Buffer" })
-map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
-
--- Dashboard and Explorer
-map("n", "<leader>d", function()
-    local ok, snacks = pcall(require, "snacks")
-    if ok and snacks.dashboard then
-        snacks.dashboard()
-    else
-        vim.notify("Dashboard is not available", vim.log.levels.ERROR)
-    end
-end, { desc = "Open Dashboard" })
+-- Buffer Navigation (replaced with bufferline commands in the bufferline config)
+-- map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next Buffer" })
+-- map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous Buffer" })
+-- map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
 
 map("n", "<leader>e", function()
-    local ok, explorer = pcall(require, "snacks.explorer")
-    if ok then
-        explorer()
-    else
-        vim.notify("Explorer not available", vim.log.levels.ERROR)
-    end
+	local ok, explorer = pcall(require, "snacks.explorer")
+	if ok then
+		explorer()
+	else
+		vim.notify("Explorer not available", vim.log.levels.ERROR)
+	end
 end, { desc = "File Explorer" })
 
 -- Terminal commands under toggle namespace
-map("n", "<leader>tt", function()
-    local ok, terminal = pcall(require, "snacks.terminal")
-    if ok then
-        terminal.toggle()
-    else
-        vim.notify("Terminal not available", vim.log.levels.ERROR)
-    end
+map("n", "<leader>tst", function()
+	local ok, terminal = pcall(require, "snacks.terminal")
+	if ok then
+		terminal.toggle()
+	else
+		vim.notify("Terminal not available", vim.log.levels.ERROR)
+	end
 end, { desc = "Toggle Terminal" })
 
-map("n", "<leader>tf", function()
-    local ok, terminal = pcall(require, "snacks.terminal")
-    if ok then
-        terminal.toggle({ style = "float" })
-    else
-        vim.notify("Terminal not available", vim.log.levels.ERROR)
-    end
+map("n", "<leader>tsf", function()
+	local ok, terminal = pcall(require, "snacks.terminal")
+	if ok then
+		terminal.toggle({ style = "float" })
+	else
+		vim.notify("Terminal not available", vim.log.levels.ERROR)
+	end
 end, { desc = "Floating Terminal" })
 
-map("n", "<leader>ts", function()
-    local ok, terminal = pcall(require, "snacks.terminal")
-    if ok then
-        terminal.toggle({ style = "split" })
-    else
-        vim.notify("Terminal not available", vim.log.levels.ERROR)
-    end
+map("n", "<leader>tss", function()
+	local ok, terminal = pcall(require, "snacks.terminal")
+	if ok then
+		terminal.toggle({ style = "split" })
+	else
+		vim.notify("Terminal not available", vim.log.levels.ERROR)
+	end
 end, { desc = "Split Terminal" })
 
 -- Additional TUI commands
 map("n", "<leader>tm", function()
-    vim.cmd("Mason")
+	vim.cmd("Mason")
 end, { desc = "Mason" })
 
 map("n", "<leader>tr", function()
-    vim.cmd("MasonRegistry")
+	vim.cmd("MasonRegistry")
 end, { desc = "Mason Registry" })
 
 map("n", "<leader>tl", function()
-    vim.cmd("Lazy")
+	vim.cmd("Lazy")
 end, { desc = "Lazy Plugin Manager" })
 
 map("n", "<leader>tg", function()
-    vim.cmd("Telescope live_grep")
+	vim.cmd("Telescope live_grep")
 end, { desc = "Live Grep" })
 
 map("n", "<leader>td", function()
-    vim.cmd("Telescope diagnostics")
+	vim.cmd("Telescope diagnostics")
 end, { desc = "Diagnostics" })
 
 map("n", "<leader>tp", function()
-    -- Try to load project management plugin
-    local has_project, project = pcall(require, "telescope")
-    if has_project then
-        vim.cmd("Telescope projects")
-    else
-        vim.notify("Project plugin not available", vim.log.levels.ERROR)
-    end
+	-- Try to load project management plugin
+	local has_project, project = pcall(require, "telescope")
+	if has_project then
+		vim.cmd("Telescope projects")
+	else
+		vim.notify("Project plugin not available", vim.log.levels.ERROR)
+	end
 end, { desc = "Projects" })
 
 map("n", "<C-\\>", function()
-    local ok, terminal = pcall(require, "snacks.terminal")
-    if ok then
-        terminal.toggle()
-    else
-        vim.notify("Terminal not available", vim.log.levels.ERROR)
-    end
+	local ok, terminal = pcall(require, "snacks.terminal")
+	if ok then
+		terminal.toggle()
+	else
+		vim.notify("Terminal not available", vim.log.levels.ERROR)
+	end
 end, { desc = "Toggle Terminal" })
 
 -- Telescope/Fuzzy Finding
@@ -221,11 +211,11 @@ map("n", "<leader>tfs", "<cmd>ToggleFormatOnSave<CR>", { desc = "Toggle Format o
 
 -- Theme/Colorscheme
 map("n", "<leader>tc", function()
-    require("plugins.ui.theme.theme_ui").open_theme_picker()
+	require("plugins.ui.theme.theme_ui").open_theme_picker()
 end, { desc = "Theme Picker" })
 
 map("n", "<leader>uC", function()
-    require("plugins.ui.theme.theme_ui").open_theme_picker()
+	require("plugins.ui.theme.theme_ui").open_theme_picker()
 end, { desc = "Colorschemes" })
 
 -- Diagnostic configurations
