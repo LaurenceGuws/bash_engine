@@ -1,25 +1,14 @@
+-- Configure web icons
 return {
-  "echasnovski/mini.icons",
-  version = false,
-  event = "VeryLazy",
-  config = function()
-    require("mini.icons").setup({
-      -- Configure icon groups for different use cases
-      lsp = {
-        error = "",
-        warn = "",
-        hint = "",
-        info = "",
-      },
-      git = {
-        added = "",
-        changed = "",
-        deleted = "",
-      },
-      filesystem = {
-        directory = "",
-        file = "",
-      },
-    })
-  end,
-} 
+	"nvim-tree/nvim-web-devicons",
+	lazy = true,
+	config = function()
+		require("nvim-web-devicons").setup({
+			-- Override icon defaults
+			override = {},
+			-- Global options
+			default = true,
+			strict = true,
+		})
+	end,
+}

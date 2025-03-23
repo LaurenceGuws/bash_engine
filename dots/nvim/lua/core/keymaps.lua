@@ -68,7 +68,6 @@ map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next Buffer" })
 map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous Buffer" })
 map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
 
-
 -- 🔹 Save File
 map({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", { desc = "Save File" })
 
@@ -107,56 +106,173 @@ map("i", "<C-p>", "<cmd>Telescope find_files<cr>", opts)
 map("v", "<C-p>", "<cmd>Telescope find_files<cr>", opts)
 
 -- 🔹 Reorganized Leader mappings for find operations
-map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
-map("n", "<leader>fh", "<cmd>Telescope find_files hidden=true<cr>", { desc = "Find Hidden Files" })
-map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Find Recent Files" })
+map("n", "<leader>ff", function()
+	local ok, picker = pcall(require, "snacks.picker")
+	if ok then
+		picker.files()
+	else
+		vim.notify("snacks.picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Find Files" })
+
+map("n", "<leader>fh", function()
+	local ok, picker = pcall(require, "snacks.picker")
+	if ok then
+		picker.files({ hidden = true })
+	else
+		vim.notify("snacks.picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Find Hidden Files" })
+
+map("n", "<leader>fr", function()
+	local ok, picker = pcall(require, "snacks.picker")
+	if ok then
+		picker.recent()
+	else
+		vim.notify("snacks.picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Find Recent Files" })
 
 -- 🔹 Buffer operations with consistent hierarchy
-map("n", "<leader>fbb", "<cmd>FzfLua buffers<cr>", { desc = "Buffer List (FZF)" })
-map("n", "<leader>fbu", "<cmd>Telescope buffers<cr>", { desc = "Telescope Buffers" })
-map("n", "<leader>fbc", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search Current Buffer" })
+map("n", "<leader>fbb", function()
+	local ok, picker = pcall(require, "snacks.picker")
+	if ok then
+		picker.buffers()
+	else
+		vim.notify("snacks.picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Buffer List" })
+map("n", "<leader>fbu", function()
+	local ok, picker = pcall(require, "snacks.picker")
+	if ok then
+		picker.buffers()
+	else
+		vim.notify("snacks.picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Buffers" })
+map("n", "<leader>fbc", function()
+	local ok, picker = pcall(require, "snacks.picker")
+	if ok then
+		picker.lines()
+	else
+		vim.notify("snacks.picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Search Current Buffer" })
 
 -- 🔹 Grep operations with consistent hierarchy
-map("n", "<leader>fgg", "<cmd>FzfLua live_grep<cr>", { desc = "Live Grep (FZF)" })
-map("n", "<leader>fgf", "<cmd>Telescope git_files<cr>", { desc = "Find Git Files" })
+map("n", "<leader>fgg", function()
+	local ok, picker = pcall(require, "snacks.picker")
+	if ok then
+		picker.grep()
+	else
+		vim.notify("snacks.picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Live Grep" })
+map("n", "<leader>fgf", function()
+	local ok, picker = pcall(require, "snacks.picker")
+	if ok then
+		picker.git_files()
+	else
+		vim.notify("snacks.picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Find Git Files" })
 
 -- 🔹 Markdown
 map("n", "<leader>md", "<cmd>RenderMarkdownToggle<CR>", { desc = "Toggle Markdown Rendering" })
 map("n", "<leader>mr", "<cmd>RenderMarkdownToggle<CR>", { desc = "Render Markdown" })
 
-
--- Key mappings for launching commands with descriptions
-map('n', '<leader>tk9', ':lua OpenTerminalBuffer("k9s", "K9s Dashboard")<CR>', { noremap = true, silent = true, desc = "K9s Dashboard (Kubernetes)" })
-map('n', '<leader>tbt', ':lua OpenTerminalBuffer("btop", "Btop System Monitor")<CR>', { noremap = true, silent = true, desc = "Btop System Monitor" })
-map('n', '<leader>tpa', ':lua OpenTerminalBuffer("pacseek", "Pacseek Package Manager")<CR>', { noremap = true, silent = true, desc = "Pacseek Package Manager (Arch Linux)" })
-map('n', '<leader>tm', ':lua OpenTerminalBuffer("cmatrix", "Matrix Rain")<CR>', { noremap = true, silent = true, desc = "Matrix Rain (cmatrix)" })
-map('n', '<leader>tbs', ':lua OpenTerminalBuffer("bash -i -c browsh", "Browsh Web Browser")<CR>', { noremap = true, silent = true, desc = "Browsh Web Browser (Text-Based)" })
-map('n', '<leader>tgk', ':lua OpenTerminalBuffer("gk launchpad", "Game Launchpad")<CR>', { noremap = true, silent = true, desc = "Game Launchpad (gk)" })
-map('n', '<leader>tgl', ':lua OpenTerminalBuffer("lazygit", "LazyGit Interface")<CR>', { noremap = true, silent = true, desc = "LazyGit Interface (Git TUI)" })
-map('n', '<leader>t1d', ':lua OpenTerminalBuffer("bash -i -c 1doc", "1Doc Documentation")<CR>', { noremap = true, silent = true, desc = "1Doc Documentation" })
-map('n', '<leader>t1v', ':lua OpenTerminalBuffer("bash -i -c 1value", "1Value Viewer")<CR>', { noremap = true, silent = true, desc = "1Value Viewer (Structured Data)" })
-map('n', '<leader>tw', ':lua OpenTerminalBuffer("bash -i -c wiki_life", "Personal Wiki")<CR>', { noremap = true, silent = true, desc = "Personal Wiki (wiki_life)" })
-map('n', '<leader>tps', ':lua OpenTerminalBuffer("bash -i -c posting", "Posting (like Postman)")<CR>', { noremap = true, silent = true, desc = "Posting (like Postman)" })
-
 -- Add notification log toggle
 map("n", "<leader>tn", "<cmd>NotificationLogToggle<CR>", { desc = "Toggle Notification Log" })
 
 -- Database UI (DBUI) Key Mappings (with Toggle on <leader>dt)
-map('n', '<leader>dt', ':DBUIToggle<CR>', { noremap = true, silent = true, desc = "Toggle Database UI" })
-map('n', '<leader>du', ':DBUI<CR>', { noremap = true, silent = true, desc = "Open Database UI" })
-map('n', '<leader>da', ':DBUIAddConnection<CR>', { noremap = true, silent = true, desc = "Add New Database Connection" })
-map('n', '<leader>df', ':DBUIFindBuffer<CR>', { noremap = true, silent = true, desc = "Find Database Buffer" })
+map("n", "<leader>dt", ":DBUIToggle<CR>", { noremap = true, silent = true, desc = "Toggle Database UI" })
+map("n", "<leader>du", ":DBUI<CR>", { noremap = true, silent = true, desc = "Open Database UI" })
+map(
+	"n",
+	"<leader>da",
+	":DBUIAddConnection<CR>",
+	{ noremap = true, silent = true, desc = "Add New Database Connection" }
+)
+map("n", "<leader>df", ":DBUIFindBuffer<CR>", { noremap = true, silent = true, desc = "Find Database Buffer" })
 
 -- 🔹 Diagnostic Toggles
 map("n", "<leader>tt", "<cmd>TroubleToggle<CR>", { desc = "Toggle Trouble Panel" })
 map("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", { desc = "Toggle Document Diagnostics" })
 map("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = "Toggle Workspace Diagnostics" })
-map("n", "<leader>tdi", "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>", { desc = "Toggle Inline Diagnostics" })
-map("n", "<leader>tds", "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>", { desc = "Toggle Diagnostic Signs" })
-map("n", "<leader>tdu", "<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>", { desc = "Toggle Diagnostic Underlines" })
+map(
+	"n",
+	"<leader>tdi",
+	"<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>",
+	{ desc = "Toggle Inline Diagnostics" }
+)
+map(
+	"n",
+	"<leader>tds",
+	"<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>",
+	{ desc = "Toggle Diagnostic Signs" }
+)
+map(
+	"n",
+	"<leader>tdu",
+	"<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>",
+	{ desc = "Toggle Diagnostic Underlines" }
+)
 map("n", "<leader>tf", "<cmd>lua vim.lsp.buf.format({async = true})<CR>", { desc = "Format Current Buffer" })
 map("n", "<leader>tfs", "<cmd>ToggleFormatOnSave<CR>", { desc = "Toggle Format on Save" })
 
+-- Add diagnostics copy popup
+map("n", "<leader>tdc", function()
+	require("core.lsp_utils").show_diagnostics_popup()
+end, { desc = "Copy Buffer Diagnostics" })
+map("n", "<leader>tdp", function()
+	require("core.lsp_utils").show_diagnostics_popup({ scope = "workspace" })
+end, { desc = "Project Error List" })
+map("n", "<leader>tda", function()
+	require("core.lsp_utils").show_diagnostics_popup({ scope = "workspace", aggressive = true })
+end, { desc = "Aggressive Project Lint" })
+
 -- 🔹 Theme Picker
-map("n", "<leader>tc", "<cmd>ThemePicker<CR>", { desc = "Theme Picker" })
-map("n", "<leader>td", "<cmd>ThemeDebug<CR>", { desc = "Toggle Theme Debug Mode" })
+map("n", "<leader>tc", function()
+	-- Use Snacks' built-in colorschemes picker with preview
+	local ok, snacks = pcall(require, "snacks")
+	if ok and snacks.picker then
+		snacks.picker.colorschemes()
+	else
+		vim.notify("Snacks picker not available", vim.log.levels.ERROR)
+	end
+end, { desc = "Theme Picker" })
+map("n", "<leader>td", function()
+	vim.notify("Theme debugging was removed with core themes folder", vim.log.levels.INFO)
+end, { desc = "Theme Debug Info" })
+
+-- 🔹 File Explorer (NvimTree or Snacks)
+map("n", "<leader>e", function()
+	-- Directly use snacks.explorer
+	require("snacks").explorer()
+end, { desc = "Toggle File Explorer" })
+
+-- 🔹 Fuzzy Finder (Telescope or Snacks)
+map("n", "<leader>ff", function()
+	-- Directly use Telescope since snacks is disabled
+	vim.cmd("Telescope find_files")
+end, { desc = "Find Files" })
+
+map("n", "<leader>fg", function()
+	-- Directly use Telescope since snacks is disabled
+	vim.cmd("Telescope git_files")
+end, { desc = "Find Git Files" })
+
+map("n", "<leader>fb", function()
+	-- Directly use Telescope since snacks is disabled
+	vim.cmd("Telescope buffers")
+end, { desc = "Find Buffers" })
+
+map("n", "<leader>fh", function()
+	-- Directly use Telescope since snacks is disabled
+	vim.cmd("Telescope help_tags")
+end, { desc = "Find Help" })
+
+map("n", "<leader>/", function()
+	-- Directly use Telescope since snacks is disabled
+	vim.cmd("Telescope live_grep")
+end, { desc = "Search Text" })

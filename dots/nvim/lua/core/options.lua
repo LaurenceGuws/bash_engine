@@ -32,17 +32,16 @@ opt.smartindent = true
 -- UI Tweaks
 opt.termguicolors = true
 opt.signcolumn = "yes"
-opt.fillchars:append({ eob = " " })  -- Replace `~` with blank space
+opt.fillchars:append({ eob = " " }) -- Replace `~` with blank space
 
 -- Enable persistent undo
-opt.undofile = true  -- Keep undo history across sessions
+opt.undofile = true -- Keep undo history across sessions
 opt.undodir = vim.fn.stdpath("data") .. "/undo" -- Set undo directory
 vim.api.nvim_create_autocmd("BufRead", {
-  pattern = "*.zig",
-  callback = function()
-    vim.bo.filetype = "zig"
-  end,
+	pattern = "*.zig",
+	callback = function()
+		vim.bo.filetype = "zig"
+	end,
 })
 
 return {}
-
