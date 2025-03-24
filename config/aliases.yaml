@@ -4,18 +4,19 @@
 # - These will be loaded into your bash session via ./init/load_aliases.sh
 ###
 bot: "ollama run $ACTIVE_BOT"
-bat: "bat --paging=never -n"
+bat: "bat -p"
+cat: "bat -p"
 b: ${BROWSER}
 e: ${EDITOR}
 r: "source ~/.bashrc"
-ls: "ls --color=auto"
+ls: "lsd"
 l: "ls"
 ll: "ls -la"
 allow: "sudo chmod +x"
 own: "sudo chown"
 yt: "invidious_instance='https://vid.puffyan.us' ytfzf -t"
 tree: "tree -CAS --hyperlink"
-ln: 'nnn -deaH'
+ln: "nnn -deaH"
 ############
 # libvirtd, qemu-kvm, virtlockd, virtlogd stack
 ############
