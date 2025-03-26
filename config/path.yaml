@@ -4,12 +4,13 @@
 # - keys in this file does not do anything accept make your life easier.
 ###
 
-ROCM_BIN_PATH: /opt/rocm-6.2.3/bin    
+JAVA: "${HOME}/.sdkman/candidates/java/21.0.2-graalce/bin"
+ROCM_BIN_PATH: /opt/rocm-6.2.3/bin
 CKER_PLUGIN_PATH: /usr/lib/docker/cli-plugins
 USR_BIN_PATH: /usr/bin
 HELM_LS: /usr/local/bin
 CARGO_PATH: /${HOME}/.cargo/bin
-LOCAL_BIN_PATH: ${HOME}/.local/bin     
+LOCAL_BIN_PATH: ${HOME}/.local/bin
 NODE_PATH: ${HOME}/.nvm/versions/node/v20.18.1/bin
 GO_PATH: "/usr/local/go/bin:${HOME}/go/bin"
 BUN_PATH: "${HOME}/.bun/bin:${HOME}/node_modules/.bin:${HOME}/.cache/.bun/bin:/${HOME}/.cache/.bun/install/global/bin"
@@ -17,8 +18,5 @@ SNAP_PATH: "/var/lib/snapd/snap/bin"
 KREW: "${HOME}/.krew/bin"
 JBANG: "${HOME}/.sdkman/candidates/jbang/0.124.0/bin"
 QUARKUS: "${HOME}/.sdkman/candidates/quarkus/3.19.2/bin"
-JAVA: "${HOME}/.sdkman/candidates/java/21.0.2-graalce/bin"
 MAVEN: "${HOME}/.sdkman/candidates/maven/3.9.9/bin/"
 KREW_ROOT: "${HOME}/.krew/bin"
-
-
