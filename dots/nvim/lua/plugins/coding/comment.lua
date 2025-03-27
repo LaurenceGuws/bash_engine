@@ -8,7 +8,8 @@ return {
 		require("Comment").setup({
 			-- Configure with explicit mappings to avoid overlap
 			mappings = {
-				-- Disable default mappings
+				-- Disable default mappings completely to avoid redundancy
+				-- with the custom ones defined in keymaps.lua
 				basic = false,
 				extra = false,
 			},
@@ -34,7 +35,7 @@ return {
 			end,
 		})
 
-		-- Our custom keymaps for commenting are in mappings.lua using <C-/>
-		-- We don't need to set any keymaps here as they're defined in mappings.lua
+		-- IMPORTANT: All comment keymaps are defined in lua/core/keymaps.lua using:
+		-- <C-/> and <C-_> for normal, visual, and insert mode
 	end,
 }

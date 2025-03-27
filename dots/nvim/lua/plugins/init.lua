@@ -8,7 +8,7 @@ return {
 	require("plugins.ui.components.bufferline"),
 	-- Theme management
 	require("plugins.ui.theme.colors"),
-	require("plugins.ui.theme.theme_ui"),
+	-- require("plugins.ui.theme.theme_ui"), -- Removed as redundant with Telescope
 	require("plugins.ui.components.telescope_config"),
 	-- Coding
 	require("plugins.coding.lsp.init"),

@@ -13,11 +13,6 @@ M.init = function()
 	-- Load notification system
 	require("plugins.ui.components.notifications").setup()
 
-	-- Load bufferline instead of tabline (bufferline setup is in its own file)
-	-- Comment out or remove the old tabline setup
-	-- require("plugins.ui.components.tabline").setup()
-	-- require("plugins.ui.components.tabline").setup_keymaps()
-
 	-- Create an autocmd to restore original UI handlers on exit
 	vim.api.nvim_create_autocmd("VimLeavePre", {
 		callback = function()

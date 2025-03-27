@@ -107,7 +107,6 @@ return {
 			keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 			keymap(bufnr, "n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 			keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-			keymap(bufnr, "n", "<leader>f", "<cmd>lua vim.lsp.buf.format({async = true})<CR>", opts)
 			keymap(bufnr, "n", "<leader>ws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", opts)
 
 			-- Diagnostics
@@ -234,10 +233,15 @@ return {
 
 		-- Configure LSP servers with specialized setups for integration development
 		-- BASE SERVER CONFIG
+		local base_config = {
+			capabilities = capabilities,
+			on_attach = on_attach,
+		}
+
 		local server_configs = {
 			-- Web Development
-			html = { capabilities = capabilities, on_attach = on_attach },
-			cssls = { capabilities = capabilities, on_attach = on_attach },
+			html = base_config,
+			cssls = base_config,
 			tsserver = {
 				capabilities = capabilities,
 				on_attach = on_attach,
@@ -266,7 +270,7 @@ return {
 			},
 
 			-- DevOps-related
-			dockerls = { capabilities = capabilities, on_attach = on_attach },
+			dockerls = base_config,
 			helm_ls = {
 				capabilities = capabilities,
 				on_attach = on_attach,
@@ -320,7 +324,7 @@ return {
 					},
 				},
 			},
-			sqlls = { capabilities = capabilities, on_attach = on_attach },
+			sqlls = base_config,
 
 			-- Programming Languages
 			lua_ls = {
@@ -354,8 +358,8 @@ return {
 					},
 				},
 			},
-			jdtls = { capabilities = capabilities, on_attach = on_attach },
-			bashls = { capabilities = capabilities, on_attach = on_attach },
+			jdtls = base_config,
+			bashls = base_config,
 			zls = {
 				autostart = true,
 				on_attach = on_attach,

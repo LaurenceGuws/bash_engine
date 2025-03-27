@@ -4,35 +4,35 @@ return {
 	event = "VeryLazy",
 	opts = {
 		-- General options
-		icons = {
-			breadcrumb = "»",
-			separator = "➜",
-			group = "+",
-			-- Use devicons if available
-			mappings = true, -- Enable/disable icons for mappings
-		},
-		popup = {
-			border = "rounded",
-			position = "bottom",
-			margin = { 1, 0, 1, 0 },
-			padding = { 2, 2, 2, 2 },
-			win_opts = {
-				winblend = 0,
-				cursorline = true,
-				cursorcolumn = false,
-				winhighlight = {
-					Normal = "WhichKeyNormal",
-					FloatBorder = "WhichKeyBorder",
-					Title = "WhichKeyTitle",
-				},
-			},
-		},
-		layout = {
-			height = { min = 4, max = 25 },
-			width = { min = 20, max = 50 },
-			spacing = 3,
-			align = "left",
-		},
+		-- icons = {
+		-- 	breadcrumb = "»",
+		-- 	separator = "➜",
+		-- 	group = "+",
+		-- 	-- Use devicons if available
+		-- 	mappings = true, -- Enable/disable icons for mappings
+		-- },
+		-- popup = {
+		-- 	border = "rounded",
+		-- 	position = "bottom",
+		-- 	margin = { 1, 0, 1, 0 },
+		-- 	padding = { 2, 2, 2, 2 },
+		-- 	win_opts = {
+		-- 		winblend = 0,
+		-- 		cursorline = true,
+		-- 		cursorcolumn = false,
+		-- 		winhighlight = {
+		-- 			Normal = "WhichKeyNormal",
+		-- 			FloatBorder = "WhichKeyBorder",
+		-- 			Title = "WhichKeyTitle",
+		-- 		},
+		-- 	},
+		-- },
+		-- layout = {
+		-- 	height = { min = 4, max = 25 },
+		-- 	width = { min = 20, max = 50 },
+		-- 	spacing = 3,
+		-- 	align = "left",
+		-- },
 		-- Set up triggers properly (table format)
 		triggers = {
 			{ "<leader>", mode = { "n", "v" } },
@@ -66,45 +66,7 @@ return {
 			-- Set to false to disable colors
 			enable = true,
 		},
-		-- Define groups directly in opts (newer method)
-		defaults = {
-			mode = "n",
-			["<leader>f"] = { name = "+Find/Files" },
-			["<leader>fb"] = { name = "+Buffers" },
-			["<leader>fg"] = { name = "+Grep/Git" },
-			["<leader>t"] = { name = "+Terminal/Toggle" },
-			["<leader>td"] = { name = "+Diagnostics" },
-			["<leader>tdc"] = { desc = "Copy Buffer Diagnostics" },
-			["<leader>tdp"] = { desc = "Project Error List" },
-			["<leader>tda"] = { desc = "Aggressive Project Lint" },
-			["<leader>tb"] = { name = "+Terminal/System" },
-			["<leader>tg"] = { name = "+Terminal/Git/Games" },
-			["<leader>t1"] = { name = "+Terminal/Tools" },
-			["<leader>ta"] = { name = "+ANSI/Terminal" },
-			["<leader>tn"] = { desc = "Toggle Notification Log" },
-			["<leader>tx"] = { name = "+Test Pickers" },
-			["<leader>d"] = { name = "+Database" },
-			["<leader>c"] = { name = "+Code" },
-			["<leader>g"] = { name = "+Git" },
-			["<leader>b"] = {
-				name = "+Buffers",
-				n = { desc = "Next Buffer" },
-				p = { desc = "Previous Buffer" },
-				c = { desc = "Close Buffer" },
-				f = { desc = "Pick Buffer" },
-				s = { desc = "Sort Buffers by Directory" },
-				["1"] = { desc = "Buffer 1" },
-				["2"] = { desc = "Buffer 2" },
-				["3"] = { desc = "Buffer 3" },
-				["4"] = { desc = "Buffer 4" },
-				["5"] = { desc = "Buffer 5" },
-				expand = function()
-					return require("which-key.extras").expand.buf()
-				end,
-			},
-			["<leader>m"] = { name = "+Markdown" },
-			["<leader>w"] = { proxy = "<c-w>", name = "+Windows" },
-		},
+		
 		-- Sort options
 		sort = {
 			enable = true,

@@ -173,13 +173,5 @@ return {
 		end,
 	},
 
-	-- Markdown renderer
-	{
-		"MeanderingProgrammer/render-markdown.nvim",
-	},
-
-	-- Image clipboard plugin
-	{
-		"HakonHarnes/img-clip.nvim",
-	},
+	-- NOTE: Markdown-related plugins have been moved to lua/plugins/coding/languages/markdown/markdown.lua
 }

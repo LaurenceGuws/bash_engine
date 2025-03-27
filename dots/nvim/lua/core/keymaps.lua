@@ -2,7 +2,7 @@ local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
 -- ----------------------------------------------------------------
--- Core Keymaps
+-- Core Editor Operations
 -- ----------------------------------------------------------------
 
 -- Basic navigation and commands
@@ -20,14 +20,15 @@ map("v", "<C-/>", "<Plug>(comment_toggle_linewise_visual)", { desc = "Toggle Com
 map("i", "<C-_>", "<Esc><Plug>(comment_toggle_linewise_current)i", opts)
 map("i", "<C-/>", "<Esc><Plug>(comment_toggle_linewise_current)i", opts)
 
--- LSP Completions
-map("i", "<C-Space>", "<cmd>lua require('cmp').complete()<CR>", { desc = "Toggle Completions" })
+map("n", "<C-\\>", "<cmd>lua require('snacks.terminal').toggle()<CR>", { desc = "Toggle Terminal" })
+
+
 
 -- ----------------------------------------------------------------
 -- Movement and Selection
 -- ----------------------------------------------------------------
 
--- Ctrl + Movement for Fast Navigation
+-- Word and Paragraph Navigation
 map("n", "<C-Right>", "e", { desc = "Move to end of word" })
 map("n", "<C-Left>", "b", { desc = "Move to beginning of word" })
 map("n", "<C-Up>", "{", { desc = "Move up one paragraph" })
@@ -37,7 +38,7 @@ map("i", "<C-Left>", "<C-o>b", { desc = "Move to beginning of word" })
 map("i", "<C-Up>", "<C-o>{", { desc = "Move up one paragraph" })
 map("i", "<C-Down>", "<C-o>}", { desc = "Move down one paragraph" })
 
--- HJKL alternatives
+-- HJKL alternatives for word/paragraph navigation
 map("n", "<C-l>", "e", { desc = "Move to end of word" })
 map("n", "<C-h>", "b", { desc = "Move to beginning of word" })
 map("n", "<C-k>", "{", { desc = "Move up one paragraph" })
@@ -47,7 +48,7 @@ map("i", "<C-h>", "<C-o>b", { desc = "Move to beginning of word" })
 map("i", "<C-k>", "<C-o>{", { desc = "Move up one paragraph" })
 map("i", "<C-j>", "<C-o>}", { desc = "Move down one paragraph" })
 
--- Shift + Movement for Selection (VS Code style)
+-- Selection (VS Code style)
 map("n", "<S-Right>", "v<Right>", { desc = "Select right" })
 map("n", "<S-Left>", "v<Left>", { desc = "Select left" })
 map("n", "<S-Up>", "v<Up>", { desc = "Select up" })
@@ -61,7 +62,7 @@ map("v", "<S-Left>", "<Left>", { desc = "Extend selection left" })
 map("v", "<S-Up>", "<Up>", { desc = "Extend selection up" })
 map("v", "<S-Down>", "<Down>", { desc = "Extend selection down" })
 
--- Shift+Ctrl combinations for word selection
+-- Word Selection
 map("n", "<C-S-Right>", "vE", { desc = "Select to end of word" })
 map("n", "<C-S-Left>", "vB", { desc = "Select to beginning of word" })
 map("i", "<C-S-Right>", "<Esc>vE", { desc = "Select to end of word" })
@@ -109,140 +110,44 @@ map("v", "<C-f>", "<Esc>/", opts)
 -- Leader Key Mappings
 -- ----------------------------------------------------------------
 
--- Buffer Navigation (replaced with bufferline commands in the bufferline config)
--- map("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Next Buffer" })
--- map("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Previous Buffer" })
--- map("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
-
-map("n", "<leader>e", function()
-	local ok, explorer = pcall(require, "snacks.explorer")
-	if ok then
-		explorer()
-	else
-		vim.notify("Explorer not available", vim.log.levels.ERROR)
-	end
-end, { desc = "File Explorer" })
-
 -- Terminal commands under toggle namespace
-map("n", "<leader>tst", function()
-	local ok, terminal = pcall(require, "snacks.terminal")
-	if ok then
-		terminal.toggle()
-	else
-		vim.notify("Terminal not available", vim.log.levels.ERROR)
-	end
-end, { desc = "Toggle Terminal" })
-
-map("n", "<leader>tsf", function()
-	local ok, terminal = pcall(require, "snacks.terminal")
-	if ok then
-		terminal.toggle({ style = "float" })
-	else
-		vim.notify("Terminal not available", vim.log.levels.ERROR)
-	end
-end, { desc = "Floating Terminal" })
-
-map("n", "<leader>tss", function()
-	local ok, terminal = pcall(require, "snacks.terminal")
-	if ok then
-		terminal.toggle({ style = "split" })
-	else
-		vim.notify("Terminal not available", vim.log.levels.ERROR)
-	end
-end, { desc = "Split Terminal" })
-
--- Additional TUI commands
-map("n", "<leader>tm", function()
-	vim.cmd("Mason")
-end, { desc = "Mason" })
-
-map("n", "<leader>tr", function()
-	vim.cmd("MasonRegistry")
-end, { desc = "Mason Registry" })
-
-map("n", "<leader>tl", function()
-	vim.cmd("Lazy")
-end, { desc = "Lazy Plugin Manager" })
-
-map("n", "<leader>tg", function()
-	vim.cmd("Telescope live_grep")
-end, { desc = "Live Grep" })
-
-map("n", "<leader>td", function()
-	vim.cmd("Telescope diagnostics")
-end, { desc = "Diagnostics" })
-
-map("n", "<leader>tp", function()
-	-- Try to load project management plugin
-	local has_project, project = pcall(require, "telescope")
-	if has_project then
-		vim.cmd("Telescope projects")
-	else
-		vim.notify("Project plugin not available", vim.log.levels.ERROR)
-	end
-end, { desc = "Projects" })
-
-map("n", "<C-\\>", function()
-	local ok, terminal = pcall(require, "snacks.terminal")
-	if ok then
-		terminal.toggle()
-	else
-		vim.notify("Terminal not available", vim.log.levels.ERROR)
-	end
-end, { desc = "Toggle Terminal" })
+map("n", "<leader>tth", "<cmd>lua require('snacks.terminal').toggle()<CR>", { desc = "Horizontal Terminal" })
+map("n", "<leader>ttf", "<cmd>lua require('snacks.terminal').toggle('bash')<CR>", { desc = "Floating Terminal" })
 
 -- Telescope/Fuzzy Finding
-map("n", "<C-p>", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
-map("i", "<C-p>", "<cmd>Telescope find_files<cr>", opts)
-map("v", "<C-p>", "<cmd>Telescope find_files<cr>", opts)
-
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
 map("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Find Git Files" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find Buffers" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Find Help" })
-map("n", "<leader>/", "<cmd>Telescope live_grep<cr>", { desc = "Search Text" })
 map("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Find Recent Files" })
+map("n", "<leader>ft", "<cmd>Telescope live_grep<cr>", { desc = "Search Text" })
 
--- Toggle mappings
-map("n", "<leader>tn", "<cmd>NotificationLogToggle<CR>", { desc = "Toggle Notification Log" })
-map("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<CR>", { desc = "Toggle Document Diagnostics" })
-map("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = "Toggle Workspace Diagnostics" })
-map("n", "<leader>tfs", "<cmd>ToggleFormatOnSave<CR>", { desc = "Toggle Format on Save" })
+-- File Explorer
+map("n", "<leader>e", "<cmd>lua require('snacks.explorer')()<CR>", { desc = "File Explorer" })
 
 -- Theme/Colorscheme
-map("n", "<leader>tc", function()
-	require("plugins.ui.theme.theme_ui").open_theme_picker()
-end, { desc = "Theme Picker" })
+map("n", "<leader>tc", "<cmd>Telescope colorscheme<cr>", { desc = "Theme Picker" })
 
-map("n", "<leader>uC", function()
-	require("plugins.ui.theme.theme_ui").open_theme_picker()
-end, { desc = "Colorschemes" })
+-- Diagnostics
+map("n", "<leader>td", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics" })
 
--- Diagnostic configurations
 map(
-	"n",
-	"<leader>tdi",
-	"<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>",
-	{ desc = "Toggle Inline Diagnostics" }
+    "n",
+    "<leader>tdi",
+    "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>",
+    { desc = "Toggle Inline Diagnostics" }
 )
 map(
-	"n",
-	"<leader>tds",
-	"<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>",
-	{ desc = "Toggle Diagnostic Signs" }
+    "n",
+    "<leader>tds",
+    "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>",
+    { desc = "Toggle Diagnostic Signs" }
 )
-map(
-	"n",
-	"<leader>tdu",
-	"<cmd>lua vim.diagnostic.config({underline = not vim.diagnostic.config().underline})<CR>",
-	{ desc = "Toggle Diagnostic Underlines" }
-)
+
+map("n", "<leader>tdc", "<cmd>lua require('core.lsp_utils').show_diagnostics_popup()<CR>", { desc = "Copy Buffer Diagnostics" })
+
+map("n", "<leader>tdp", "<cmd>lua require('core.lsp_utils').show_diagnostics_popup({ scope = 'workspace' })<CR>", { desc = "Project Error List" })
+
+-- Format
 map("n", "<leader>tf", "<cmd>lua vim.lsp.buf.format({async = true})<CR>", { desc = "Format Current Buffer" })
-
--- Diagnostic utils
-map("n", "<leader>tdc", function()
-	require("core.lsp_utils").show_diagnostics_popup()
-end, { desc = "Copy Buffer Diagnostics" })
-map("n", "<leader>tdp", function()
-	require("core.lsp_utils").show_diagnostics_popup({ scope = "workspace" })
-end, { desc = "Project Error List" })
+map("n", "<leader>tfs", "<cmd>ToggleFormatOnSave<CR>", { desc = "Toggle Format on Save" })
