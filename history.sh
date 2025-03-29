@@ -1,25 +1,30 @@
-
-sudo pacman -S --needed base-devel git
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
-cd ..
-paru -S brave-bin zen-browser-bin
-paru -S 1password 1password-cli gitkraken gitkraken-cli
-sudo pacman -S chromium
-paru -S libgnome-keyring
-paru -S jq unzip
-paru -S fzf
-paru -S openssh
-paru -S neovim
-mkdir -p ~/.config/bash_completion
-paru -S barrier
-rm -rf ./paru/
-paru -S zoxide nnn npm
-wget https://download.docker.com/linux/static/stable/x86_64/docker-28.0.1.tgz -qO- | tar xvfz - docker/docker --strip-components=1
-mv ./docker /usr/local/bin
-sudo mv ./docker /usr/local/bin
-paru -S neofetch
-sudo systemctl enable sshd
-paru -S tree-sitter-cli
-paru -S --needed - < packages.txt
+8608  hyprpm add https://github.com/hyprwm/hyprland-plugins
+ 8610  hyprpm add https://github.com/hyprwm/hyprland-plugins
+ 8611  hyprpm update
+ 8612  hyprpm add https://github.com/hyprwm/hyprland-plugins
+ 8613  hyprpm list
+ 8614  hyprpm --help
+ 8615  hyprpm enable hyprexpo
+ 8617  hyprpm list
+ 8622  hyprpm log hyprexpo
+ 8623  hyprpm reload
+ 8626  hyprpm 
+ 8629  hyprpm reload
+ 8630  hyprpm update
+ 8632  hyprpm update
+ 8633  hyprpm list | cat
+ 8637  which hyprpm && which hyprexpo
+ 8638  hyprpm update 2>&1 | cat
+ 8640  hyprpm reload
+ 8644  hyprpm enable hyprtrails
+ 8645  hyprpm list 
+ 8646  hyprpm enable hyprbars
+ 8647  hyprpm enable xtra-dispatchers
+ 8648  hyprpm enable borders-plus-plus
+ 8649  hyprpm disable borders-plus-plus
+ 8650  hyprpm disable hyprbars
+ 8651  hyprpm list 
+ 9230  hyprpm reload
+ 9231  hyprpm update
+ 9310  hyprpm reload
+ 9492  history | rg hyprpm
