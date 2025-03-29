@@ -11,6 +11,7 @@ b: ${BROWSER}
 e: ${EDITOR}
 r: "source ~/.bashrc"
 
+lsd: "lsd --hyperlink=auto"
 ls: "lsd"
 l: "ls"
 ll: "ls -la"
