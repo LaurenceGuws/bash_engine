@@ -4,35 +4,35 @@ return {
 	event = "VeryLazy",
 	opts = {
 		-- General options
-		-- icons = {
-		-- 	breadcrumb = "»",
-		-- 	separator = "➜",
-		-- 	group = "+",
-		-- 	-- Use devicons if available
-		-- 	mappings = true, -- Enable/disable icons for mappings
-		-- },
-		-- popup = {
-		-- 	border = "rounded",
-		-- 	position = "bottom",
-		-- 	margin = { 1, 0, 1, 0 },
-		-- 	padding = { 2, 2, 2, 2 },
-		-- 	win_opts = {
-		-- 		winblend = 0,
-		-- 		cursorline = true,
-		-- 		cursorcolumn = false,
-		-- 		winhighlight = {
-		-- 			Normal = "WhichKeyNormal",
-		-- 			FloatBorder = "WhichKeyBorder",
-		-- 			Title = "WhichKeyTitle",
-		-- 		},
-		-- 	},
-		-- },
-		-- layout = {
-		-- 	height = { min = 4, max = 25 },
-		-- 	width = { min = 20, max = 50 },
-		-- 	spacing = 3,
-		-- 	align = "left",
-		-- },
+		icons = {
+			breadcrumb = "»",
+			separator = "➜",
+			group = "+",
+			-- Use devicons if available
+			mappings = true, -- Enable/disable icons for mappings
+		},
+		popup = {
+			border = "rounded",
+			position = "bottom",
+			margin = { 1, 0, 1, 0 },
+			padding = { 2, 2, 2, 2 },
+			win_opts = {
+				winblend = 0,
+				cursorline = true,
+				cursorcolumn = false,
+				winhighlight = {
+					Normal = "WhichKeyNormal",
+					FloatBorder = "WhichKeyBorder",
+					Title = "WhichKeyTitle",
+				},
+			},
+		},
+		layout = {
+			height = { min = 4, max = 25 },
+			width = { min = 20, max = 50 },
+			spacing = 3,
+			align = "left",
+		},
 		-- Set up triggers properly (table format)
 		triggers = {
 			{ "<leader>", mode = { "n", "v" } },

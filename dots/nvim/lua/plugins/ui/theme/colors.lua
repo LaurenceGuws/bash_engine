@@ -2,7 +2,7 @@ return {
 	-- Primary theme - Tokyo Night
 	{
 		"folke/tokyonight.nvim",
-		lazy = false,
+		lazy = false, -- Keep this one eagerly loaded as it's the default
 		priority = 1001, -- Highest priority to ensure it loads last
 		config = function()
 			-- Get path to persistence file
@@ -63,6 +63,11 @@ return {
 							end, 10) -- Small delay to not block
 						end,
 					})
+
+					-- Create global function to load all color schemes
+					_G.load_all_colorschemes = function()
+						-- This function will be called when needed
+					end
 				end, 100) -- Delay theme loading slightly
 			end, 10) -- Small delay for initial theme setup
 		end,
@@ -71,7 +76,8 @@ return {
 	-- Monokai Pro - available but not default
 	{
 		"tanvirtin/monokai.nvim",
-		lazy = true, -- Change to lazy load
+		lazy = true, -- Now lazy loaded
+		cmd = "Telescope colorscheme", -- Load when telescope colorscheme is executed
 		config = function()
 			require("monokai").setup({
 				palette = require("monokai").pro,
@@ -79,12 +85,13 @@ return {
 		end,
 	},
 
-	-- Additional themes - all lazy loaded
+	-- Additional themes - all lazy loaded with event trigger
 
 	-- Nightfox colorscheme
 	{
 		"EdenEast/nightfox.nvim",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 
 	-- Catppuccin colorscheme
@@ -92,36 +99,43 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 
 	-- Ensure we have other themes available for the theme picker
 	{
 		"navarasu/onedark.nvim",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 	{
 		"rebelot/kanagawa.nvim",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 	{
 		"ellisonleao/gruvbox.nvim",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 	{
 		"NLKNguyen/papercolor-theme",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 
 	-- Dracula
 	{
 		"Mofiqul/dracula.nvim",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 
 	-- Solarized
 	{
 		"maxmx03/solarized.nvim",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 		config = function()
 			require("solarized").setup({
 				theme = "neo",
@@ -133,12 +147,14 @@ return {
 	{
 		"RRethy/nvim-base16",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 
 	-- Material
 	{
 		"marko-cerovac/material.nvim",
 		lazy = true,
+		cmd = "Telescope colorscheme",
 		config = function()
 			require("material").setup({
 				styles = {
@@ -146,6 +162,362 @@ return {
 				},
 			})
 		end,
+	},
+
+	-- Nord Theme
+	{
+		"shaunsingh/nord.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Rose Pine
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Everforest
+	{
+		"sainnhe/everforest",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Sonokai
+	{
+		"sainnhe/sonokai",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Edge
+	{
+		"sainnhe/edge",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Ayu
+	{
+		"Shatur/neovim-ayu",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Oxocarbon
+	{
+		"nyoom-engineering/oxocarbon.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- GitHub Theme
+	{
+		"projekt0n/github-nvim-theme",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Nightfly
+	{
+		"bluz71/vim-nightfly-colors",
+		name = "nightfly",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Melange
+	{
+		"savq/melange-nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Poimandres
+	{
+		"olivercederborg/poimandres.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Moonfly
+	{
+		"bluz71/vim-moonfly-colors",
+		name = "moonfly",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Vim-enfocado
+	{
+		"wuelnerdotexe/vim-enfocado",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Modus Themes
+	{
+		"miikanissi/modus-themes.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Doom One
+	{
+		"NTBBloodbath/doom-one.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Horizon
+	{
+		"lunarvim/horizon.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- OneDarkPro
+	{
+		"olimorris/onedarkpro.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- VSCode Theme
+	{
+		"Mofiqul/vscode.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Noctis
+	{
+		"kartikp10/noctis.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+		dependencies = {
+			"rktjmp/lush.nvim"
+		},
+	},
+
+	-- Zenburn
+	{
+		"phha/zenburn.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Embark
+	{
+		"embark-theme/vim",
+		name = "embark",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Minimal
+	{
+		"Yazeed1s/minimal.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Zephyr
+	{
+		"glepnir/zephyr-nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Apprentice
+	{
+		"romainl/Apprentice",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Tender
+	{
+		"jacoborus/tender.vim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Jellybeans
+	{
+		"metalelf0/jellybeans-nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+		dependencies = { "rktjmp/lush.nvim" },
+	},
+
+	-- Nightfox variants (Duskfox, Nordfox, etc.)
+	{
+		"EdenEast/nightfox.nvim",
+		name = "nightfox-extra",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Palenight
+	{
+		"drewtempelmeyer/palenight.vim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Iceberg
+	{
+		"cocopon/iceberg.vim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- OceanicNext
+	{
+		"mhartington/oceanic-next",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Hybrid
+	{
+		"w0ng/vim-hybrid",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Snow
+	{
+		"nightsense/snow",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- One Half
+	{
+		"sonph/onehalf",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Deep Space
+	{
+		"tyrannicaltoucan/vim-deep-space",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Sierra
+	{
+		"AlessandroYorba/Sierra",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Alduin
+	{
+		"AlessandroYorba/Alduin",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Srcery
+	{
+		"srcery-colors/srcery-vim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Vim-two-firewatch
+	{
+		"rakr/vim-two-firewatch",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Papercolor (comfortable light theme)
+	{
+		"NLKNguyen/papercolor-theme",
+		name = "papercolor-extra",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Falcon
+	{
+		"fenetikm/falcon",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Carbonfox (special Nightfox variant)
+	{
+		"EdenEast/nightfox.nvim",
+		name = "carbonfox",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Mellow
+	{
+		"kvrohit/mellow.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Adwaita
+	{
+		"Mofiqul/adwaita.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Neosolarized
+	{
+		"svrana/neosolarized.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+		dependencies = { "tjdevries/colorbuddy.nvim" },
+	},
+
+	-- Nordic
+	{
+		"AlexvZyl/nordic.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Kanagawa-dragon
+	{
+		"rebelot/kanagawa.nvim",
+		name = "kanagawa-dragon",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Boo
+	{
+		"rockerBOO/boo-colorscheme-nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Fluormachine
+	{
+		"maxmx03/fluoromachine.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
+	},
+
+	-- Miasma
+	{
+		"xero/miasma.nvim",
+		lazy = true,
+		cmd = "Telescope colorscheme",
 	},
 
 	-- Colorizer for Highlighting Color Codes

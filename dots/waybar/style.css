@@ -5,7 +5,7 @@
   /* `otf-font-awesome` is required to be installed for icons */
   font-family:
     "FontAwesome", "Roboto Mono", "Roboto", Helvetica, Arial, sans-serif;
-  font-size: 17px;
+  font-size: 14px;
 }
 
 window#waybar {
@@ -24,33 +24,31 @@ window#waybar.hidden {
 .modules-right {
   background-color: #1e1e2e;
   border-radius: 10px;
+  border: 1px solid #a49eee;
   margin-top: 5px;
   margin-right: 5px;
   margin-left: 5px;
-  padding: 3.5px;
+  /* padding: 2.5px; */
 }
 
 #workspaces button {
-  padding: 0 5px;
-  background-color: transparent;
+  padding: 0px 8px;
+  margin: 2px 2px;
   color: #cdd6f4;
-  /* Use box-shadow instead of border so the text isn't offset */
-  box-shadow: none;
-  /* Avoid rounded borders under each workspace name */
-  border: none;
-  border-radius: 0;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
-  background: rgba(49, 50, 68, 0.5);
-  box-shadow: none;
+  border: 1px solid #a49eee;
 }
 
 #workspaces button.active {
   background-color: rgba(69, 71, 90, 0.5);
   box-shadow: none;
-  border-radius: 5px;
 }
 
 #workspaces button.urgent {
@@ -83,113 +81,37 @@ window#waybar.hidden {
 #custom-network,
 #power-profiles-daemon,
 #keyboard-state {
-  padding: 0 3px;
-  /* margin: 5px 3px; */
+  padding: 0px 5px;
+  margin: 2px 2px;
   color: #cdd6f4;
   background-color: transparent;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid transparent;
   transition: all 0.3s ease;
 }
 
-#clock:hover {
-  border-color: #b4befe;
-  box-shadow: none;
-}
-
-#battery:hover {
-  border-color: #a6e3a1;
-  box-shadow: none;
-}
-
-#cpu:hover {
-  border-color: #cba6f7;
-  box-shadow: none;
-}
-
-#memory:hover {
-  border-color: #fab387;
-  box-shadow: none;
-}
-
-#disk:hover {
-  border-color: #74c7ec;
-  box-shadow: none;
-}
-
-#backlight:hover {
-  border-color: #f9e2af;
-  box-shadow: none;
-}
-
-#network:hover {
-  border-color: #94e2d5;
-  box-shadow: none;
-}
-
-#pulseaudio:hover {
-  border-color: #74c7ec;
-  box-shadow: none;
-}
-
-#wireplumber:hover {
-  border-color: #74c7ec;
-  box-shadow: none;
-}
-
-#custom-media:hover {
-  border-color: #a6e3a1;
-  box-shadow: none;
-}
-
-#temperature:hover {
-  border-color: #fab387;
-  box-shadow: none;
-}
-
-#tray:hover {
-  border-color: #cdd6f4;
-  box-shadow: none;
-}
-
-#idle_inhibitor:hover {
-  border-color: #6c7086;
-  box-shadow: none;
-}
-
-#mpd:hover {
-  border-color: #a6e3a1;
-  box-shadow: none;
-}
-
-#language:hover {
-  border-color: #89dceb;
-  box-shadow: none;
-}
-
+#clock:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#temperature:hover,
+#backlight:hover,
+#network:hover,
+#pulseaudio:hover,
+#wireplumber:hover,
+#custom-media:hover,
+#tray:hover,
+#mode:hover,
+#idle_inhibitor:hover,
+#scratchpad:hover,
+#mpd:hover,
+#custom-power:hover,
+#custom-gpu:hover,
+#custom-network:hover,
+#power-profiles-daemon:hover,
 #keyboard-state:hover {
-  border-color: #89b4fa;
-  box-shadow: none;
-}
-
-#scratchpad:hover {
-  border-color: #cdd6f4;
-  box-shadow: none;
-}
-
-#power-profiles-daemon:hover {
-  border-color: #cba6f7;
-  box-shadow: none;
-}
-
-#custom-power:hover {
-  border-color: #f38ba8;
-  box-shadow: none;
-}
-
-#custom-gpu:hover {
-  border-color: #f5c2e7;
-  box-shadow: none;
+  border: 1px solid #a49eee;
 }
 
 #custom-network {
@@ -209,7 +131,6 @@ window#waybar.hidden {
 }
 
 #custom-network:hover {
-  border-color: #94e2d5;
   box-shadow: none;
 }
 
@@ -405,6 +326,7 @@ label:focus {
 
 #custom-power {
   color: #f38ba8;
+  font-size: 20px;
 }
 
 #custom-gpu {

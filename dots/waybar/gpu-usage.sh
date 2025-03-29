@@ -12,7 +12,7 @@ if command -v nvidia-smi &> /dev/null; then
     CSS_CLASS=$(( ($GPU_USAGE / 10) * 10 ))
     
     # Format the output with different icons - match waybar style
-    echo "{\"text\": \"${GPU_USAGE}% 󰾲  ${GPU_MEMORY}MB 󰍛  ${GPU_TEMP}°C 󰔏\", \"tooltip\": \"GPU Usage: ${GPU_USAGE}%\\nMemory: ${GPU_MEMORY}/${GPU_TOTAL_MEMORY} MB\\nTemperature: ${GPU_TEMP}°C\", \"class\": \"gpu-${CSS_CLASS}\"}"
+    echo "{\"text\": \"${GPU_USAGE}% 󰾲  | ${GPU_MEMORY}MB 󰍛  | ${GPU_TEMP}°C 󰔏\", \"tooltip\": \"GPU Usage: ${GPU_USAGE}%\\nMemory: ${GPU_MEMORY}/${GPU_TOTAL_MEMORY} MB\\nTemperature: ${GPU_TEMP}°C\", \"class\": \"gpu-${CSS_CLASS}\"}"
 else
     # Try to get AMD GPU info via radeontop
     if command -v radeontop &> /dev/null; then

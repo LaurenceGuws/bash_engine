@@ -2,7 +2,7 @@
 {
     // "layer": "top", // Waybar at top layer
     // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 46, // Waybar height (to be removed for auto height)
+    "height": 36, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     "css": "./style.css",
@@ -16,9 +16,8 @@
     ],
     "modules-center": [
         "tray",
+        // "keyboard-state",
         "pulseaudio",
-        "keyboard-state",
-        "clock",
         "power-profiles-daemon",
         "custom/power"
     ],
@@ -27,7 +26,8 @@
         "cpu",
         "temperature",
         "memory",
-        "custom/gpu"
+        "custom/gpu",
+        "clock"
 
     ],
     // Modules configuration
@@ -37,9 +37,9 @@
         "warp-on-scroll": false,
         "format": "{name}: {icon}",
         "format-icons": {
-            "urgent": " ",
-            "active": "󰍹 ",
-            "default": "󰶐 "
+            "urgent": "",
+            "active": "󰍹",
+            "default": "󰶐"
         }
     },
     "keyboard-state": {
@@ -47,8 +47,8 @@
         "capslock": true,
         "format": "{name} {icon}",
         "format-icons": {
-            "locked": " ",
-            "unlocked": " "
+            "locked": "",
+            "unlocked": ""
         }
     },
     "sway/mode": {
@@ -57,28 +57,28 @@
     "sway/scratchpad": {
         "format": "{icon} {count}",
         "show-empty": false,
-        "format-icons": ["", " "],
+        "format-icons": ["", ""],
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
     },
     "mpd": {
-        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}%  ",
-        "format-disconnected": "Disconnected  ",
-        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped  ",
+        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+        "format-disconnected": "Disconnected ",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
         "unknown-tag": "N/A",
         "interval": 5,
         "consume-icons": {
-            "on": " "
+            "on": ""
         },
         "random-icons": {
             "off": "<span color=\"#f53c3c\"></span> ",
-            "on": " "
+            "on": ""
         },
         "repeat-icons": {
-            "on": " "
+            "on": ""
         },
         "single-icons": {
-            "on": "1 "
+            "on": "1"
         },
         "state-icons": {
             "paused": "",
@@ -104,11 +104,11 @@
         "format-alt": "{:%Y-%m-%d}"
     },
     "cpu": {
-        "format": "{usage}%  ",
+        "format": "{usage}% ",
         "tooltip": false
     },
     "memory": {
-        "format": "{}%  "
+        "format": "{}% "
     },
     "temperature": {
         // "thermal-zone": 2,
@@ -148,8 +148,8 @@
       "format-icons": {
         "default": "",
         "performance": "",
-        "balanced": " ",
-        "power-saver": " "
+        "balanced": "",
+        "power-saver": ""
       }
     },
     "network": {
@@ -171,8 +171,8 @@
         "format-source-muted": " ",
         "format-icons": {
             "headphone": " ",
-            "hands-free": "",
-            "headset": "",
+            "hands-free": " ",
+            "headset": " ",
             "phone": " ",
             "portable": " ",
             "car": " ",
@@ -185,15 +185,15 @@
         "return-type": "json",
         "max-length": 40,
         "format-icons": {
-            "spotify": " ",
-            "default": "🎜 "
+            "spotify": "",
+            "default": "🎜"
         },
         "escape": true,
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
         // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     },
     "custom/power": {
-        "format" : "⏻ ",
+        "format" : "⏻",
         "tooltip": false,
         "on-click": "wlogout",
         // "menu": "on-click",
