@@ -114,6 +114,9 @@ map("v", "<C-f>", "<Esc>/", opts)
 map("n", "<leader>tth", "<cmd>lua require('snacks.terminal').toggle()<CR>", { desc = "Horizontal Terminal" })
 map("n", "<leader>ttf", "<cmd>lua require('snacks.terminal').toggle('bash')<CR>", { desc = "Floating Terminal" })
 
+-- Notification history
+map("n", "<leader>tn", ":NotificationLogToggle<CR>", { desc = "Show Notification History" })
+
 -- Telescope/Fuzzy Finding
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
 map("n", "<leader>fg", "<cmd>Telescope git_files<cr>", { desc = "Find Git Files" })

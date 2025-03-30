@@ -29,3 +29,4 @@ vmen: "sudo systemctl enable libvirtd.service qemu-kvm.service virtlockd.service
 vmdis: "sudo systemctl disable libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
 
 ktheme: "kitty + kitten themes"
+gtheme: "ghostty +list-themes"

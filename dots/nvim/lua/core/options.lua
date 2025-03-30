@@ -3,6 +3,14 @@ local opt = vim.opt
 -- 1. Essential early-loading settings
 -- These must be set before plugins load
 
+vim.g.ansi_colors_enabled = true
+vim.opt.scrolloff = 2
+vim.opt.confirm = true
+
+-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
 -- Disable netrw (required by nvim-tree to be set before it loads)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

@@ -26,26 +26,6 @@ return {
 			{ section = "startup" },
 		},
 		preset = {
-			header = [[
-      ▓▓            ▒▒                                                                                               
-    ▓▓▓▓▓           ▒▓▓▒                                                                                             
-  ▒▓▓▓▓▓▓▓▒         ▒▓▓▓▓▒                                                                ▓███                       
-▒▓▓▓▓▓▓▓▓▓▓▒        ▒▓▓▓▓▓▓▒                                                              ▓███                       
-▓▓▓▓▓▓▓▓▓▓▓▓▒       ▒▓▓▓▓▓▓▓                                                                                         
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓      ▒▓▓▓▓▓▓▓       ▒█  ▒████▓       ▓█████▒      ▒█████▓   ████      ▒███▒▓███  ▓██▓▓█████▓ ▓██████▓ 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓     ▓▓▓▓▓▓▓▓       ▒█▓▓     ▒█▒   ▓█      ▒█   ▒█▓      ██  ███▓     ███▓ ▓███  ▓████▓▒▒██████▒▒████▓
-▓▓▓▓▓▓▓▒▓▓▓▓▓▓▓▓▒   ▒▓▓▓▓▓▓▓       ▒█▒       ██  ██        ▒█ ▒█▒        ██ ▒███▒   ▓███  ▓███  ▓███    ▒███▓    ████
-▓▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▒  ▒▓▓▓▓▓▓▓       ▒█▒       ▓█  ████████████ ██         ▒█▒ ▓███  ▒███▒  ▓███  ▓███    ▒███▓    ▓███
-▓▓▓▓▓▓▓   ▓▓▓▓▓▓▓▓▓ ▒▓▓▓▓▓▓▓       ▒█▒       ▓█  █▒           █▓         ▒█▒  ███▓ ███▒   ▓███  ▓███    ▒███▓    ▓███
-▓▓▓▓▓▓▓    ▒▓▓▓▓▓▓▓▓▓██████▓       ▒█▒       ▓█  █▓           ▓█         ▓█▒  ▒███▓██▓    ▓███  ▓███    ▒███▓    ▓███
-▓▓▓▓▓▓▓▒    ▒▓▓▓▓▓▓▓▓██████▓       ▒█▒       ▓█   █▓           █▓       ▒█▒    ▒█████     ▓███  ▓███    ▒███▓    ▓███
-▓▓▓▓▓▓█▒     ▒▓▓▓▓▓▓▓▓█████▓       ▒█▒       ▓█    ▓██▒▒▒▓██    ▒█▓▒▒▒▓██       ▓███      ▓███  ▓███    ▒███▓    ▓███
-███████▒       ▓▓▓▓▓▓▓▓████▓                                                                                         
-▓██████▒        ▓▓▓▓▓▓▓▓███▒                                                                                         
-  ▓████▒         ▓▓▓▓███▓▓                                                                                           
-    ███▒          ▒▓▓██▓                                                                                             
-     ▒█▒           ▒▓▓                                                                                               
-]],
 			keys = {
 				{ icon = "󰏖 ", key = "m", desc = "Mason -> language support", action = ":Mason" },
 				{ icon = " ", key = "L", desc = "Lazy -> nvim plugins", action = ":Lazy" },
@@ -59,20 +39,20 @@ return {
 	explorer = { enabled = true, replace_netrw = false, hidden = true, auto_open = false },
 	image = { enabled = true },
 	indent = { enabled = true },
-	input = { enabled = false, override_ui = false },
+	input = { enabled = true, override_ui = true },
 	notifier = { enabled = false },
-	picker = { enabled = false },
-	quickfile = { enabled = false },
-	scope = { enabled = false },
-	scroll = { enabled = false },
-	statuscolumn = { enabled = false },
+	picker = { enabled = true },
+	quickfile = { enabled = true },
+	scope = { enabled = true },
+	scroll = { enabled = true },
+	statuscolumn = { enabled = true },
 	terminal = {
 		enabled = true,
 		win = { style = "terminal", border = "rounded" },
 		shell = vim.o.shell,
 	},
-	toggle = { enabled = false },
-	words = { enabled = false },
+	toggle = { enabled = true },
+	words = { enabled = true },
 	styles = {
 		notification = {},
 		terminal = {

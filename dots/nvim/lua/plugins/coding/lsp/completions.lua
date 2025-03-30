@@ -33,6 +33,26 @@ return {
 				})
 			end,
 		},
+		-- Add markdown rendering for documentation
+		{
+			"nvim-treesitter/nvim-treesitter",
+			build = ":TSUpdate",
+		},
+		-- Enhanced markdown preview for documentation
+		"jghauser/follow-md-links.nvim",
+		-- Improved hover documentation
+		{
+			"lewis6991/hover.nvim",
+			config = function()
+				require("hover").setup({
+					init = function()
+						require("hover.providers.lsp")
+					end,
+					preview_window = false,
+					title = true,
+				})
+			end,
+		},
 	},
 	event = "VeryLazy",
 	config = function()
@@ -87,6 +107,31 @@ return {
 		-- 	return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
 		-- end
 
+		-- Enhance documentation formatting with markdown support
+		local format_documentation = function(documentation)
+			if not documentation then
+				return nil
+			end
+
+			if type(documentation) == "string" then
+				return documentation
+			end
+
+			-- Handle LSP documentation format
+			if documentation.kind == "markdown" then
+				-- Process markdown for better display
+				local content = documentation.value or ""
+				-- Add proper spacing for markdown elements
+				content = content:gsub("^%s+", ""):gsub("%s+$", "")
+				return content
+			elseif documentation.kind == "plaintext" then
+				return documentation.value
+			end
+
+			-- Fallback for other formats
+			return documentation.value
+		end
+
 		-- Enhanced formatting for completions with color support
 		local format = function(entry, vim_item)
 			local kind = lspkind.cmp_format({
@@ -118,6 +163,12 @@ return {
 						cmp_git = "[Git]",
 						["vim-dadbod-completion"] = "[DB]",
 					})[entry.source.name]
+
+					-- Enhanced documentation processing
+					local documentation = entry.completion_item.documentation
+					if documentation then
+						vim_item.documentation = format_documentation(documentation)
+					end
 
 					return vim_item
 				end,
@@ -157,8 +208,8 @@ return {
 					border = "rounded",
 					winhighlight = "Normal:CmpDocNormal,FloatBorder:CmpDocBorder",
 					scrollbar = true,
-					max_height = 15,
-					max_width = 80,
+					max_height = 20, -- Increased from 15 to 20
+					max_width = 120, -- Increased from 80 to 120 for more space
 					-- Always show docs when available
 					auto_open = true,
 				},
@@ -238,9 +289,11 @@ return {
 					select = false, -- Only confirm explicit selections
 				}),
 
-				-- Scroll docs
-				["<C-u>"] = cmp.mapping.scroll_docs(-4),
-				["<C-d>"] = cmp.mapping.scroll_docs(4),
+				-- Scroll docs - using VSCode-like mappings for consistency
+				["<C-f>"] = cmp.mapping.scroll_docs(4),
+				["<C-b>"] = cmp.mapping.scroll_docs(-4),
+				["<C-u>"] = cmp.mapping.scroll_docs(-10), -- Larger jumps
+				["<C-d>"] = cmp.mapping.scroll_docs(10),  -- Larger jumps
 
 				-- Cancel completion
 				["<C-e>"] = cmp.mapping.abort(),
@@ -263,6 +316,15 @@ return {
 						fallback()
 					end
 				end),
+				
+				-- Add mapping to explicitly open documentation
+				["<C-h>"] = cmp.mapping(function()
+					if cmp.visible_docs() then
+						cmp.close_docs()
+					else
+						cmp.open_docs()
+					end
+				end, { "i", "s" }),
 			}),
 
 			-- Sources in priority order
@@ -406,13 +468,57 @@ return {
 			false
 		)
 
-		-- Set up standard LSP handlers with borders
+		-- Set up standard LSP handlers with borders and enhanced markdown support
 		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 			border = "rounded",
+			-- Add max width and height for better documentation display
+			max_width = 120,
+			max_height = 30,
 		})
 
 		vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
 			border = "rounded",
+			max_width = 120,
+			max_height = 30,
 		})
+		
+		-- Add additional hover key binding outside of LSP
+		vim.keymap.set("n", "K", function()
+			require("hover").hover()
+		end)
+        
+		-- Add a custom command to show fuller documentation
+		vim.api.nvim_create_user_command("ShowFullDocs", function()
+			-- Get the word under cursor
+			local word = vim.fn.expand("<cword>")
+			-- Request hover with larger size
+			local params = vim.lsp.util.make_position_params(nil, "utf-8")
+			vim.lsp.buf_request(0, "textDocument/hover", params, function(_, result, _, _)
+				if result and result.contents then
+					-- Create a larger floating window with the documentation
+					local lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+					local bufnr = vim.api.nvim_create_buf(false, true)
+					vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+					vim.api.nvim_buf_set_option(bufnr, "filetype", "markdown")
+					
+					-- Use fixed width instead of calculating from first line
+					local width = 100  -- Fixed wider width 
+					local height = math.min(#lines, 30)
+					
+					vim.api.nvim_open_win(bufnr, true, {
+						relative = "cursor",
+						width = width,
+						height = height,
+						row = 1,
+						col = 0,
+						style = "minimal",
+						border = "rounded",
+					})
+				end
+			end)
+		end, {})
+		
+		-- Bind the fuller docs to a key
+		vim.keymap.set("n", "<leader>K", "<cmd>ShowFullDocs<CR>", { desc = "Show Full Documentation" })
 	end,
 }
