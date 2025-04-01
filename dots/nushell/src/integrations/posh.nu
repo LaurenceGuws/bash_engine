@@ -4,7 +4,7 @@ if ($env.config? | is-not-empty) {
 }
 
 $env.POWERLINE_COMMAND = 'oh-my-posh'
-$env.POSH_THEME = (echo "/home/home/.cache/oh-my-posh/themes/pure.omp.json")
+# $env.POSH_THEME = (echo "/home/home/.cache/oh-my-posh/themes/pure.omp.json")
 $env.PROMPT_INDICATOR = ""
 $env.POSH_SESSION_ID = (echo "4afaf13c-8840-4275-a620-029f37e3503a")
 $env.POSH_SHELL = "nu"

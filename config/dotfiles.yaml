@@ -20,4 +20,4 @@ applications:
   btop: "${HOME}/.config/btop/"
   alacritty: "${HOME}/.config/alacritty/"
   posting: "${HOME}/.config/posting/"
-
+  starship: "${HOME}/.config/starship/"

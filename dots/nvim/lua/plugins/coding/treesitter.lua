@@ -28,6 +28,7 @@ return {
 			"typst",
 			"vue",
 			"norg",
+			"nu",
 		},
 		highlight = {
 			enable = true,
