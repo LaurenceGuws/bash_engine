@@ -19,7 +19,6 @@ theme = rose-pine-moon
 
 
 window-decoration = none
-gtk-adwaita = true
 gtk-wide-tabs = false
 gtk-tabs-location = top
 keybind = alt+tab=toggle_tab_overview
@@ -29,4 +28,5 @@ background-blur = true
 
 
 cursor-click-to-move = true
-scrollback-limit = 30000
+# scrollback-limit = 655360
+scrollback-limit = 4294967295

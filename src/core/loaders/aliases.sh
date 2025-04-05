@@ -10,7 +10,7 @@ set_aliases_from_yaml() {
   fi
 
   # Create a temporary script file to store alias commands
-  tmp_script="/tmp/aliases_temp.sh"
+  tmp_script="$PROFILE_DIR/aliases_temp.sh"
 
   # Use yq to parse YAML and write alias commands to the temporary file
   yq e '. | to_entries | .[] | "alias \(.key)=\(.value | @sh)"' "$yaml_file" > "$tmp_script"

@@ -1,0 +1,2 @@
+-- nvimpager.maps = false
+-- git_colors = true

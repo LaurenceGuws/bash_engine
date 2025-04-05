@@ -8,6 +8,7 @@ applications:
   kitty: "${HOME}/.config/kitty/"
   ghostty: "${HOME}/.config/ghostty/"
   nvim: "${HOME}/.config/nvim/"
+  nvimpager: "${HOME}/.config/nvimpager/"
   zellij: "${HOME}/.config/zellij/"
   ytfzf: "${HOME}/.config/ytfzf/"
   hypr: "${HOME}/.config/hypr/"
