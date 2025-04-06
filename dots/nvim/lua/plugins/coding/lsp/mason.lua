@@ -180,24 +180,7 @@ return {
 
 		-- Setup diagnostic display from init.lua
 		vim.diagnostic.config({
-			virtual_text = {
-				prefix = "●",
-				spacing = 4,
-				source = "if_many",
-				format = function(diagnostic)
-					local severity = diagnostic.severity
-					local msg = diagnostic.message
-					if severity == vim.diagnostic.severity.ERROR then
-						return "ERROR: " .. msg
-					elseif severity == vim.diagnostic.severity.WARN then
-						return "WARNING: " .. msg
-					elseif severity == vim.diagnostic.severity.INFO then
-						return "INFO: " .. msg
-					else
-						return msg
-					end
-				end,
-			},
+			virtual_text = false, -- Disable inline diagnostics by default
 			signs = true,
 			underline = true,
 			update_in_insert = false,

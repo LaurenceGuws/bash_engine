@@ -6,9 +6,12 @@ return {
 	require("plugins.ui.components.statusline"),
 	require("plugins.ui.components.which_key"),
 	require("plugins.ui.components.bufferline"),
+	require("plugins.ui.components.mini_map"),
+	require("plugins.ui.components.scrollbar"),
+	require("plugins.ui.components.codefold"),
+
 	-- Theme management
 	require("plugins.ui.theme.colors"),
-	-- require("plugins.ui.theme.theme_ui"), -- Removed as redundant with Telescope
 	require("plugins.ui.components.telescope_config"),
 	-- Coding
 	require("plugins.coding.lsp.init"),

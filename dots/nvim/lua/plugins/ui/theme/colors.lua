@@ -143,13 +143,6 @@ return {
 		end,
 	},
 
-	-- Base16
-	{
-		"RRethy/nvim-base16",
-		lazy = true,
-		cmd = "Telescope colorscheme",
-	},
-
 	-- Material
 	{
 		"marko-cerovac/material.nvim",

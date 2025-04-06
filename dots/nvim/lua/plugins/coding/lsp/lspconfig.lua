@@ -172,22 +172,7 @@ return {
 
 		-- Customize diagnostics display
 		vim.diagnostic.config({
-			virtual_text = {
-				prefix = "●", -- Use a simple dot as prefix
-				source = "if_many", -- Show source only if multiple
-				severity = {
-					min = vim.diagnostic.severity.HINT, -- Show all diagnostics including hints
-				},
-				spacing = 4, -- Add more space before the diagnostic text
-				format = function(diagnostic)
-					if diagnostic.severity == vim.diagnostic.severity.ERROR then
-						return string.format("ERROR: %s", diagnostic.message)
-					elseif diagnostic.severity == vim.diagnostic.severity.WARN then
-						return string.format("WARNING: %s", diagnostic.message)
-					end
-					return diagnostic.message
-				end,
-			},
+			virtual_text = false, -- Disable inline diagnostics by default
 			float = {
 				source = "always", -- Always show source in float window
 				format = function(diagnostic)
