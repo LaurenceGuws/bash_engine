@@ -35,6 +35,7 @@ return {
 				},
 				colorscheme = {
 					enable_preview = true,
+					temp__scrolling_limit = 1000, -- Increase the max results limit to 1000 (default is 250)
 				},
 			},
 			extensions = {

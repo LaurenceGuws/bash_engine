@@ -8,6 +8,7 @@ return {
 	require("plugins.ui.components.bufferline"),
 	require("plugins.ui.components.mini_map"),
 	require("plugins.ui.components.scrollbar"),
+	require("plugins.ui.components.indent_guide"),
 	require("plugins.ui.components.codefold"),
 
 	-- Theme management

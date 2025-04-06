@@ -72,6 +72,12 @@ return {
 			end, 10) -- Small delay for initial theme setup
 		end,
 	},
+	-- Base16
+	-- {
+	-- 	"RRethy/nvim-base16",
+	-- 	lazy = true,
+	-- 	cmd = "Telescope colorscheme",
+	-- },
 
 	-- Monokai Pro - available but not default
 	{
@@ -292,7 +298,7 @@ return {
 		lazy = true,
 		cmd = "Telescope colorscheme",
 		dependencies = {
-			"rktjmp/lush.nvim"
+			"rktjmp/lush.nvim",
 		},
 	},
 
