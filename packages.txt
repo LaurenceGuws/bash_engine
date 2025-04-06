@@ -51,7 +51,7 @@ nnn
 openssh
 packer
 pacseek
-page-git
+nvimpager
 pandoc-cli
 piper-tts-bin
 podman
