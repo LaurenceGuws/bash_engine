@@ -22,8 +22,6 @@ map("i", "<C-/>", "<Esc><Plug>(comment_toggle_linewise_current)i", opts)
 
 map("n", "<C-\\>", "<cmd>lua require('snacks.terminal').toggle()<CR>", { desc = "Toggle Terminal" })
 
-
-
 -- ----------------------------------------------------------------
 -- Movement and Selection
 -- ----------------------------------------------------------------
@@ -135,22 +133,35 @@ map("n", "<leader>tc", "<cmd>Telescope colorscheme<cr>", { desc = "Theme Picker"
 map("n", "<leader>td", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics" })
 
 map(
-    "n",
-    "<leader>tdi",
-    "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>",
-    { desc = "Toggle Inline Diagnostics" }
+	"n",
+	"<leader>tdi",
+	"<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>",
+	{ desc = "Toggle Inline Diagnostics" }
 )
 map(
-    "n",
-    "<leader>tds",
-    "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>",
-    { desc = "Toggle Diagnostic Signs" }
+	"n",
+	"<leader>tds",
+	"<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>",
+	{ desc = "Toggle Diagnostic Signs" }
 )
 
-map("n", "<leader>tdc", "<cmd>lua require('core.lsp_utils').show_diagnostics_popup()<CR>", { desc = "Copy Buffer Diagnostics" })
+map(
+	"n",
+	"<leader>tdc",
+	"<cmd>lua require('core.lsp_utils').show_diagnostics_popup()<CR>",
+	{ desc = "Copy Buffer Diagnostics" }
+)
 
-map("n", "<leader>tdp", "<cmd>lua require('core.lsp_utils').show_diagnostics_popup({ scope = 'workspace' })<CR>", { desc = "Project Error List" })
+map(
+	"n",
+	"<leader>tdp",
+	"<cmd>lua require('core.lsp_utils').show_diagnostics_popup({ scope = 'workspace' })<CR>",
+	{ desc = "Project Error List" }
+)
 
 -- Format
 map("n", "<leader>tf", "<cmd>lua vim.lsp.buf.format({async = true})<CR>", { desc = "Format Current Buffer" })
 map("n", "<leader>tfs", "<cmd>ToggleFormatOnSave<CR>", { desc = "Toggle Format on Save" })
+
+-- Persistent Relative Line Numbers toggle
+map("n", "<leader>tr", "<cmd>set relativenumber!<CR>", { desc = "Toggle Relative Line Numbers" })

@@ -1,0 +1,46 @@
+fork = false
+frame = "full"
+idle = true
+maximized = true
+mouse-cursor-icon = "arrow"
+# neovim-bin = "/usr/bin/nvim" # in reality found dynamically on $PATH if unset
+no-multigrid = false
+srgb = false
+tabs = true
+theme = "auto"
+title-hidden = true
+vsync = true
+wsl = false
+
+[font]
+size = 12
+hinting = "full"
+edging = "antialias"
+
+[[font.normal]]
+family = "MesloLGL Nerd Font"
+style = "W400"
+
+# You can set a different font for fallback
+[[font.normal]]
+family = "MesloLGL Nerd Font"
+style = "Normal"
+
+[[font.bold]]
+family = "MesloLGL Nerd Font"
+style = "W600"
+
+# No need to specify fallback in every variant, if omitted or specified here
+# but not found, it will fallback to normal font with this weight which is bold
+# in this case.
+[[font.bold]]
+family = "MesloLGL Nerd Font"
+style = "Bold"
+[box-drawing]
+# "font-glyph", "native" or "selected-native"
+# mode = "font-glyph"
+mode = "native"
+
+
+# [box-drawing.sizes]
+# default = [2, 4]  # Thin and thick values respectively, for all sizes
