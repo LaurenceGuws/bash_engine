@@ -1,6 +1,30 @@
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
+if vim.g.neovide then
+	vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+	vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+	vim.keymap.set({ "n", "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
+	vim.keymap.set("i", "jk", "<ESC>", { desc = "Exit Insert Mode" })
+	vim.keymap.set(
+		{ "n", "v" },
+		"<C-ScrollWheelUp>",
+		":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>"
+	)
+	vim.keymap.set(
+		{ "n", "v" },
+		"<C-ScrollWheelDown>",
+		":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>"
+	)
+	-- sonicboom, railgun, wireframe, ripple, pixiedust, sonicboom
+	vim.g.neovide_cursor_vfx_mode = "railgun"
+	vim.g.neovide_cursor_vfx_opacity = 200.0
+	vim.g.neovide_cursor_vfx_particle_lifetime = 1.0
+	vim.g.neovide_cursor_vfx_particle_highlight_lifetime = 1.0
+	vim.g.neovide_cursor_vfx_particle_density = 1.0
+	vim.g.neovide_cursor_vfx_particle_curl = 1.0
+end
+
 -- ----------------------------------------------------------------
 -- Core Editor Operations
 -- ----------------------------------------------------------------

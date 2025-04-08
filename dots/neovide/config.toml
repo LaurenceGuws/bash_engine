@@ -1,4 +1,4 @@
-fork = false
+fork = true
 frame = "full"
 idle = true
 maximized = true
@@ -11,36 +11,26 @@ theme = "auto"
 title-hidden = true
 vsync = true
 wsl = false
+linespace=0
 
+# [font]
+# size = 17
+# # hinting = "full"
+# # edging = "antialias"
+# family = "MesloLGL Nerd Font"
 [font]
-size = 12
-hinting = "full"
-edging = "antialias"
+normal = ["MesloLGL Nerd Font"]
+size = 18
 
-[[font.normal]]
-family = "MesloLGL Nerd Font"
-style = "W400"
+[font.features]
+"MonoLisa Nerd Font" = [ "+ss01", "+ss07", "+ss11", "-calt", "+ss09", "+ss02", "+ss14" ]
 
-# You can set a different font for fallback
-[[font.normal]]
-family = "MesloLGL Nerd Font"
-style = "Normal"
-
-[[font.bold]]
-family = "MesloLGL Nerd Font"
-style = "W600"
-
-# No need to specify fallback in every variant, if omitted or specified here
-# but not found, it will fallback to normal font with this weight which is bold
-# in this case.
-[[font.bold]]
-family = "MesloLGL Nerd Font"
-style = "Bold"
 [box-drawing]
 # "font-glyph", "native" or "selected-native"
+mode = "selected-native"
+# mode = "native"
 # mode = "font-glyph"
-mode = "native"
+selected = "│┤┐└┌├─┼┘┬┴"
 
-
-# [box-drawing.sizes]
-# default = [2, 4]  # Thin and thick values respectively, for all sizes
+[box-drawing.sizes]
+default = [2, 4]  # Thin and thick values respectively, for all sizes
