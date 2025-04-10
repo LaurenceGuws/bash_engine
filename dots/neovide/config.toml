@@ -13,11 +13,6 @@ vsync = true
 wsl = false
 linespace=0
 
-# [font]
-# size = 17
-# # hinting = "full"
-# # edging = "antialias"
-# family = "MesloLGL Nerd Font"
 [font]
 normal = ["MesloLGL Nerd Font"]
 size = 18
