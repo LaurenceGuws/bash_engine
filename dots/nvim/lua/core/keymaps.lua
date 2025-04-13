@@ -135,6 +135,7 @@ map("v", "<C-f>", "<Esc>/", opts)
 -- Terminal commands under toggle namespace
 map("n", "<leader>tth", "<cmd>lua require('snacks.terminal').toggle()<CR>", { desc = "Horizontal Terminal" })
 map("n", "<leader>ttf", "<cmd>lua require('snacks.terminal').toggle('bash')<CR>", { desc = "Floating Terminal" })
+map("n", "<leader>ttb", "<cmd>terminal<CR>", { desc = "Bufffer Terminal" })
 
 -- Notification history
 map("n", "<leader>tn", ":NotificationLogToggle<CR>", { desc = "Show Notification History" })
