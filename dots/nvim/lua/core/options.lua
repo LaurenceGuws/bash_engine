@@ -7,6 +7,9 @@ vim.g.ansi_colors_enabled = true
 vim.opt.scrolloff = 2
 vim.opt.confirm = true
 
+-- Don't show the mode, since it's already in the status line
+vim.opt.showmode = false
+
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
