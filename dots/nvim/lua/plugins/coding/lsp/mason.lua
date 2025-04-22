@@ -153,35 +153,8 @@ return {
 		})
 
 		-- Add this configuration from init.lua
-		-- Set up capabilities for autocompletion
-		local capabilities
-		local has_blink, blink_cmp = pcall(require, "blink.cmp")
-		
-		if has_blink then
-			-- Create standard capabilities for blink.cmp
-			capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities.textDocument.completion.completionItem = {
-				documentationFormat = { "markdown", "plaintext" },
-				snippetSupport = true,
-				preselectSupport = true,
-				insertReplaceSupport = true,
-				labelDetailsSupport = true,
-				deprecatedSupport = true,
-				commitCharactersSupport = true,
-				tagSupport = { valueSet = { 1 } },
-				resolveSupport = {
-					properties = {
-						"documentation",
-						"detail",
-						"additionalTextEdits",
-					},
-				},
-			}
-		else
-			-- Fallback to vim's default capabilities if blink.cmp is not available
-			capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities.textDocument.completion.completionItem.snippetSupport = true
-		end
+		-- Set up cmp_nvim_lsp for autocompletion capabilities
+		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 		-- Setup all servers - added from init.lua
 		mason_lspconfig.setup_handlers({
