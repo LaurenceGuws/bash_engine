@@ -27,7 +27,7 @@ vim.g.mapleader = " "
 
 -- General settings
 opt.number = true
-opt.relativenumber = true
+opt.relativenumber = false
 opt.mouse = "a"
 opt.clipboard = "unnamedplus"
 opt.swapfile = false

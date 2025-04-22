@@ -19,6 +19,7 @@ return {
 	require("plugins.coding.git"),
 	require("plugins.coding.treesitter"),
 	require("plugins.coding.comment"),
-	require("plugins.coding.languages.ansi.ansi"),
-	require("plugins.coding.languages.markdown.markdown"),
+	require("plugins.coding.languages.ansi"),
+	require("plugins.coding.languages.markdown"),
+	require("plugins.coding.languages.log"),
 }
