@@ -22,4 +22,5 @@ return {
 	require("plugins.coding.languages.ansi"),
 	require("plugins.coding.languages.markdown"),
 	require("plugins.coding.languages.log"),
+	require("plugins.coding.languages.csv"),
 }
