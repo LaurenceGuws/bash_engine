@@ -190,3 +190,56 @@ map("n", "<leader>tfs", "<cmd>ToggleFormatOnSave<CR>", { desc = "Toggle Format o
 
 -- Persistent Relative Line Numbers toggle
 map("n", "<leader>tr", "<cmd>set relativenumber!<CR>", { desc = "Toggle Relative Line Numbers" })
+
+-- Toggle line wrap
+map("n", "<leader>tw", "<cmd>set wrap!<CR>", { desc = "Toggle Line Wrap" })
+
+-- Horizontal scrolling when wrap is off
+map("n", "<S-Right>", function()
+    if not vim.opt.wrap:get() then
+        return "zL"
+    else
+        return "v<Right>"
+    end
+end, { expr = true, desc = "Scroll right or select right" })
+
+map("n", "<S-Left>", function()
+    if not vim.opt.wrap:get() then
+        return "zH"
+    else
+        return "v<Left>"
+    end
+end, { expr = true, desc = "Scroll left or select left" })
+
+map("n", "<S-l>", function()
+    if not vim.opt.wrap:get() then
+        return "zL"
+    else
+        return "l"
+    end
+end, { expr = true, desc = "Scroll right" })
+
+map("n", "<S-h>", function()
+    if not vim.opt.wrap:get() then
+        return "zH"
+    else
+        return "h"
+    end
+end, { expr = true, desc = "Scroll left" })
+
+-- Mouse wheel horizontal scrolling
+map("n", "<S-ScrollWheelDown>", function()
+    if not vim.opt.wrap:get() then
+        return "zL"
+    else
+        return "<ScrollWheelDown>"
+    end
+end, { expr = true, desc = "Scroll right with mouse wheel" })
+
+map("n", "<S-ScrollWheelUp>", function()
+    if not vim.opt.wrap:get() then
+        return "zH"
+    else
+        return "<ScrollWheelUp>"
+    end
+end, { expr = true, desc = "Scroll left with mouse wheel" })
