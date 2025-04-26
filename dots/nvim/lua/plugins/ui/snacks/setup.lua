@@ -10,8 +10,6 @@ M.init = function()
 		input = vim.ui.input,
 	}
 
-	-- Load notification system
-	require("plugins.ui.components.notifications").setup()
 
 	-- Create an autocmd to restore original UI handlers on exit
 	vim.api.nvim_create_autocmd("VimLeavePre", {

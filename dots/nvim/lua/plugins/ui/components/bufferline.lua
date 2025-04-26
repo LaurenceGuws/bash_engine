@@ -29,8 +29,8 @@ return {
 				},
 				-- Customize buffer separators
 				separator_style = "thin", -- | "slant" | "thick" | "thin" | { 'any', 'any' },
-				-- Always show tabs
-				always_show_bufferline = true,
+				-- Only show when more than one buffer is open
+				always_show_bufferline = false,
 				-- Show close icon
 				show_buffer_close_icons = true,
 				-- Show close icon for tabs

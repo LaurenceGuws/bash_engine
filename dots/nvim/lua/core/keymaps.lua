@@ -2,27 +2,27 @@ local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
 if vim.g.neovide then
-	vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
-	vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
-	vim.keymap.set({ "n", "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
-	vim.keymap.set("i", "jk", "<ESC>", { desc = "Exit Insert Mode" })
-	vim.keymap.set(
-		{ "n", "v" },
-		"<C-ScrollWheelUp>",
-		":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>"
-	)
-	vim.keymap.set(
-		{ "n", "v" },
-		"<C-ScrollWheelDown>",
-		":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>"
-	)
-	-- sonicboom, railgun, wireframe, ripple, pixiedust, sonicboom
-	vim.g.neovide_cursor_vfx_mode = "railgun"
-	vim.g.neovide_cursor_vfx_opacity = 200.0
-	vim.g.neovide_cursor_vfx_particle_lifetime = 1.0
-	vim.g.neovide_cursor_vfx_particle_highlight_lifetime = 1.0
-	vim.g.neovide_cursor_vfx_particle_density = 1.0
-	vim.g.neovide_cursor_vfx_particle_curl = 1.0
+    vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+    vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+    vim.keymap.set({ "n", "v" }, "<C-0>", ":lua vim.g.neovide_scale_factor = 1<CR>")
+    vim.keymap.set("i", "jk", "<ESC>", { desc = "Exit Insert Mode" })
+    vim.keymap.set(
+        { "n", "v" },
+        "<C-ScrollWheelUp>",
+        ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>"
+    )
+    vim.keymap.set(
+        { "n", "v" },
+        "<C-ScrollWheelDown>",
+        ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>"
+    )
+    -- sonicboom, railgun, wireframe, ripple, pixiedust, sonicboom
+    vim.g.neovide_cursor_vfx_mode = "railgun"
+    vim.g.neovide_cursor_vfx_opacity = 200.0
+    vim.g.neovide_cursor_vfx_particle_lifetime = 1.0
+    vim.g.neovide_cursor_vfx_particle_highlight_lifetime = 1.0
+    vim.g.neovide_cursor_vfx_particle_density = 1.0
+    vim.g.neovide_cursor_vfx_particle_curl = 1.0
 end
 
 -- ----------------------------------------------------------------
@@ -158,30 +158,30 @@ map("n", "<leader>tc", "<cmd>Telescope colorscheme<cr>", { desc = "Theme Picker"
 map("n", "<leader>td", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics" })
 
 map(
-	"n",
-	"<leader>tdi",
-	"<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>",
-	{ desc = "Toggle Inline Diagnostics" }
+    "n",
+    "<leader>tdi",
+    "<cmd>lua vim.diagnostic.config({virtual_text = not vim.diagnostic.config().virtual_text})<CR>",
+    { desc = "Toggle Inline Diagnostics" }
 )
 map(
-	"n",
-	"<leader>tds",
-	"<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>",
-	{ desc = "Toggle Diagnostic Signs" }
-)
-
-map(
-	"n",
-	"<leader>tdc",
-	"<cmd>lua require('core.lsp_utils').show_diagnostics_popup()<CR>",
-	{ desc = "Copy Buffer Diagnostics" }
+    "n",
+    "<leader>tds",
+    "<cmd>lua vim.diagnostic.config({signs = not vim.diagnostic.config().signs})<CR>",
+    { desc = "Toggle Diagnostic Signs" }
 )
 
 map(
-	"n",
-	"<leader>tdp",
-	"<cmd>lua require('core.lsp_utils').show_diagnostics_popup({ scope = 'workspace' })<CR>",
-	{ desc = "Project Error List" }
+    "n",
+    "<leader>tdc",
+    "<cmd>lua require('core.lsp_utils').show_diagnostics_popup()<CR>",
+    { desc = "Copy Buffer Diagnostics" }
+)
+
+map(
+    "n",
+    "<leader>tdp",
+    "<cmd>lua require('core.lsp_utils').show_diagnostics_popup({ scope = 'workspace' })<CR>",
+    { desc = "Project Error List" }
 )
 
 -- Format
@@ -193,6 +193,7 @@ map("n", "<leader>tr", "<cmd>set relativenumber!<CR>", { desc = "Toggle Relative
 
 -- Toggle line wrap
 map("n", "<leader>tw", "<cmd>set wrap!<CR>", { desc = "Toggle Line Wrap" })
+map("n", "<leader>ts", "<cmd>nohlsearch<CR>", { desc = "Clear Search Highlight" })
 
 -- Horizontal scrolling when wrap is off
 map("n", "<S-Right>", function()

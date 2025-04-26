@@ -32,7 +32,7 @@ opt.mouse = "a"
 opt.clipboard = "unnamedplus"
 opt.swapfile = false
 opt.backup = false
-opt.wrap = false -- Disable line wrapping by default
+opt.wrap = true
 
 -- Indentation
 opt.expandtab = true

@@ -10,6 +10,7 @@ return {
 	require("plugins.ui.components.scrollbar"),
 	require("plugins.ui.components.indent_guide"),
 	require("plugins.ui.components.codefold"),
+	require("plugins.ui.components.noice"),
 
 	-- Theme management
 	require("plugins.ui.theme.colors"),
