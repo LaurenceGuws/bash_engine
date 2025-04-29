@@ -9,6 +9,7 @@ cat: "bat -p"
 
 b: ${BROWSER}
 e: ${EDITOR}
+eg: "neovide"
 r: "source ~/.bashrc"
 
 lsd: "lsd --hyperlink=auto"
