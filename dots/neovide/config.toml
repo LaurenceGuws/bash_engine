@@ -8,7 +8,7 @@ srgb = false
 tabs = true
 theme = "auto"
 title-hidden = true
-vsync = true
+vsync = false
 wsl = false
 linespace=0
 
