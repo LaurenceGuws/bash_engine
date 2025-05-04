@@ -3,27 +3,13 @@ $env.EDITOR = "nvim"
 $env.PAGER = "nvimpager"
 $env.MANPAGER = "nvimpager"
 $env.ACTIVE_BOT = "phi4:latest"
-
 $env.SSH_AUTH_SOCK = $"($env.HOME)/.1password/agent.sock"
-$env.XDG_CONFIG_HOME = $"($env.HOME)/.config"
 $env.BROWSER = "brave"
-
-# $env.BANNER_DISABLED = "true"
-# $env.BLOG_DISABLED = "true"
-
 $env.POSH_THEME = "pure"
 $env.POSH_THEME_DIR = $"($env.HOME)/.cache/oh-my-posh/themes"
 $env.POSH_THEME = $"($env.POSH_THEME_DIR)/($env.POSH_THEME).omp.json"
-
 $env.NU_HOME = $"($env.HOME)/.config/nushell"
 $env.NU_THEME_DIR = $"($env.NU_HOME)/src/themes"
 $env.NU_ACTIVE_THEME = $"catppuccin-mocha"
 $env.NU_ACTIVE_THEME_LOCATION = $"($env.NU_THEME_DIR)/($env.NU_ACTIVE_THEME).nu"
-
-
 $env.FZF_DEFAULT_OPTS = "--color=bg+:-1,bg:-1,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 --color=selected-bg:-1 --multi"
-
-$env.NNN_FCOLORS = "D4DE9F78E79F9F67D2E5E5D2"
-$env.NNN_PLUG = "b:nnn_cd.sh;p:preview-tui"
-$env.NNN_BMS = $"p:($env.HOME)/personal;w:($env.HOME)/work;l:($env.HOME)/personal/linux_profile/;c:($env.HOME)/.config/"
-$env.NNN_FIFO = "/tmp/nnn.fifo"

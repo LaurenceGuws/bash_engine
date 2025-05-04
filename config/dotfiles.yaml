@@ -12,7 +12,6 @@ applications:
   ytfzf: "${HOME}/.config/ytfzf/"
   hypr: "${HOME}/.config/hypr/"
   yazi: "${HOME}/.config/yazi/"
-  nnn: "${HOME}/.config/nnn/"
   neofetch: "${HOME}/.config/neofetch/"
   nushell: "${HOME}/.config/nushell/"
   waybar: "${HOME}/.config/waybar/"

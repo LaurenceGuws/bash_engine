@@ -5,36 +5,36 @@
 ###
 scripts:
   - src/core/loaders/env_vars.sh
-  - src/core/harden/permissions.sh
+  # - src/core/harden/permissions.sh
   # - src/core/installers/dependencies.sh
   - src/core/loaders/aliases.sh
   - src/core/loaders/dotfiles.sh
   - src/core/loaders/path.sh
   - src/modules/config/bash_history_settings.sh
-  - src/modules/config/py-activate.sh
+  # - src/modules/config/py-activate.sh
   - src/modules/config/edit_config.sh
-  - src/modules/apps/docker/browsh_docker.sh
-  - src/modules/apps/docker/dsp.sh
-  - src/modules/apps/docker/docker_tag_search.sh
-  - src/modules/prompt/load_custom_posh.sh
+  # - src/modules/apps/docker/browsh_docker.sh
+  # - src/modules/apps/docker/dsp.sh
+  # - src/modules/apps/docker/docker_tag_search.sh
+  # - src/modules/prompt/load_custom_posh.sh
   - src/modules/prompt/posh.sh
   - src/modules/prompt/posh-theme-helper.sh
-  - src/modules/apps/1pass/1doc.sh
-  - src/modules/apps/1pass/1kube.sh
+  # - src/modules/apps/1pass/1doc.sh
+  # - src/modules/apps/1pass/1kube.sh
   # - src/modules/apps/1pass/1value.sh
   # - src/modules/apps/helm/drifter.sh
-  - src/modules/fun/arch_story.sh
+  # - src/modules/fun/arch_story.sh
   - src/modules/apps/fzf/fzf_bash_completion.sh
-  - src/modules/apps/fzf/rg_fzf.sh
-  - src/modules/fun/banner.sh
+  # - src/modules/apps/fzf/rg_fzf.sh
+  # - src/modules/fun/banner.sh
   # - src/modules/fun/network_logger.sh
   - src/modules/config/dots.sh
-  - src/modules/fun/spinner/spinner.sh
+  # - src/modules/fun/spinner/spinner.sh
   # - src/modules/apps/git/check_repos.sh
-  - src/modules/apps/git/update.sh
-  - src/modules/ai/bassist.sh
-  - src/modules/ai/piper/piper_wrapper.sh
-  - src/modules/ai/piper/piper_file.sh
+  # - src/modules/apps/git/update.sh
+  # - src/modules/ai/bassist.sh
+  # - src/modules/ai/piper/piper_wrapper.sh
+  # - src/modules/ai/piper/piper_file.sh
 
   - src/modules/logging/clog.sh
   # - src/core/core_init.sh
@@ -47,6 +47,6 @@ scripts:
   # - src/core/profile_loader.sh
   # - src/modules/apps/1pass/1env.sh
   # - src/modules/apps/vault/load_secrets.sh
-  - src/modules/apps/git/http2ssh.sh
+  # - src/modules/apps/git/http2ssh.sh
   # - src/modules/fun/random_imgcat.sh
 

@@ -35,7 +35,6 @@ RUN yay -S --noconfirm --mflags="--skippgpcheck" \
     way-clipboard \
     fd \
     lazygit \
-    nnn \
     zellij \
     zoxide \
     bat \

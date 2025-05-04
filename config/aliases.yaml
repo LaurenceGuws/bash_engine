@@ -22,7 +22,6 @@ own: "sudo chown"
 
 yt: "invidious_instance='https://vid.puffyan.us' ytfzf -t"
 tree: "tree -CAS --hyperlink"
-ln: "nnn -deaH"
 
 vmon: "sudo systemctl start libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
 vmoff: "sudo systemctl stop libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"

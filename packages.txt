@@ -47,7 +47,6 @@ nano
 neofetch
 neovim
 neovim-remote
-nnn
 openssh
 packer
 pacseek

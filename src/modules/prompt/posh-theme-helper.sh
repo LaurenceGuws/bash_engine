@@ -29,12 +29,21 @@ theme() {
             grep "^THEME:" "$ENV_FILE" | awk -F': ' '{print $2}' | tr -d '"'
             ;;
         loop)
-            if ! command -v pwsh &> /dev/null; then
-                echo "PowerShell not found. Install PowerShell to use this feature."
-                return
-            fi
+            pwsh <<'EOF'
+function Get-PoshThemes {
+    $themeDir = $env:THEME_DIR
+    Get-ChildItem "$themeDir" -Filter *.omp.json | ForEach-Object {
+        $bar = "─" * 60
+        Write-Host "$bar"
+        Write-Host "THEME: $($_.BaseName)`n"
+        oh-my-posh init pwsh --config $_.FullName | Invoke-Expression
+        & $function:prompt
+    }
+    exit
+}
 
-            pwsh -Command "Get-PoshThemes '$THEME_DIR'"
+Get-PoshThemes
+EOF
             ;;
         *)
             echo "Usage: theme [list|set <theme>|current|loop]"

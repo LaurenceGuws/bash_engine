@@ -43,5 +43,5 @@ load_scripts() {
 load_profile() {
     load_scripts
     load_completions
-    banner
+    # banner
 } 
