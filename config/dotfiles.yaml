@@ -21,3 +21,4 @@ applications:
   posting: "${HOME}/.config/posting/"
   starship: "${HOME}/.config/starship/"
   neovide: "${HOME}/.config/neovide/"
+  swaync: "${HOME}/.config/swaync/"

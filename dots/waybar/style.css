@@ -3,8 +3,7 @@
 
 * {
   /* `otf-font-awesome` is required to be installed for icons */
-  font-family:
-    "FontAwesome", "Roboto Mono", "Roboto", Helvetica, Arial, sans-serif;
+  font-family: "JetBrainsMono Nerd Font", monospace;
   font-size: 14px;
 }
 
@@ -60,6 +59,7 @@ window#waybar.hidden {
   border-bottom: 3px solid #cdd6f4;
 }
 
+/* Common module styling for all modules */
 #clock,
 #battery,
 #cpu,
@@ -79,9 +79,10 @@ window#waybar.hidden {
 #custom-power,
 #custom-gpu,
 #custom-network,
+#custom-notification,
 #power-profiles-daemon,
 #keyboard-state {
-  padding: 0px 5px;
+  padding: 0px 8px;  /* Consistent padding for all modules */
   margin: 2px 2px;
   color: #cdd6f4;
   background-color: transparent;
@@ -109,13 +110,14 @@ window#waybar.hidden {
 #custom-power:hover,
 #custom-gpu:hover,
 #custom-network:hover,
+#custom-notification:hover,
 #power-profiles-daemon:hover,
 #keyboard-state:hover {
   border: 1px solid #a49eee;
 }
 
 #custom-network {
-  padding: 0 8px;
+  color: #89b4fa;
 }
 
 #custom-network.wifi {
@@ -326,7 +328,7 @@ label:focus {
 
 #custom-power {
   color: #f38ba8;
-  font-size: 20px;
+  /* font-size: 20px; */
 }
 
 #custom-gpu {
@@ -364,4 +366,23 @@ label:focus {
 #custom-gpu.gpu-100 {
   color: #f38ba8;
   /* Red for high usage */
+}
+
+#custom-notification {
+  color: #a6e3a1;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#custom-notification.notification {
+  color: #f38ba8;
+  animation-name: blink;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: 3;
+  animation-direction: alternate;
+}
+
+#custom-notification.dnd {
+  color: #fab387;
 }

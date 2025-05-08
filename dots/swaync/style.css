@@ -1,0 +1,160 @@
+/* Import Catppuccin Mocha theme to match your Waybar */
+@import url("../waybar/themes/mocha.css");
+
+* {
+  font-family: "FontAwesome", "Roboto Mono", "Roboto", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.floating-notifications.background .notification-row .notification-background {
+  background-color: #1e1e2e;
+  border: 1px solid #a49eee;
+  margin: 8px;
+  padding: 0;
+}
+
+.floating-notifications .notification-row .notification-background .notification {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.notification-row .notification-background .notification .notification-content {
+  margin: 7px;
+  color: #cdd6f4;
+}
+
+.notification-row .notification-background .notification .notification-content .summary {
+  font-size: 16px;
+  font-weight: bold;
+  color: #b4befe;
+}
+
+.notification-row .notification-background .notification .notification-content .time {
+  color: #cdd6f4;
+}
+
+.notification-row .notification-background .notification .notification-content .body {
+  color: #cdd6f4;
+}
+
+.notification-row .notification-background .close-button {
+  margin: 7px;
+  padding: 2px;
+  color: #f38ba8;
+  border-radius: 100%;
+}
+
+.control-center {
+  background-color: #1e1e2e;
+  border: 1px solid #a49eee;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.control-center .widget-title {
+  margin: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #b4befe;
+}
+
+.control-center .widget-title button {
+  margin-right: 5px;
+  border-radius: 10px;
+  background-color: #313244;
+  color: #cdd6f4;
+  padding: 5px 10px;
+}
+
+.control-center .widget-title button:hover {
+  background-color: #45475a;
+}
+
+.control-center .notifications-list {
+  margin: 10px;
+}
+
+.control-center .notifications-list .notification-row .notification-background {
+  background-color: #313244;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.control-center .notifications-list .notification-row .notification-background .notification {
+  padding: 10px;
+}
+
+/* Buttons at the right */
+.buttons-grid {
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  background-color: #313244;
+}
+
+.control-center-button-grid {
+  margin: 8px;
+}
+
+.control-center-button {
+  background-color: #45475a;
+  border-radius: 10px;
+  margin: 2px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.control-center-button:hover {
+  background-color: #585b70;
+}
+
+.control-center-button label {
+  font-size: 16px;
+  color: #cdd6f4;
+}
+
+/* DND button */
+.widget-dnd {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #313244;
+  color: #cdd6f4;
+}
+
+.widget-dnd .toggle-button {
+  background-color: #45475a;
+  border-radius: 999px;
+}
+
+.widget-dnd .toggle-button.active {
+  background-color: #f38ba8;
+}
+
+/* MPRIS */
+.widget-mpris {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #313244;
+}
+
+.widget-mpris .title {
+  font-weight: bold;
+  color: #b4befe;
+}
+
+.widget-mpris .artist {
+  color: #cdd6f4;
+}
+
+.widget-mpris .controls button {
+  background-color: transparent;
+  color: #cdd6f4;
+  font-size: 16px;
+}
+
+.widget-mpris .controls button:hover {
+  color: #b4befe;
+} 
