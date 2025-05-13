@@ -14,13 +14,13 @@ scripts:
   # - src/modules/config/py-activate.sh
   - src/modules/config/edit_config.sh
   # - src/modules/apps/docker/browsh_docker.sh
-  # - src/modules/apps/docker/dsp.sh
+  - src/modules/apps/docker/dsp.sh
   # - src/modules/apps/docker/docker_tag_search.sh
   # - src/modules/prompt/load_custom_posh.sh
   - src/modules/prompt/posh.sh
   - src/modules/prompt/posh-theme-helper.sh
   # - src/modules/apps/1pass/1doc.sh
-  # - src/modules/apps/1pass/1kube.sh
+  - src/modules/apps/1pass/1kube.sh
   # - src/modules/apps/1pass/1value.sh
   # - src/modules/apps/helm/drifter.sh
   # - src/modules/fun/arch_story.sh
