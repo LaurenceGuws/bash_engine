@@ -22,3 +22,7 @@ applications:
   starship: "${HOME}/.config/starship/"
   neovide: "${HOME}/.config/neovide/"
   swaync: "${HOME}/.config/swaync/"
+  lazygit: "${HOME}/.config/lazygit/"
+  lazydocker: "${HOME}/.config/lazydocker/"
+  lazysql: "${HOME}/.config/lazysql/"
+

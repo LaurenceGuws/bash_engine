@@ -1,0 +1,16 @@
+[application]
+DefaultPageSize = 300
+DisableSidebar = false
+SidebarOverlay = false
+
+[[database]]
+Name = 'test'
+URL = 'file:clipboard.db'
+Provider = 'sqlite3'
+Username = ''
+Password = ''
+Hostname = ''
+Port = ''
+DBName = ''
+URLParams = ''
+Commands = []
