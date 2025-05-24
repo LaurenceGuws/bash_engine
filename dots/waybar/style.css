@@ -2,7 +2,6 @@
 @import url("./themes/mocha.css");
 
 * {
-  /* `otf-font-awesome` is required to be installed for icons */
   font-family: "JetBrainsMono Nerd Font", monospace;
   font-size: 14px;
 }
@@ -21,9 +20,9 @@ window#waybar.hidden {
 .modules-left,
 .modules-center,
 .modules-right {
-  background-color: #1e1e2e;
+  background-color: rgba(0, 0, 0, 0.4);
   border-radius: 10px;
-  border: 1px solid #a49eee;
+  border: 1px solid rgba(164, 158, 238, 0.5);
   margin-top: 5px;
   margin-right: 5px;
   margin-left: 5px;
@@ -42,21 +41,23 @@ window#waybar.hidden {
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
-  border: 1px solid #a49eee;
+  border: 1px solid rgba(164, 158, 238, 0.6);
+  background-color: rgba(30, 30, 30, 0.2);
 }
 
 #workspaces button.active {
-  background-color: rgba(69, 71, 90, 0.5);
+  background-color: rgba(30, 30, 30, 0.4);
+  border: 1px solid rgba(2, 119, 130, 0.6); /* Bright peach/orange border for active workspace */
   box-shadow: none;
 }
 
 #workspaces button.urgent {
-  background-color: #f38ba8;
+  background-color: rgba(243, 139, 168, 0.6);
 }
 
 #mode {
-  background-color: #313244;
-  border-bottom: 3px solid #cdd6f4;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-bottom: 3px solid rgba(205, 214, 244, 0.6);
 }
 
 /* Common module styling for all modules */
@@ -113,7 +114,8 @@ window#waybar.hidden {
 #custom-notification:hover,
 #power-profiles-daemon:hover,
 #keyboard-state:hover {
-  border: 1px solid #a49eee;
+  border: 1px solid rgba(164, 158, 238, 0.6);
+  background-color: rgba(30, 30, 30, 0.2);
 }
 
 #custom-network {
@@ -166,13 +168,13 @@ window#waybar.hidden {
 
 @keyframes blink {
   to {
-    background-color: #f38ba8;
+    background-color: rgba(243, 139, 168, 0.6);
     color: #11111b;
   }
 }
 
 #battery.critical:not(.charging) {
-  background-color: #f38ba8;
+  background-color: rgba(243, 139, 168, 0.6);
   color: #11111b;
   animation-name: blink;
   animation-duration: 0.5s;
@@ -202,7 +204,7 @@ label:focus {
 }
 
 #network.disconnected {
-  background-color: #f38ba8;
+  background-color: rgba(243, 139, 168, 0.6);
   color: #11111b;
 }
 
@@ -240,7 +242,7 @@ label:focus {
 }
 
 #temperature.critical {
-  background-color: #f38ba8;
+  background-color: rgba(243, 139, 168, 0.6);
   color: #11111b;
 }
 
@@ -254,7 +256,7 @@ label:focus {
 
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
-  background-color: #f38ba8;
+  background-color: rgba(243, 139, 168, 0.6);
 }
 
 #idle_inhibitor {
@@ -270,7 +272,7 @@ label:focus {
 }
 
 #mpd.disconnected {
-  background-color: #f38ba8;
+  background-color: rgba(243, 139, 168, 0.6);
   color: #11111b;
 }
 
