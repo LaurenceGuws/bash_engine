@@ -13,6 +13,7 @@ applications:
   hypr: "${HOME}/.config/hypr/"
   yazi: "${HOME}/.config/yazi/"
   neofetch: "${HOME}/.config/neofetch/"
+  fastfetch: "${HOME}/.config/fastfetch/"
   nushell: "${HOME}/.config/nushell/"
   waybar: "${HOME}/.config/waybar/"
   wofi: "${HOME}/.config/wofi/"
