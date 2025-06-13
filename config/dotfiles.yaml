@@ -26,4 +26,8 @@ applications:
   lazygit: "${HOME}/.config/lazygit/"
   lazydocker: "${HOME}/.config/lazydocker/"
   lazysql: "${HOME}/.config/lazysql/"
+  k9s: "${HOME}/.config/k9s/"
+  lsd: "${HOME}/.config/lsd/"
+  bat: "${HOME}/.config/bat/"
+  wlogout: "${HOME}/.config/wlogout/"
 
