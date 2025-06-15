@@ -6,7 +6,7 @@
 bot: "ollama run $ACTIVE_BOT"
 bat: "bat -p"
 cat: "bat -p"
-
+# fzf: "fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 b: ${BROWSER}
 e: ${EDITOR}
 eg: "neovide"

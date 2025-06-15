@@ -6,15 +6,11 @@
 ###
 applications:
   kitty: "${HOME}/.config/kitty/"
-  ghostty: "${HOME}/.config/ghostty/"
-  nvimpager: "${HOME}/.config/nvimpager/"
   zellij: "${HOME}/.config/zellij/"
   ytfzf: "${HOME}/.config/ytfzf/"
   hypr: "${HOME}/.config/hypr/"
   yazi: "${HOME}/.config/yazi/"
-  neofetch: "${HOME}/.config/neofetch/"
   fastfetch: "${HOME}/.config/fastfetch/"
-  nushell: "${HOME}/.config/nushell/"
   waybar: "${HOME}/.config/waybar/"
   wofi: "${HOME}/.config/wofi/"
   btop: "${HOME}/.config/btop/"

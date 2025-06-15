@@ -1,3 +1,5 @@
+# https://github.com/jorgerojas26/lazysql
+
 [application]
 DefaultPageSize = 300
 DisableSidebar = false

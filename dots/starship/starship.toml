@@ -1,145 +1,328 @@
-# ~/.config/starship.toml
+# Palette ------------------------------------------------------------------
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo  = "#f2cdcd"
+pink      = "#f5c2e7"
+mauve     = "#cba6f7"
+red       = "#f38ba8"
+maroon    = "#eba0ac"
+peach     = "#fab387"
+yellow    = "#f9e2af"
+green     = "#a6e3a1"
+teal      = "#94e2d5"
+sky       = "#89dceb"
+sapphire  = "#74c7ec"
+blue      = "#89b4fa"
+lavender  = "#b4befe"
+text      = "#cdd6f4"
+subtext1  = "#bac2de"
+subtext0  = "#a6adc8"
+overlay2  = "#9399b2"
+overlay1  = "#7f849c"
+overlay0  = "#6c7086"
+surface2  = "#585b70"
+surface1  = "#45475a"
+surface0  = "#313244"
+base      = "#1e1e2e"
+mantle    = "#181825"
+crust     = "#11111b"
 
+# Core Modules -------------------------------------------------------------
 [username]
-style_user = "bold green"
-
+style_user = "green"
 
 [hostname]
 ssh_only = true
 
-[git_branch]
-symbol = " "  # Fancy git branch symbol
-
-# ~/.config/starship.toml
-
-[git_metrics]
-added_style = 'bold blue'
-format = '[+$added]($added_style)/[-$deleted]($deleted_style) '
+[shell]
+fish_indicator = '󰈺 '
+bash_indicator = ' '
+powershell_indicator = '_'
+unknown_indicator = 'mystery shell'
+style = 'teal'
+disabled = false
 
 [time]
 format = "[%T]"
 
-[python]
-symbol = "🐍 "
+# Operating System Symbols -------------------------------------------------
+[os.symbols]
+AIX = " "
+Alpaquita = " "
+AlmaLinux = " "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+OpenCloudOS = " "
+openEuler = "󰒲 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Ultramarine = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
 
-# ~/.config/starship.toml
+# Version Control ----------------------------------------------------------
+[git_branch]
+format = '[$symbol$branch(:$remote_branch)]($style) '
+always_show_remote = true
+symbol = ' '
+style = 'mauve'
 
-[kubernetes]
-format = 'on [⛵ ($user on )($cluster in )$context \($namespace\)](dimmed green) '
+[git_commit]
+commit_hash_length = 7
+only_detached = true
+tag_symbol = '  '
+style = 'yellow'
+
+[git_state]
+format = '([$state( $progress_current/$progress_total)]($style)) '
+style = 'yellow'
+
+[git_status]
+format = '([$ahead_behind$all_status]($style)) '
+ahead = '⇡${count}'
+behind = '⇣${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+up_to_date = ''
+conflicted = '='
+untracked = '?'
+stashed = '$'
+modified = '!'
+staged = '+'
+renamed = '»'
+deleted = '✘'
+style = 'red'
+
+[git_metrics]
+added_style = 'green'
+deleted_style = 'red'
+format = '([+$added]($added_style)/[-$deleted]($deleted_style)) '
+only_nonzero_diffs = true
 disabled = false
-contexts = [
-  { context_pattern = "dev.local.cluster.k8s", style = "green", symbol = "💔 " },
-]
 
-# ~/.config/starship.toml
+[fossil_branch]
+symbol = ' '
 
-[java]
-symbol = '🌟 '
-
-# ~/.config/starship.toml
-
-[docker_context]
-format = 'via [🐋 $context](blue bold)'
-
-# ~/.config/starship.toml
-
+# Prompt Timing & Duration --------------------------------------------------
 [cmd_duration]
 min_time = 500
-format = 'underwent [$duration](bold yellow)'
+format = 'underwent [$duration](yellow)'
 
-# ~/.config/starship.toml
+# Kubernetes / Cloud -------------------------------------------------------
+[kubernetes]
+format = 'on [󰠳 ($user on )($cluster in )$context \($namespace\)](green) '
+disabled = false
+contexts = [
+  { context_pattern = "dev.local.cluster.k8s", style = "green", symbol = "󰅟 " },
+]
 
+[gcloud]
+symbol = '  '
+
+# Containers & DevOps ------------------------------------------------------
+[docker_context]
+format = 'via [ $context](blue)'
+
+[helm]
+format = 'via [󰠶 $version](text) '
+
+[terraform]
+symbol = '󰚩 '
+style = 'lavender'
+
+[container]
+symbol = '󰆦 '
+
+# Directory & Files --------------------------------------------------------
+[directory]
+read_only = ' 󰌾'
+
+# Environment / Shell Helpers ---------------------------------------------
 [direnv]
 disabled = false
 
-# ~/.config/starship.toml
+[conda]
+symbol = ' '
 
-[helm]
-format = 'via [⎈ $version](bold white) '
+[guix_shell]
+symbol = ' '
 
-# ~/.config/starship.toml
+[nix_shell]
+symbol = ' '
 
-[rust]
-format = 'via [⚙️ $version](red bold)'
+[pixi]
+symbol = '󰏗 '
 
-# ~/.config/starship.toml
+# Languages & Runtimes (Alphabetical) -------------------------------------
+[bun]
+symbol = ' '
+style = 'peach'
 
-[zig]
-symbol = '⚡️ '
+[c]
+symbol = ' '
+style = 'blue'
 
-# ~/.config/starship.toml
+[cpp]
+symbol = ' '
+style = 'sapphire'
+
+[crystal]
+symbol = ' '
+style = 'pink'
+
+[dart]
+symbol = ' '
+style = 'sky'
+
+[deno]
+symbol = ' '
+style = 'green'
+
+[dotnet]
+symbol = '󰪮 '
+style = 'lavender'
+
+[elixir]
+symbol = ' '
+style = 'mauve'
+
+[elm]
+symbol = ' '
+style = 'green'
+
+[fennel]
+symbol = ' '
+style = 'yellow'
 
 [golang]
-format = 'via [🏎💨 $version](bold cyan) '
+format = 'via [ $version](sapphire) '
 
-# ~/.config/starship.toml
+[gradle]
+symbol = ' '
+style = 'maroon'
 
-[memory_usage]
-disabled = false
-threshold = -1
-symbol = ' '
-style = 'bold dimmed green'
+[haskell]
+symbol = ' '
+style = 'lavender'
 
-# ~/.config/starship.toml
+[haxe]
+symbol = ' '
+style = 'yellow'
+
+[java]
+symbol = ' '
+style = 'maroon'
+
+[jobs]
+symbol = ' '
+
+[julia]
+symbol = ' '
+style = 'pink'
+
+[kotlin]
+symbol = ' '
+style = 'peach'
+
+[lua]
+symbol = ' '
+style = 'sky'
+
+[meson]
+symbol = '󰔷 '
+style = 'subtext0'
+
+[nim]
+symbol = '󰆥 '
+style = 'yellow'
 
 [nodejs]
-format = 'via [🤖 $version](bold green) '
+format = 'via [ $version](green) '
 
-# ~/.config/starship.toml
+[ocaml]
+symbol = ' '
+style = 'peach'
 
-[shell]
-fish_indicator = '󰈺 '
-powershell_indicator = '_'
-unknown_indicator = 'mystery shell'
-style = 'cyan bold'
-disabled = false
+[package]
+symbol = '󰏗 '
+style = 'subtext1'
 
-# This is the default symbols table.
-[os.symbols]
-AIX = "➿ "
-Alpaquita = "🔔 "
-AlmaLinux = "💠 "
-Alpine = "🏔️ "
-Amazon = "🙂 "
-Android = "🤖 "
-Arch = "🎗️ "
-Artix = "🎗️ "
-CentOS = "💠 "
-Debian = "🌀 "
-DragonFly = "🐉 "
-Emscripten = "🔗 "
-EndeavourOS = "🚀 "
-Fedora = "🎩 "
-FreeBSD = "😈 "
-Garuda = "🦅 "
-Gentoo = "🗜️ "
-HardenedBSD = "🛡️ "
-Illumos = "🐦 "
-Kali = "🐉 "
-Linux = "🐧 "
-Mabox = "📦 "
-Macos = "🍎 "
-Manjaro = "🥭 "
-Mariner = "🌊 "
-MidnightBSD = "🌘 "
-Mint = "🌿 "
-NetBSD = "🚩 "
-NixOS = "❄️ "
-OpenBSD = "🐡 "
-OpenCloudOS = "☁️ "
-openEuler = "🦉 "
-openSUSE = "🦎 "
-OracleLinux = "🦴 "
-Pop = "🍭 "
-Raspbian = "🍓 "
-Redhat = "🎩 "
-RedHatEnterprise = "🎩 "
-RockyLinux = "💠 "
-Redox = "🧪 "
-Solus = "⛵ "
-SUSE = "🦎 "
-Ubuntu = "🎯 "
-Ultramarine = "🔷 "
-Unknown = "❓ "
-Void = "  "
-Windows = "🪟 "
+[perl]
+symbol = ' '
+style = 'flamingo'
+
+[php]
+symbol = ' '
+style = 'blue'
+
+[pijul_channel]
+symbol = ' '
+style = 'mauve'
+
+[python]
+symbol = ' '
+style = 'green'
+
+[rlang]
+symbol = '󰟔 '
+style = 'teal'
+
+[ruby]
+symbol = ' '
+style = 'red'
+
+[rust]
+format = 'via [󱘗 $version](red)'
+
+[scala]
+symbol = ' '
+style = 'maroon'
+
+[swift]
+symbol = ' '
+style = 'pink'
+
+[zig]
+symbol = ' '
+style = 'yellow'
+
+# Misc Tools --------------------------------------------------------------
+[memory_usage]
+disabled = true
+threshold = -1
+symbol = ' '
+style = 'green'

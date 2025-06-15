@@ -17,7 +17,7 @@ scripts:
   - src/modules/apps/docker/dsp.sh
   # - src/modules/apps/docker/docker_tag_search.sh
   # - src/modules/prompt/load_custom_posh.sh
-  - src/modules/prompt/posh.sh
+  # - src/modules/prompt/posh.sh
   - src/modules/prompt/posh-theme-helper.sh
   # - src/modules/apps/1pass/1doc.sh
   - src/modules/apps/1pass/1kube.sh
