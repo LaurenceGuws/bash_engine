@@ -1,6 +1,12 @@
 # https://starship.rs/config/
 # Move the directory to the second line
-# format = '$all$directory$character'
+format = '$os$all$character'
+# Use the Catppuccin Mocha palette for custom color names
+palette = 'catppuccin_mocha'
+# Enable OS module so the operating system icon shows
+[os]
+disabled = false
+style = "maroon"
 # Palette ------------------------------------------------------------------
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
