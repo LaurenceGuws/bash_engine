@@ -1,3 +1,4 @@
+# https://neovide.dev/configuration.html
 fork = true
 frame = "full"
 idle = true
