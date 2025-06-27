@@ -83,12 +83,12 @@ blog() {
     ##########################################################################
     # Default emojis (will be cleared if --no-emoji is used)
     ##########################################################################
-    local EMOJI_TRACE="🔍"
-    local EMOJI_DEBUG="🐛"
-    local EMOJI_INFO="ℹ️"
-    local EMOJI_WARNING="⚠️"
-    local EMOJI_ERROR="❌"
-    local EMOJI_FATAL="💥"
+    local EMOJI_TRACE="󰍉"
+    local EMOJI_DEBUG=""
+    local EMOJI_INFO=""
+    local EMOJI_WARNING=""
+    local EMOJI_ERROR=""
+    local EMOJI_FATAL=""
 
     ##########################################################################
     # Defaults

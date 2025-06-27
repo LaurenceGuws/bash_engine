@@ -4,7 +4,4 @@
 # - keys in this file does not do anything accept make your life easier.
 ###
 
-# JAVA: "$JAVA_HOME/bin:$PATH"
-# JBANG: "${HOME}/.sdkman/candidates/jbang/0.124.0/bin"
-# QUARKUS: "${HOME}/.sdkman/candidates/quarkus/3.19.2/bin"
-# MAVEN: "${HOME}/.sdkman/candidates/maven/3.9.9/bin"
+JAVA: "$HOME/.local/bin:$PATH"
