@@ -115,8 +115,16 @@ dots_fzf() {
 
     if [[ -d "$source_path" && -n "$target_path" ]]; then
       mkdir -p "$target_path"
-      cp -r "${source_path}"* "$target_path"
-      echo -e "${CTP_MINT}Copied ${app} configuration to ${target_path}${CTP_RESET}"
+      # Enable dotglob to include hidden files, nullglob to handle empty directories
+      shopt -s dotglob nullglob
+      local files=("${source_path}"*)
+      if [[ ${#files[@]} -gt 0 ]]; then
+        cp -r "${files[@]}" "$target_path"
+        echo -e "${CTP_MINT}Copied ${app} configuration to ${target_path}${CTP_RESET}"
+      else
+        echo -e "${CTP_BUTTER}No files found in ${source_path} for ${app}${CTP_RESET}"
+      fi
+      shopt -u dotglob nullglob
     else
       echo -e "${CTP_ROSE}Warning: Missing source folder ($source_path) or target path ($target_path) for ${app}${CTP_RESET}"
     fi

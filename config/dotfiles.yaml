@@ -26,4 +26,5 @@ applications:
   lsd: "${HOME}/.config/lsd/"
   bat: "${HOME}/.config/bat/"
   wlogout: "${HOME}/.config/wlogout/"
+  home: "${HOME}/"
 

@@ -39,7 +39,7 @@ _blog_completions() {
       -e --no-emoji
       -t --timestamp-format
       -u --no-timestamp
-      -b --no-border
+      -b --border
       -m --mask
       -j --json
       -x --exec
@@ -96,7 +96,7 @@ blog() {
     local log_level="info"
     local timestamp_format="%Y-%m-%d %H:%M:%S"
     local use_timestamp="true"
-    local use_border="true"
+    local use_border="false"
     local use_emoji="true"
     local use_json="false"
     local color_enabled="true"
@@ -125,7 +125,7 @@ options:
 
   -t, --timestamp-format <F>   set date format (default: "%Y-%m-%d %H:%M:%S")
   -u, --no-timestamp           omit timestamps entirely
-  -b, --no-border              omit the border
+  -b, --border                 show the border (off by default)
 
   -m, --mask <mode>            mask file paths; mode = 'none', 'filename', or 'location'
 
@@ -197,8 +197,8 @@ EOF
                 use_timestamp="false"
                 shift
                 ;;
-            -b|--no-border)
-                use_border="false"
+            -b|--border)
+                use_border="true"
                 shift
                 ;;
             -m|--mask)
@@ -462,23 +462,30 @@ EOF
             final_output+="${COLOR_BORDER}==================================================${COLOR_RESET}\n"
         fi
 
-        # 6) first line => [timestamp] emoji LEVEL [script]
-        # e.g. [2025-02-01 12:34:56] 🐛 DEBUG [script]
+        # 6) format the log line with message on same line
+        # e.g. [2025-02-01 12:34:56] 🐛 DEBUG [script] message content
         if [[ -n "$timestamp_str" ]]; then
             final_output+="${COLOR_TIMESTAMP}[${timestamp_str}]${COLOR_RESET} "
             final_output+="${level_emoji} ${chosen_color}${level_text}${COLOR_RESET} "
-            final_output+="${COLOR_SCRIPT}[${script_path}]${COLOR_RESET}\n"
+            final_output+="${COLOR_SCRIPT}[${script_path}]${COLOR_RESET} "
         else
-            # e.g. 🐛 DEBUG [script]
+            # e.g. 🐛 DEBUG [script] message content
             final_output+="${level_emoji} ${chosen_color}${level_text}${COLOR_RESET} "
-            final_output+="${COLOR_SCRIPT}[${script_path}]${COLOR_RESET}\n"
+            final_output+="${COLOR_SCRIPT}[${script_path}]${COLOR_RESET} "
         fi
 
-        # 7) the message itself, line by line
+        # 7) the message itself - handle multiline messages
         IFS=$'\n' read -rd '' -a message_lines <<< "$message"
-        for line in "${message_lines[@]}"; do
-            final_output+="${COLOR_MESSAGE}${line}${COLOR_RESET}\n"
-        done
+        if [[ ${#message_lines[@]} -eq 1 ]]; then
+            # Single line message - put it on the same line
+            final_output+="${COLOR_MESSAGE}${message_lines[0]}${COLOR_RESET}\n"
+        else
+            # Multi-line message - first line on same line, rest on new lines
+            final_output+="${COLOR_MESSAGE}${message_lines[0]}${COLOR_RESET}\n"
+            for ((i=1; i<${#message_lines[@]}; i++)); do
+                final_output+="${COLOR_MESSAGE}${message_lines[i]}${COLOR_RESET}\n"
+            done
+        fi
     fi
 
     ##########################################################################

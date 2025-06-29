@@ -17,7 +17,7 @@ load_dots() {
       cp -r "${source_path}"* "$target_path"
       blog -l info "Copied $app configuration to $target_path" 
     else
-      blog -l warn "Missing source folder ($source_path) or target path ($target_path) for $app" 
+      blog -l warning "Missing source folder ($source_path) or target path ($target_path) for $app" 
     fi
   done
 }
