@@ -1,3 +1,4 @@
+
 //usr/bin/env jbang "$0" "$@" ; exit $?
 import java.io.*;
 import java.util.*;
@@ -6,36 +7,34 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Spinner {
 
     private static final Map<String, String[]> SPINNER_STYLES = Map.ofEntries(
-        Map.entry("classic", new String[] {"|", "/", "-", "\\"}),
-        Map.entry("dots", new String[] {"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}),
-        Map.entry("ball", new String[] {"●", "○", "●", "○"}),
-        Map.entry("arrow", new String[] {"←", "↖", "↑", "↗", "→", "↘", "↓", "↙"}),
-        Map.entry("braille", new String[] {"⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷"}),
-        Map.entry("pipe", new String[] {"┤", "┘", "┴", "└", "├", "┌", "┬", "┐"}),
-        Map.entry("clock", new String[] {"🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"}),
-        Map.entry("wave", new String[] {"🌊", "🌊", "🌊", "🌊", "🌊", "🌊", "🌊", "🌊"}),
-        Map.entry("matrix", new String[] {"░", "▒", "▓", "█", "▓", "▒", "░"}),
-        Map.entry("runner", new String[] {"🏃", "🏃‍♂️", "🏃‍♀️"}),
-        Map.entry("pulse", new String[] {"⬤", "○", "⬤", "○", "⬤"})
-    );
+            Map.entry("classic", new String[] { "|", "/", "-", "\\" }),
+            Map.entry("dots", new String[] { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }),
+            Map.entry("ball", new String[] { "●", "○", "●", "○" }),
+            Map.entry("arrow", new String[] { "←", "↖", "↑", "↗", "→", "↘", "↓", "↙" }),
+            Map.entry("braille", new String[] { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" }),
+            Map.entry("pipe", new String[] { "┤", "┘", "┴", "└", "├", "┌", "┬", "┐" }),
+            Map.entry("clock", new String[] { "🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚" }),
+            Map.entry("wave", new String[] { "🌊", "🌊", "🌊", "🌊", "🌊", "🌊", "🌊", "🌊" }),
+            Map.entry("matrix", new String[] { "░", "▒", "▓", "█", "▓", "▒", "░" }),
+            Map.entry("runner", new String[] { "🏃", "🏃‍♂️", "🏃‍♀️" }),
+            Map.entry("pulse", new String[] { "⬤", "○", "⬤", "○", "⬤" }));
 
     private static final Map<String, String> COLOR_CODES = Map.of(
-        "red", "\033[31m",
-        "green", "\033[32m",
-        "yellow", "\033[33m",
-        "blue", "\033[34m",
-        "magenta", "\033[35m",
-        "cyan", "\033[36m",
-        "white", "\033[37m",
-        "reset", "\033[0m"
-    );
+            "red", "\033[31m",
+            "green", "\033[32m",
+            "yellow", "\033[33m",
+            "blue", "\033[34m",
+            "magenta", "\033[35m",
+            "cyan", "\033[36m",
+            "white", "\033[37m",
+            "reset", "\033[0m");
 
     public static void main(String[] args) throws Exception {
         // Check if user asked for help
         for (String arg : args) {
             if (arg.equals("--help") || arg.equals("-h")) {
                 printHelp();
-                return;  // Exit after showing help
+                return; // Exit after showing help
             }
         }
 
@@ -55,7 +54,8 @@ public class Spinner {
             } else if (args[i].equals("--speed") && i + 1 < args.length) {
                 try {
                     delayMs = Integer.parseInt(args[i + 1]);
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
             } else if (args[i].equals("--message") && i + 1 < args.length) {
                 message = args[i + 1];
             } else if (args[i].equals("--color") && i + 1 < args.length) {
@@ -81,33 +81,36 @@ public class Spinner {
         final String GREEN = "\033[32m";
         final String BLUE = "\033[34m";
         final String RESET = "\033[0m";
-    
+
         System.out.println(YELLOW + BOLD + "Usage: spinner [OPTIONS]" + RESET);
         System.out.println("A CLI spinner utility with multiple styles, colors, and streaming support.");
-        
+
         System.out.println("\n" + BOLD + "Options:" + RESET);
         System.out.println("  " + CYAN + "--help, -h" + RESET + "        Show this help message");
-        System.out.println("  " + CYAN + "--style <name>" + RESET + "   Choose a spinner style (e.g. dots, ball, arrow)");
-        System.out.println("  " + CYAN + "--speed <ms>" + RESET + "     Set spinner speed in milliseconds (default: 100)");
+        System.out
+                .println("  " + CYAN + "--style <name>" + RESET + "   Choose a spinner style (e.g. dots, ball, arrow)");
+        System.out.println(
+                "  " + CYAN + "--speed <ms>" + RESET + "     Set spinner speed in milliseconds (default: 100)");
         System.out.println("  " + CYAN + "--message <text>" + RESET + " Display custom text next to the spinner");
-        System.out.println("  " + CYAN + "--color <name>" + RESET + "   Colorize spinner (red, green, yellow, blue, etc.)");
+        System.out.println(
+                "  " + CYAN + "--color <name>" + RESET + "   Colorize spinner (red, green, yellow, blue, etc.)");
         System.out.println("  " + CYAN + "--multi" + RESET + "         Run all spinners at once in multiple lines");
-    
+
         System.out.println("\n" + BOLD + "Available Spinner Styles:" + RESET);
         for (String key : SPINNER_STYLES.keySet()) {
             System.out.print(GREEN + key + RESET + "  ");
         }
         System.out.println("\n");
-    
+
         System.out.println(BOLD + "Examples:" + RESET);
         System.out.println(BLUE + "  spinner --style dots --message \"Loading...\"" + RESET);
         System.out.println(BLUE + "  echo \"Hello World\" | spinner" + RESET);
         System.out.println(BLUE + "  ls -la | spinner --style ball --message \"Indexing files...\"" + RESET);
         System.out.println(BLUE + "  spinner --multi --speed 100 --message \"Spinning all the things!\"" + RESET);
     }
-    
 
-    private static void runSingleSpinner(String[] frames, int delay, String message, String color, boolean hasInput, BufferedReader reader, AtomicBoolean spinnerRunning) {
+    private static void runSingleSpinner(String[] frames, int delay, String message, String color, boolean hasInput,
+            BufferedReader reader, AtomicBoolean spinnerRunning) {
         final String resetColor = "\033[0m";
 
         Thread spinnerThread = new Thread(() -> {
@@ -142,13 +145,15 @@ public class Spinner {
                 }
                 System.out.println(line);
             }
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
 
         if (spinnerRunning.get()) {
             spinnerThread.interrupt();
             try {
                 spinnerThread.join();
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+            }
         }
     }
 
