@@ -6,6 +6,7 @@
 ###
 applications:
   kitty: "${HOME}/.config/kitty/"
+  ghostty: "${HOME}/.config/ghostty/"
   zellij: "${HOME}/.config/zellij/"
   ytfzf: "${HOME}/.config/ytfzf/"
   hypr: "${HOME}/.config/hypr/"

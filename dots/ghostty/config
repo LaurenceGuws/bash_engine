@@ -1,0 +1,34 @@
+cursor-style = bar
+cursor-style-blink = false
+adjust-cell-width = 1
+
+font-family = "JetBrainsMono Nerd Font"
+font-family-bold = "JetBrainsMono Nerd Font"
+font-family-italic = "JetBrainsMono Nerd Font"
+font-family-bold-italic = "JetBrainsMono Nerd Font"
+window-title-font-family = "JetBrainsMono Nerd Font"
+
+# Valid values are integers between 0 and 255. 0 does not correspond to no thickening, rather it corresponds to the lightest available thickening. 
+font-thicken-strength = 255
+font-size = 17
+
+
+# A theme to use. This can be a built-in theme name, a custom theme name, or an absolute path to a custom theme file.
+# theme = MonaLisa
+theme = catppuccin-mocha
+
+window-padding-balance = false
+window-padding-x = 0,0
+window-padding-y = 0,0
+window-decoration = none
+gtk-wide-tabs = true
+gtk-tabs-location = top
+keybind = alt+tab=toggle_tab_overview
+
+background-opacity = 1
+background-blur = true
+
+
+cursor-click-to-move = true
+# scrollback-limit = 655360
+scrollback-limit = 4294967295

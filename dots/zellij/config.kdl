@@ -271,7 +271,14 @@ pane_frames false
 //   - true (default)
 //   - false
 //
-// auto_layout true
+auto_layout false
+
+layout {
+    pane size=1 borderless=true {
+        plugin location="compact-bar"
+    }
+    pane
+}
 
 // Whether sessions should be serialized to the cache folder (including their tabs/panes, cwds and running commands) so that they can later be resurrected
 // (Requires restart)
@@ -280,6 +287,7 @@ pane_frames false
 //   - false
 //
 session_serialization true
+on_session_close "detach"
 
 // Whether pane viewports are serialized along with the session, default is false
 // (Requires restart)
@@ -357,13 +365,13 @@ scrollback_lines_to_serialize 10000
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "catppuccin-macchiato"
+theme "catppuccin-mocha"
 
 // The name of the default layout to load on startup
 // Default: "default"
 // (Requires restart)
 //
-// default_layout "compact"
+default_layout "compact"
 
 // Choose the mode that zellij uses when starting up.
 // Default: normal
@@ -396,7 +404,7 @@ theme "catppuccin-macchiato"
 // Examples:
 //
 // copy_command "xclip -selection clipboard" // x11
-// copy_command "wl-copy"                    // wayland
+copy_command "wl-copy"                    // wayland
 // copy_command "pbcopy"                     // osx
 
 // Choose the destination for copied text
@@ -411,7 +419,7 @@ theme "catppuccin-macchiato"
 // Enable or disable automatic copy (and clear) of selection when releasing mouse
 // Default: true
 //
-copy_on_select false
+copy_on_select true
 
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
