@@ -9,4 +9,6 @@ shopt -s histappend
 HISTCONTROL=ignoredups:erasedups
 
 # Save history after each command (this might be very disorienting if you're not use to it...)
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+# PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+
