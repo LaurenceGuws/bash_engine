@@ -13,6 +13,7 @@ scripts:
   - src/modules/config/bash_history_settings.sh
   - src/modules/config/py-activate.sh
   - src/modules/config/edit_config.sh
+  - src/modules/apps/ssh/brun.sh
   # - src/modules/apps/docker/browsh_docker.sh
   # - src/modules/apps/docker/dsp.sh
   # - src/modules/apps/docker/docker_tag_search.sh

@@ -3,6 +3,9 @@
 # - Define bash session Aliases in yaml key/value format
 # - These will be loaded into your bash session via ./init/load_aliases.sh
 ###
+
+grabpage: 'wget -p -k -E -H'
+
 bot: "ollama run $ACTIVE_BOT"
 bat: "bat -p"
 cat: "bat -p"
@@ -11,11 +14,17 @@ b: ${BROWSER}
 e: ${EDITOR}
 eg: "neovide"
 r: "source ~/.bashrc"
+ff: "fastfetch"
 
 lsd: "lsd --hyperlink=auto"
 ls: "lsd"
 l: "ls"
 ll: "ls -la"
+
+lgit: lazygit
+ldocker: lazydocker
+ljournal: lazyjournal
+lsql: lazysql
 
 allow: "sudo chmod +x"
 own: "sudo chown"
@@ -30,3 +39,6 @@ vmdis: "sudo systemctl disable libvirtd.service qemu-kvm.service virtlockd.servi
 
 ktheme: "kitty + kitten themes"
 gtheme: "ghostty +list-themes"
+
+voff: "sudo wg-quick down wg1 && sudo resolvconf -u"
+von: "sudo resolvconf -u && sudo wg-quick up wg1"

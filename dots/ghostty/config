@@ -25,7 +25,7 @@ gtk-wide-tabs = true
 gtk-tabs-location = top
 
 keybind = alt+tab=toggle_tab_overview
-keybind = global:super+kp_down=toggle_quick_terminal
+
 
 background-opacity = 1
 background-blur = true

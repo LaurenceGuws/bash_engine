@@ -314,7 +314,7 @@ arch_story() {
         esac
 
         # Log output
-        blog -l "$level" "$message"
+        blog -l "$level" -mask filename "$message"
     done
 }
 

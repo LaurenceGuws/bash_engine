@@ -3,5 +3,6 @@
 # - all these path will be added to your bash session PATH by ./init/load_path.sh
 # - keys in this file does not do anything accept make your life easier.
 ###
-JAVA: "$HOME/.local/bin:$PATH"
-CARGO: "$HOME/.cargo/bin:$PATH"
+JAVA: "$HOME/.local/bin"
+CARGO: "$HOME/.cargo/bin"
+ZIG: "$HOME/.local/share/zigup/0.14.1/files"
