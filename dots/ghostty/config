@@ -15,7 +15,7 @@ font-thicken-strength = 255
 font-size = 17
 
 # theme = MonaLisa
-theme = catppuccin-mocha
+theme = Catppuccin Mocha
 
 window-padding-balance = false
 window-padding-x = 0,0
