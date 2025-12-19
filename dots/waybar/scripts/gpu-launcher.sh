@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-helper="$HOME/.config/waybar/run-in-terminal.sh"
+helper="$HOME/.config/waybar/scripts/run-in-terminal.sh"
 
 if command -v nvtop >/dev/null 2>&1; then
     "$helper" nvtop

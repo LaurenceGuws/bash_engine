@@ -109,11 +109,11 @@
     },
     "custom/cpu": {
         "class": "hardware-module",
-        "exec": "$HOME/.config/waybar/cpu-usage-temp.sh",
+        "exec": "$HOME/.config/waybar/scripts/cpu-usage-temp.sh",
         "return-type": "json",
         "interval": 3,
         "tooltip": true,
-        "on-click": "$HOME/.config/waybar/run-in-terminal.sh btop"
+        "on-click": "$HOME/.config/waybar/scripts/run-in-terminal.sh btop"
     },
     "backlight": {
         // "device": "acpi_video1",
@@ -206,20 +206,20 @@
     },
     "custom/gpu": {
         "class": "hardware-module",
-        "exec": "$HOME/.config/waybar/gpu-usage.sh",
+        "exec": "$HOME/.config/waybar/scripts/gpu-usage.sh",
         "return-type": "json",
         "format": "{}",
         "interval": 5,
         "tooltip": true,
-        "on-click": "$HOME/.config/waybar/gpu-launcher.sh"
+        "on-click": "$HOME/.config/waybar/scripts/gpu-launcher.sh"
     },
     "custom/network": {
-        "exec": "/home/home/.config/waybar/network.sh",
+        "exec": "$HOME/.config/waybar/scripts/network.sh",
         "return-type": "json",
         "format": "{}",
         "interval": 2,
         "tooltip": true,
-        "on-click": "/home/home/.config/waybar/network-menu.sh"
+        "on-click": "$HOME/.config/waybar/scripts/network-menu.sh"
     },
     "custom/notification": {
         "class": "notification-module",
@@ -236,6 +236,6 @@
         "class": "custom-popup",
         "format": "≡",
         "tooltip": "Quick actions",
-        "on-click": "bash -c \"$HOME/.config/waybar/waybar_popup.sh\""
+        "on-click": "bash -c \"$HOME/.config/waybar/scripts/waybar_popup.sh\""
     }
 }

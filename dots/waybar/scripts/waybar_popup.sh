@@ -27,9 +27,9 @@ fi
 
 TERMINAL=${TERMINAL:-kitty}
 BROWSER=${BROWSER:-firefox}
-GPU_LAUNCHER="$HOME/.config/waybar/gpu-launcher.sh"
-NETWORK_MENU="$HOME/.config/waybar/network-menu.sh"
-RUN_IN_TERMINAL="$HOME/.config/waybar/run-in-terminal.sh"
+GPU_LAUNCHER="$HOME/.config/waybar/scripts/gpu-launcher.sh"
+NETWORK_MENU="$HOME/.config/waybar/scripts/network-menu.sh"
+RUN_IN_TERMINAL="$HOME/.config/waybar/scripts/run-in-terminal.sh"
 POPUP_WIDTH=400
 POPUP_HEIGHT=460
 WAYBAR_POSITION=${WAYBAR_POSITION:-bottom}
@@ -241,6 +241,26 @@ run_popup() {
     fi
 }
 
+start_focus_watchdog() {
+    local self_pid="$$"
+    (
+        while sleep 0.2; do
+            local active_json
+            active_json=$(hyprctl activewindow -j 2>/dev/null) || continue
+            local active_class active_title
+            active_class=$(jq -r '.class // empty' <<<"$active_json")
+            active_title=$(jq -r '.title // empty' <<<"$active_json")
+            if [[ "$active_class" != "waybar-popup" || "$active_title" != "Waybar Popup" ]]; then
+                log "focus lost to class=${active_class:-unset} title=${active_title:-unset}, closing popup"
+                kill "$self_pid" 2>/dev/null
+                exit 0
+            fi
+        done
+    ) &
+    WATCHDOG_PID=$!
+    trap '[[ -n "${WATCHDOG_PID:-}" ]] && kill "$WATCHDOG_PID" 2>/dev/null' EXIT
+}
+
 move_popup_to_abs() {
     local abs_x="$1"
     local abs_y="$2"
@@ -327,7 +347,9 @@ if [[ -z "${WAYBAR_POPUP_RUNNING:-}" ]]; then
     else
         log "failed to move popup after launch"
     fi
+    hyprctl dispatch focuswindow "class:waybar-popup" >/dev/null 2>&1 || true
     exit 0
 fi
 
+start_focus_watchdog
 run_popup
