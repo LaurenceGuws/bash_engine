@@ -32,6 +32,7 @@ NETWORK_MENU="$HOME/.config/waybar/network-menu.sh"
 RUN_IN_TERMINAL="$HOME/.config/waybar/run-in-terminal.sh"
 POPUP_WIDTH=400
 POPUP_HEIGHT=460
+WAYBAR_POSITION=${WAYBAR_POSITION:-bottom}
 
 dispatch_helper() {
     log "dispatch helper command: $*"
@@ -56,6 +57,42 @@ launch_network_manager() {
     log "no network manager helpers available"
     return 1
 }
+waybar_geometry_for_monitor() {
+    local monitor_name="$1"
+    if [[ -z "$monitor_name" ]]; then
+        log "waybar_geometry_for_monitor called without monitor name"
+        return 1
+    fi
+
+    local layers_json
+    if ! layers_json=$(hyprctl layers -j 2>/dev/null); then
+        log "hyprctl layers failed while fetching waybar geometry"
+        return 1
+    fi
+
+    local candidates=()
+    while IFS= read -r line; do
+        candidates+=("$line")
+    done < <(printf '%s' "$layers_json" \
+        | jq -r --arg mon "$monitor_name" '
+            .[$mon].levels // empty
+            | to_entries | map(.value) | add // []
+            | map(select(.namespace=="waybar"))
+            | .[]? | "\(.x) \(.y) \(.w) \(.h)"')
+
+    if ((${#candidates[@]} == 0)); then
+        log "no waybar layer candidates found for monitor=${monitor_name}"
+        return 1
+    fi
+
+    log "waybar layer candidates for ${monitor_name}: ${candidates[*]}"
+
+    local best="${candidates[0]}"
+    local bar_x bar_y bar_w bar_h
+    read -r bar_x bar_y bar_w bar_h <<<"$best"
+    log "waybar_geometry result monitor=${monitor_name} coords=${bar_x},${bar_y} size=${bar_w}x${bar_h}"
+    printf '%s %s %s %s' "$bar_x" "$bar_y" "$bar_w" "$bar_h"
+}
 SCRIPT_PATH="${BASH_SOURCE[0]}"
 if command -v realpath >/dev/null 2>&1; then
     SCRIPT_PATH="$(realpath "$SCRIPT_PATH")"
@@ -69,16 +106,18 @@ popup_position() {
     log "monitors json length=$(printf '%s' "$monitors_json" | wc -c)"
     if [[ -z "$monitors_json" ]]; then
         log "hyprctl monitors returned empty response, using fallback coords"
-        printf '10 760'
+        printf '10 760 0 0'
         return 0
     fi
 
     local monitor
     monitor=$(jq -r 'map(select(.focused == true))[0] // .[0]' <<<"$monitors_json")
-    log "selected monitor name=$(jq -r '.name' <<<"$monitor") pos=$(jq -r '.x' <<<"$monitor"),$(jq -r '.y' <<<"$monitor") size=$(jq -r '.width' <<<"$monitor")x$(jq -r '.height' <<<"$monitor")"
+    local monitor_name
+    monitor_name=$(jq -r '.name' <<<"$monitor")
+    log "selected monitor name=$monitor_name pos=$(jq -r '.x' <<<"$monitor"),$(jq -r '.y' <<<"$monitor") size=$(jq -r '.width' <<<"$monitor")x$(jq -r '.height' <<<"$monitor")"
     if [[ -z "$monitor" || "$monitor" == "null" ]]; then
         log "no focused monitor found in monitor list, using fallback coords"
-        printf '10 760'
+        printf '10 760 0 0'
         return 0
     fi
 
@@ -87,31 +126,60 @@ popup_position() {
     mon_y=$(jq -r '.y' <<<"$monitor")
     mon_w=$(jq -r '.width' <<<"$monitor")
     mon_h=$(jq -r '.height' <<<"$monitor")
-    reserved_bottom=$(jq -r '.reserved[3]' <<<"$monitor")
-    reserved_bottom=${reserved_bottom:-0}
+    reserved_bottom=$(jq -r '.reserved[2] // 0' <<<"$monitor")
 
-    if [[ -z "$mon_x" || -z "$mon_y" || -z "$mon_w" || -z "$mon_h" || -z "$reserved_bottom" ]]; then
+    if [[ -z "$mon_x" || -z "$mon_y" || -z "$mon_w" || -z "$mon_h" ]]; then
         printf '10 760'
         return 0
     fi
 
     local margin=12
-    local target_x=$((mon_x + mon_w - POPUP_WIDTH - margin))
-    local target_y=$((mon_y + mon_h - reserved_bottom - POPUP_HEIGHT - margin))
+    local target_x target_y
+    local placement_source="monitor-edge"
+    local max_x=$((mon_x + mon_w - POPUP_WIDTH - margin))
+    local max_y=$((mon_y + mon_h - POPUP_HEIGHT - margin))
+    local waybar_coords
+    if waybar_coords=$(waybar_geometry_for_monitor "$monitor_name"); then
+        read -r bar_x bar_y bar_w bar_h <<<"$waybar_coords"
+        log "waybar geometry monitor=${monitor_name} coords=${bar_x},${bar_y} size=${bar_w}x${bar_h}"
+        case "$WAYBAR_POSITION" in
+            top)
+                target_y=$((bar_y + bar_h + margin))
+                target_x=$((bar_x + bar_w - POPUP_WIDTH - margin))
+                ;;
+            left)
+                target_x=$((bar_x + bar_w + margin))
+                target_y=$((bar_y + margin))
+                ;;
+            right)
+                target_x=$((bar_x - POPUP_WIDTH - margin))
+                target_y=$((bar_y + margin))
+                ;;
+            bottom|*)
+                target_y=$((bar_y - POPUP_HEIGHT - margin))
+                target_x=$((bar_x + bar_w - POPUP_WIDTH - margin))
+                ;;
+        esac
+        placement_source="waybar"
+    else
+        target_x=$((mon_x + mon_w - POPUP_WIDTH - margin))
+        target_y=$((mon_y + mon_h - reserved_bottom - POPUP_HEIGHT - margin))
+    fi
 
-    if ((target_x < mon_x + margin)); then
-        target_x=$((mon_x + margin))
-        log "popup X clamped to margin"
-    fi
-    if ((target_y < mon_y + margin)); then
-        target_y=$((mon_y + margin))
-        log "popup Y clamped to margin"
-    fi
+    ((target_x > max_x)) && target_x=$max_x
+    ((target_x < mon_x + margin)) && target_x=$((mon_x + margin))
+    ((target_y > max_y)) && target_y=$max_y
+    ((target_y < mon_y + margin)) && target_y=$((mon_y + margin))
 
     local rel_x=$((target_x - mon_x))
     local rel_y=$((target_y - mon_y))
     local pct_x=$((rel_x * 100 / mon_w))
     local pct_y=$((rel_y * 100 / mon_h))
+
+    local offset_right=$((mon_x + mon_w - target_x - POPUP_WIDTH))
+    local offset_bottom=$((mon_y + mon_h - reserved_bottom - target_y - POPUP_HEIGHT))
+    log "monitor summary: name=$(jq -r '.name' <<<"$monitor") geom=${mon_x},${mon_y}+${mon_w}x${mon_h} reserved_bottom=${reserved_bottom}"
+    log "target offsets: right=${offset_right} bottom=${offset_bottom} margin=${margin} source=${placement_source}"
 
     log "computed popup coords: abs=${target_x},${target_y} pct=${pct_x}%,${pct_y}%"
     printf '%s %s %s %s' "$target_x" "$target_y" "$pct_x" "$pct_y"
