@@ -27,6 +27,43 @@ fi
 
 TERMINAL=${TERMINAL:-kitty}
 BROWSER=${BROWSER:-firefox}
+GPU_LAUNCHER="$HOME/.config/waybar/gpu-launcher.sh"
+NETWORK_MENU="$HOME/.config/waybar/network-menu.sh"
+RUN_IN_TERMINAL="$HOME/.config/waybar/run-in-terminal.sh"
+
+dispatch_helper() {
+    local helper="$*"
+    log "dispatch helper command: $helper"
+    local escaped
+    escaped=$(printf '%q' "$helper")
+    if hyprctl dispatch exec "bash -lc $escaped" >/dev/null 2>&1; then
+        log "hyprctl dispatch exec succeeded for helper"
+    else
+        log "hyprctl dispatch exec failed for helper"
+    fi
+}
+
+launch_network_manager() {
+    log "starting network manager helper"
+    if command -v nm-connection-editor >/dev/null 2>&1; then
+        dispatch_helper nm-connection-editor
+        return 0
+    fi
+    if command -v nmcli >/dev/null 2>&1; then
+        dispatch_helper "$RUN_IN_TERMINAL nmcli"
+        return 0
+    fi
+    if command -v nmtui >/dev/null 2>&1; then
+        dispatch_helper "$RUN_IN_TERMINAL nmtui"
+        return 0
+    fi
+    if [[ -x "$NETWORK_MENU" ]]; then
+        dispatch_helper "$NETWORK_MENU"
+        return 0
+    fi
+    log "no network manager helpers available"
+    return 1
+}
 SCRIPT_PATH="${BASH_SOURCE[0]}"
 if command -v realpath >/dev/null 2>&1; then
     SCRIPT_PATH="$(realpath "$SCRIPT_PATH")"
@@ -91,10 +128,12 @@ popup_position() {
 run_popup() {
     log "showing popup options"
     local options=(
-        "Open web browser"
-        "Open terminal"
-        "Show system info"
         "Restart Waybar"
+        "Volume control"
+        "GPU monitor"
+        "System monitor (btop)"
+        "Network manager"
+        "Power menu"
     )
     local selected
     selected=$(printf '%s\n' "${options[@]}" \
@@ -102,27 +141,36 @@ run_popup() {
 
     if [[ -n "$selected" ]]; then
         log "selected option: $selected"
-        if command -v notify-send >/dev/null 2>&1; then
-            notify-send "Waybar popup" "Selected: $selected"
-        else
-            printf 'Waybar popup selected: %s\n' "$selected" >&2
-        fi
         case "$selected" in
             "Restart Waybar")
                 log "reloading Waybar"
                 waybar --reload &
                 ;;
-            "Open terminal")
-                log "launching terminal via hyprctl dispatch exec"
-                hyprctl dispatch exec kitty &
+            "Volume control")
+                log "launching volume control"
+                if command -v pavucontrol >/dev/null 2>&1; then
+                    dispatch_helper pavucontrol
+                elif command -v pamixer >/dev/null 2>&1; then
+                    dispatch_helper "pamixer -d 5"
+                else
+                    log "volume control tools missing"
+                fi
                 ;;
-            "Open web browser")
-                log "launching browser via hyprctl dispatch exec"
-                hyprctl dispatch exec "$BROWSER" &
+            "GPU monitor")
+                log "launching GPU monitor"
+                dispatch_helper "$GPU_LAUNCHER"
                 ;;
-            "Show system info")
-                log "showing system info via hyprctl dispatch exec"
-                hyprctl dispatch exec "$TERMINAL" -e neofetch &
+            "System monitor (btop)")
+                log "launching btop via run-in-terminal"
+                dispatch_helper "$RUN_IN_TERMINAL btop"
+                ;;
+            "Network manager")
+                log "launching network manager"
+                launch_network_manager
+                ;;
+            "Power menu")
+                log "launching power menu"
+                dispatch_helper wlogout
                 ;;
         esac
     fi
@@ -162,10 +210,45 @@ move_popup_to_abs() {
     return 1
 }
 
+find_existing_popup_address() {
+    local clients_json
+    clients_json=$(hyprctl clients -j 2>/dev/null) || {
+        log "hyprctl clients failed while checking for existing popup"
+        return 1
+    }
+    local addresses
+    mapfile -t addresses < <(printf '%s' "$clients_json" \
+        | jq -r '.[] | select(.class=="waybar-popup" and .title=="Waybar Popup") | .address')
+    if ((${#addresses[@]})); then
+        log "found waybar-popup addresses=${addresses[*]}"
+        printf '%s' "${addresses[0]}"
+        return 0
+    fi
+    log "no waybar-popup clients found"
+    return 1
+}
+
+close_existing_popup() {
+    local address
+    if address=$(find_existing_popup_address); then
+        log "closing existing waybar-popup at address=${address}"
+        if ! hyprctl dispatch closewindow address:"$address" >/dev/null 2>&1; then
+            log "closewindow dispatcher failed for address=${address}, forcing killwindow"
+            hyprctl dispatch killwindow address:"$address" >/dev/null 2>&1
+        fi
+        return 0
+    fi
+    local popup_pattern="kitty --class waybar-popup --title 'Waybar Popup'"
+    if pgrep -f "$popup_pattern" >/dev/null; then
+        log "pgrep found waybar-popup kitty instance, killing it"
+        pkill -f "$popup_pattern"
+        return 0
+    fi
+    return 1
+}
+
 if [[ -z "${WAYBAR_POPUP_RUNNING:-}" ]]; then
-    if pgrep -f "kitty --class waybar-popup --title 'Waybar Popup'" >/dev/null; then
-        log "existing waybar-popup detected, killing before reopening"
-        pkill -f "kitty --class waybar-popup --title 'Waybar Popup'"
+    if close_existing_popup; then
         exit 0
     fi
     read -r abs_x abs_y pct_x pct_y <<< "$(popup_position)"
@@ -173,7 +256,7 @@ if [[ -z "${WAYBAR_POPUP_RUNNING:-}" ]]; then
     dispatch_cmd="[float; size 420 260]"
     log "hyprctl dispatch: ${dispatch_cmd}"
     log "launching popup via hyprctl exec"
-    hyprctl dispatch exec "$dispatch_cmd kitty --detach --class waybar-popup --title 'Waybar Popup' bash -lc 'WAYBAR_POPUP_RUNNING=1 \"$SCRIPT_PATH\"'"
+    hyprctl dispatch exec "$dispatch_cmd kitty -o confirm_os_window_close=0 --detach --class waybar-popup --title 'Waybar Popup' bash -lc 'WAYBAR_POPUP_RUNNING=1 \"$SCRIPT_PATH\"'"
     if move_popup_to_abs "$abs_x" "$abs_y"; then
         log "popup manually moved to abs=${abs_x},${abs_y}"
     else
