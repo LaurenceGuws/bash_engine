@@ -30,6 +30,8 @@ BROWSER=${BROWSER:-firefox}
 GPU_LAUNCHER="$HOME/.config/waybar/gpu-launcher.sh"
 NETWORK_MENU="$HOME/.config/waybar/network-menu.sh"
 RUN_IN_TERMINAL="$HOME/.config/waybar/run-in-terminal.sh"
+POPUP_WIDTH=400
+POPUP_HEIGHT=460
 
 dispatch_helper() {
     local helper="$*"
@@ -104,8 +106,8 @@ popup_position() {
     fi
 
     local margin=12
-    local target_x=$((mon_x + mon_w - 420 - margin))
-    local target_y=$((mon_y + mon_h - reserved_bottom - 260 - margin))
+    local target_x=$((mon_x + mon_w - POPUP_WIDTH - margin))
+    local target_y=$((mon_y + mon_h - reserved_bottom - POPUP_HEIGHT - margin))
 
     if ((target_x < mon_x + margin)); then
         target_x=$((mon_x + margin))
@@ -253,7 +255,7 @@ if [[ -z "${WAYBAR_POPUP_RUNNING:-}" ]]; then
     fi
     read -r abs_x abs_y pct_x pct_y <<< "$(popup_position)"
     log "popup position -> abs=${abs_x},${abs_y} pct=${pct_x}%,${pct_y}%"
-    dispatch_cmd="[float; size 420 260]"
+    dispatch_cmd="[float; size ${POPUP_WIDTH} ${POPUP_HEIGHT}]"
     log "hyprctl dispatch: ${dispatch_cmd}"
     log "launching popup via hyprctl exec"
     hyprctl dispatch exec "$dispatch_cmd kitty -o confirm_os_window_close=0 --detach --class waybar-popup --title 'Waybar Popup' bash -lc 'WAYBAR_POPUP_RUNNING=1 \"$SCRIPT_PATH\"'"

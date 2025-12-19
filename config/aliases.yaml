@@ -11,7 +11,7 @@ bat: "bat -p"
 cat: "bat -p"
 # fzf: "fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 b: ${BROWSER}
-e: nvim
+e: nvim --listen /tmp/nvimsocket
 eg: "neovide"
 r: "source ~/.bashrc"
 ff: "fastfetch"
