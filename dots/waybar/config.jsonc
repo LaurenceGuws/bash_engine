@@ -1,47 +1,47 @@
 // -*- mode: jsonc -*-
 {
-    // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "layer": "top", // Waybar at top layer
+    "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 40, // Waybar height (matched to minimum required by modules)
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     "css": "./style.css",
+    "exclusive": true,
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
         "hyprland/window",
         "mpd"
-
-
     ],
     "modules-center": [
-        "tray",
-        // "keyboard-state",
-        "pulseaudio",
-        "power-profiles-daemon",
-        "custom/notification",
-        "custom/power"
+        "custom/network",
+        "custom/cpu",
+        "custom/gpu"
     ],
     "modules-right": [
-        "custom/network",
-        "cpu",
-        "temperature",
-        "memory",
-        "custom/gpu",
+        "tray",
+        // "keyboard-state",
+        "custom/notification",
+        "pulseaudio",
+        "power-profiles-daemon",
+        "custom/power",
         "clock"
-
     ],
     // Modules configuration
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
         "warp-on-scroll": false,
-        "format": "{name}: {icon}",
+        "format": "{name}:{icon}",
+        "swap-icon-label": false,
         "format-icons": {
             "urgent": "",
             "active": "󰍹",
             "default": "󰶐"
-        }
+        },
+        "on-click": "bash -c 'wofi --show drun'"
+    },
+    "hyprland/window": {
     },
     "keyboard-state": {
         "numlock": true,
@@ -63,16 +63,16 @@
         "tooltip-format": "{app}: {title}"
     },
     "mpd": {
-        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
-        "format-disconnected": "Disconnected ",
-        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+        "format": "{stateIcon}{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}%",
+        "format-disconnected": "Disconnected",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped",
         "unknown-tag": "N/A",
         "interval": 5,
         "consume-icons": {
             "on": ""
         },
         "random-icons": {
-            "off": "<span color=\"#f53c3c\"></span> ",
+            "off": "<span color=\"#f53c3c\"></span>",
             "on": ""
         },
         "repeat-icons": {
@@ -98,44 +98,39 @@
     "tray": {
         // "icon-size": 21,
         "spacing": 10,
-        "ignore-warning": true
+        "ignore-warning": true,
+        "swap-icon-label": false
     },
     "clock": {
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
-    "cpu": {
-        "format": "{usage}% ",
-        "tooltip": false
-    },
-    "memory": {
-        "format": "{}% "
-    },
-    "temperature": {
-        // "thermal-zone": 2,
-        "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C {icon}",
-        "format": "{temperatureC}°C {icon}",
-        "format-icons": ["", "", ""]
+    "custom/cpu": {
+        "class": "hardware-module",
+        "exec": "$HOME/.config/waybar/cpu-usage-temp.sh",
+        "return-type": "json",
+        "interval": 3,
+        "tooltip": true,
+        "on-click": "$HOME/.config/waybar/run-in-terminal.sh btop"
     },
     "backlight": {
         // "device": "acpi_video1",
-        "format": "{percent}% {icon}",
+        "format": "{percent}%{icon}",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
     "battery": {
+        "class": "hardware-module",
         "states": {
             // "good": 95,
             "warning": 30,
             "critical": 15
         },
-        "format": "{capacity}% {icon}",
-        "format-full": "{capacity}% {icon}",
-        "format-charging": "{capacity}% ",
-        "format-plugged": "{capacity}% ",
-        "format-alt": "{time} {icon}",
+        "format": "{capacity}%{icon}",
+        "format-full": "{capacity}%{icon}",
+        "format-charging": "{capacity}%",
+        "format-plugged": "{capacity}%",
+        "format-alt": "{time}{icon}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]
@@ -156,29 +151,30 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "format-wifi": "{essid}({signalStrength}%)",
+        "format-ethernet": "{ipaddr}/{cidr}",
+        "tooltip-format": "{ifname} via {gwaddr}",
+        "format-linked": "{ifname}(No IP)",
+        "format-disconnected": "Disconnected⚠",
+        "format-alt": "{ifname}:{ipaddr}/{cidr}"
     },
     "pulseaudio": {
+        "class": "volume-module",
         // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon} {format_source}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
         "format-muted": " {format_source}",
         "format-source": "{volume}% ",
-        "format-source-muted": " ",
+        "format-source-muted": "",
         "format-icons": {
-            "headphone": " ",
-            "hands-free": " ",
-            "headset": " ",
-            "phone": " ",
-            "portable": " ",
-            "car": " ",
-            "default": ["", "", " "]
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
     },
@@ -208,20 +204,35 @@
         }
     },
     "custom/gpu": {
+        "class": "hardware-module",
         "exec": "$HOME/.config/waybar/gpu-usage.sh",
         "return-type": "json",
         "format": "{}",
         "interval": 5,
-        "tooltip": true
+        "tooltip": true,
+        "on-click": "$HOME/.config/waybar/gpu-launcher.sh"
     },
     "custom/network": {
-        "exec": "~/.config/waybar/network.sh",
+        "exec": "/home/home/.config/waybar/network.sh",
         "return-type": "json",
         "format": "{}",
         "interval": 2,
-        "tooltip": false
+        "tooltip": true,
+        "on-click": "/home/home/.config/waybar/network-menu.sh"
     },
     "custom/notification": {
+        "class": "notification-module",
+        "tooltip": true,
+        "format": "{} 󰂚",
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+    "custom/notification": {
+        "class": "notification-module",
         "tooltip": true,
         "format": "{} 󰂚",
         "return-type": "json",

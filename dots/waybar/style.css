@@ -2,53 +2,59 @@
 @import url("./themes/mocha.css");
 
 * {
-  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-family: "Inter", "Cantarell", "Noto Sans", "DejaVu Sans", sans-serif;
   font-size: 14px;
 }
 
 window#waybar {
-  background-color: transparent;
+  background-color: rgba(15, 17, 26, 0.85);
   color: #cdd6f4;
   transition-property: background-color;
   transition-duration: 0.5s;
 }
 
 window#waybar.hidden {
-  opacity: 0.2;
+  opacity: 1;
 }
 
 .modules-left,
 .modules-center,
 .modules-right {
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
-  border: 1px solid rgba(164, 158, 238, 0.5);
-  margin-top: 5px;
-  margin-right: 5px;
-  margin-left: 5px;
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+  margin: 0;
   /* padding: 2.5px; */
 }
 
 #workspaces button {
-  padding: 0px 8px;
-  margin: 2px 2px;
+  padding: 0px 6px;
+  margin: 0px 2px;
   color: #cdd6f4;
   background-color: transparent;
-  border-radius: 10px;
-  border: 1px solid transparent;
+  border-radius: 0;
+  border: 0;
   transition: all 0.3s ease;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
-  border: 1px solid rgba(164, 158, 238, 0.6);
-  background-color: rgba(30, 30, 30, 0.2);
+  box-shadow: none;
+  border-bottom: 3px solid rgba(164, 158, 238, 0.65);
+  background-color: rgba(30, 30, 30, 0.25);
 }
 
 #workspaces button.active {
-  background-color: rgba(30, 30, 30, 0.4);
-  border: 1px solid rgba(2, 119, 130, 0.6); /* Bright peach/orange border for active workspace */
+  background-color: rgba(164, 158, 238, 0.28);
   box-shadow: none;
+  border: 0;
+  outline: none;
+}
+
+#workspaces button:focus-visible {
+  box-shadow: none;
+  border-bottom: 3px solid rgba(164, 158, 238, 0.75);
+  background-color: rgba(30, 30, 30, 0.3);
 }
 
 #workspaces button.urgent {
@@ -64,6 +70,7 @@ window#waybar.hidden {
 #clock,
 #battery,
 #cpu,
+#custom-cpu,
 #memory,
 #disk,
 #temperature,
@@ -83,18 +90,26 @@ window#waybar.hidden {
 #custom-notification,
 #power-profiles-daemon,
 #keyboard-state {
-  padding: 0px 8px;  /* Consistent padding for all modules */
-  margin: 2px 2px;
+  padding: 0px 6px;  /* Slight side breathing room */
+  margin: 0;
   color: #cdd6f4;
   background-color: transparent;
-  border-radius: 10px;
-  border: 1px solid transparent;
+  border-radius: 0;
+  border: 0;
   transition: all 0.3s ease;
 }
 
+/* Subtle separators between modules */
+.modules-left > widget:not(:last-child) > *,
+.modules-center > widget:not(:last-child) > *,
+.modules-right > widget:not(:last-child) > * {
+  padding-right: 0;
+  margin-right: 0;
+}
+
 #clock:hover,
-#battery:hover,
 #cpu:hover,
+#custom-cpu:hover,
 #memory:hover,
 #disk:hover,
 #temperature:hover,
@@ -114,8 +129,9 @@ window#waybar.hidden {
 #custom-notification:hover,
 #power-profiles-daemon:hover,
 #keyboard-state:hover {
-  border: 1px solid rgba(164, 158, 238, 0.6);
-  background-color: rgba(30, 30, 30, 0.2);
+  box-shadow: none;
+  border-bottom: 3px solid rgba(164, 158, 238, 0.65);
+  background-color: rgba(30, 30, 30, 0.25);
 }
 
 #custom-network {
@@ -132,10 +148,6 @@ window#waybar.hidden {
 
 #custom-network.disconnected {
   color: #f38ba8;
-}
-
-#custom-network:hover {
-  box-shadow: none;
 }
 
 #window,
@@ -187,8 +199,17 @@ label:focus {
   background-color: #1e1e2e;
 }
 
-#cpu {
+#cpu,
+#custom-cpu {
   color: #cba6f7;
+}
+
+#custom-cpu {
+  font-family: "JetBrainsMono Nerd Font", "Iosevka Nerd Font", "FiraCode Nerd Font", "Noto Sans Symbols 2", "monospace";
+}
+
+#custom-gpu {
+  font-family: "JetBrainsMono Nerd Font", "Iosevka Nerd Font", "FiraCode Nerd Font", "Noto Sans Symbols 2", "monospace";
 }
 
 #memory {
@@ -208,12 +229,35 @@ label:focus {
   color: #11111b;
 }
 
+.hardware-module {
+  margin: 0 5px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background-color: rgba(94, 108, 132, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s ease;
+}
+
+#custom-gpu.hardware-module {
+  background-color: rgba(245, 194, 231, 0.15);
+  border-color: rgba(245, 194, 231, 0.3);
+}
+
 #pulseaudio {
   color: #74c7ec;
 }
 
 #pulseaudio.muted {
   color: #6c7086;
+}
+
+#pulseaudio.volume-module {
+  margin: 0 12px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background-color: rgba(56, 107, 139, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
 }
 
 #wireplumber {
@@ -387,4 +431,12 @@ label:focus {
 
 #custom-notification.dnd {
   color: #fab387;
+}
+
+#custom-notification.notification-module {
+  margin: 0 12px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background-color: rgba(162, 201, 255, 0.12);
+  border: 1px solid rgba(162, 201, 255, 0.25);
 }

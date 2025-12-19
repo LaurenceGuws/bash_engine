@@ -1,80 +1,113 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Check if nvidia-smi is available
-if command -v nvidia-smi &> /dev/null; then
-    # Get GPU usage and memory info
-    GPU_USAGE=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)
-    GPU_MEMORY=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits)
-    GPU_TOTAL_MEMORY=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits)
-    GPU_TEMP=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)
-    
-    # Round to the nearest 10 for CSS class
-    CSS_CLASS=$(( ($GPU_USAGE / 10) * 10 ))
-    
-    # Format the output with different icons - match waybar style
-    echo "{\"text\": \"${GPU_USAGE}% 󰾲  | ${GPU_MEMORY}MB 󰍛  | ${GPU_TEMP}°C 󰔏\", \"tooltip\": \"GPU Usage: ${GPU_USAGE}%\\nMemory: ${GPU_MEMORY}/${GPU_TOTAL_MEMORY} MB\\nTemperature: ${GPU_TEMP}°C\", \"class\": \"gpu-${CSS_CLASS}\"}"
-else
-    # Try to get AMD GPU info via amdgpu_top (preferred)
-    if command -v amdgpu_top &> /dev/null; then
-        # Get JSON data from amdgpu_top
-        JSON_DATA=$(amdgpu_top -J -s 1000 -n 1 2>/dev/null)
-        
-        if [ $? -eq 0 ] && [ -n "$JSON_DATA" ]; then
-            # Parse GPU usage from GRBM Graphics Pipe or total GFX activity
-            GPU_USAGE=$(echo "$JSON_DATA" | jq -r '.devices[0].gpu_activity.GFX.value // .devices[0].GRBM."Graphics Pipe".value // 0')
-            
-            # Parse memory usage (VRAM used and total)
-            VRAM_USED=$(echo "$JSON_DATA" | jq -r '.devices[0].VRAM."Total VRAM Usage".value // 0')
-            VRAM_TOTAL=$(echo "$JSON_DATA" | jq -r '.devices[0].VRAM."Total VRAM".value // 0')
-            
-            # Parse temperature (Edge temperature from sensors)
-            GPU_TEMP=$(echo "$JSON_DATA" | jq -r '.devices[0].Sensors."Edge Temperature".value // .devices[0].gpu_metrics.temperature_gfx // null')
-            
-            # Convert temperature from millicelsius to celsius if needed
-            if [ "$GPU_TEMP" != "null" ] && [ "$GPU_TEMP" -gt 1000 ]; then
-                GPU_TEMP=$((GPU_TEMP / 100))
-            fi
-            
-            # Round usage to the nearest 10 for CSS class
-            CSS_CLASS=$(( (${GPU_USAGE:-0} / 10) * 10 ))
-            
-            # Format the output
-            if [ "$GPU_TEMP" != "null" ] && [ -n "$GPU_TEMP" ]; then
-                echo "{\"text\": \"${GPU_USAGE}% 󰾲  | ${VRAM_USED}MB 󰍛  | ${GPU_TEMP}°C 󰔏\", \"tooltip\": \"GPU Usage: ${GPU_USAGE}%\\nVRAM: ${VRAM_USED}/${VRAM_TOTAL} MB\\nTemperature: ${GPU_TEMP}°C\\nDriver: AMDGPU\", \"class\": \"gpu-${CSS_CLASS}\"}"
-            else
-                echo "{\"text\": \"${GPU_USAGE}% 󰾲  | ${VRAM_USED}MB 󰍛\", \"tooltip\": \"GPU Usage: ${GPU_USAGE}%\\nVRAM: ${VRAM_USED}/${VRAM_TOTAL} MB\\nDriver: AMDGPU\", \"class\": \"gpu-${CSS_CLASS}\"}"
-            fi
-        else
-            # Fallback to radeontop if amdgpu_top fails
-            if command -v radeontop &> /dev/null; then
-                # Use radeontop with better parsing
-                GPU_DATA=$(timeout 3s radeontop -d - -l 1 2>/dev/null | tail -n 1)
-                if [ -n "$GPU_DATA" ]; then
-                    # Extract GPU usage percentage (first number followed by %)
-                    GPU_USAGE=$(echo "$GPU_DATA" | grep -oE '[0-9]+%' | head -n 1 | sed 's/%//')
-                    CSS_CLASS=$(( (${GPU_USAGE:-0} / 10) * 10 ))
-                    echo "{\"text\": \"${GPU_USAGE}% 󰾲\", \"tooltip\": \"GPU Usage: ${GPU_USAGE}%\\nDriver: Radeon\", \"class\": \"gpu-${CSS_CLASS}\"}"
-                else
-                    echo "{\"text\": \"N/A 󰾲\", \"tooltip\": \"GPU info unavailable\", \"class\": \"gpu-na\"}"
-                fi
-            else
-                # No AMD GPU monitoring tools available
-                echo "{\"text\": \"N/A 󰾲\", \"tooltip\": \"No AMD GPU monitoring tools available\\nInstall amdgpu_top or radeontop\", \"class\": \"gpu-na\"}"
-            fi
-        fi
-    elif command -v radeontop &> /dev/null; then
-        # Use radeontop as fallback
-        GPU_DATA=$(timeout 3s radeontop -d - -l 1 2>/dev/null | tail -n 1)
-        if [ -n "$GPU_DATA" ]; then
-            # Extract GPU usage percentage (first number followed by %)
-            GPU_USAGE=$(echo "$GPU_DATA" | grep -oE '[0-9]+%' | head -n 1 | sed 's/%//')
-            CSS_CLASS=$(( (${GPU_USAGE:-0} / 10) * 10 ))
-            echo "{\"text\": \"${GPU_USAGE}% 󰾲\", \"tooltip\": \"GPU Usage: ${GPU_USAGE}%\\nDriver: Radeon\", \"class\": \"gpu-${CSS_CLASS}\"}"
-        else
-            echo "{\"text\": \"N/A 󰾲\", \"tooltip\": \"GPU info unavailable\", \"class\": \"gpu-na\"}"
-        fi
+LAST_ERROR=""
+
+output() {
+    local usage=$1
+    local temp=$2
+    local mem_percent=$3
+    local tooltip=$4
+    local css_class=$5
+    local icon="󰾲"
+    printf '{"text": "%s %s%%/%s°C/ %s%%", "tooltip": "%s", "class": "gpu-%s"}\n' \
+        "$icon" "$usage" "$temp" "$mem_percent" "$tooltip" "$css_class"
+}
+
+percent() {
+    local num=$1
+    local den=$2
+    if [[ -n "$den" ]] && (( den > 0 )); then
+        printf '%d' $(( num * 100 / den ))
     else
-        # No GPU info available
-        echo "{\"text\": \"N/A 󰾲\", \"tooltip\": \"No GPU monitoring tools available\\nInstall nvidia-smi, amdgpu_top, or radeontop\", \"class\": \"gpu-na\"}"
+        printf '0'
     fi
-fi 
+}
+
+handle_nvidia() {
+    local data
+    if ! data=$(nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.total,temperature.gpu --format=csv,noheader,nounits 2>&1); then
+        LAST_ERROR="nvidia-smi: $(head -n1 <<< "$data")"
+        return 1
+    fi
+    IFS=',' read -r usage mem_used mem_total temp <<< "$data"
+    usage=${usage//[[:space:]]/}
+    mem_used=${mem_used//[[:space:]]/}
+    mem_total=${mem_total//[[:space:]]/}
+    temp=${temp//[[:space:]]/}
+
+    if [[ ! "$usage" =~ ^[0-9]+$ ]]; then
+        return 1
+    fi
+    [[ "$mem_used" =~ ^[0-9]+$ ]] || mem_used=0
+    [[ "$mem_total" =~ ^[0-9]+$ ]] || mem_total=0
+    if [[ ! "$temp" =~ ^[0-9]+$ ]]; then
+        temp="--"
+    fi
+
+    local css_class=$(( (usage / 10) * 10 ))
+    local mem_percent
+    mem_percent=$(percent "$mem_used" "$mem_total")
+    local tooltip="GPU Usage: ${usage}%\nVRAM: ${mem_used}/${mem_total} MB\nTemperature: ${temp}°C"
+    output "$usage" "$temp" "$mem_percent" "$tooltip" "$css_class"
+}
+
+handle_amdgpu() {
+    local json
+    json=$(amdgpu_top -J -s 1000 -n 1 2>/dev/null) || return 1
+    local usage
+    usage=$(echo "$json" | jq -r '.devices[0].gpu_activity.GFX.value // .devices[0].GRBM."Graphics Pipe".value // 0')
+    local vram_used
+    vram_used=$(echo "$json" | jq -r '.devices[0].VRAM."Total VRAM Usage".value // 0')
+    local vram_total
+    vram_total=$(echo "$json" | jq -r '.devices[0].VRAM."Total VRAM".value // 0')
+    local temp
+    temp=$(echo "$json" | jq -r '.devices[0].Sensors."Edge Temperature".value // .devices[0].gpu_metrics.temperature_gfx // 0')
+    if [[ "$temp" -gt 1000 ]]; then
+        temp=$(( temp / 100 ))
+    fi
+
+    local css_class=$(( (usage / 10) * 10 ))
+    local mem_percent
+    mem_percent=$(percent "$vram_used" "$vram_total")
+    local tooltip="GPU Usage: ${usage}%\nVRAM: ${vram_used}/${vram_total} MB\nTemperature: ${temp}°C\nDriver: AMDGPU"
+    output "$usage" "$temp" "$mem_percent" "$tooltip" "$css_class"
+}
+
+handle_radeon() {
+    local data
+    data=$(timeout 3s radeontop -d - -l 1 2>/dev/null | tail -n 1)
+    if [[ -n "$data" ]]; then
+        local usage
+        usage=$(echo "$data" | grep -oE '[0-9]+%' | head -n1 | tr -d '%')
+        local css_class=$(( (usage / 10) * 10 ))
+        local tooltip="GPU Usage: ${usage}%\nDriver: Radeon"
+        output "$usage" "--" "0" "$tooltip" "$css_class"
+    else
+        printf '{"text": "N/A 󰾲", "tooltip": "GPU info unavailable", "class": "gpu-na"}\n'
+    fi
+}
+
+if command -v nvidia-smi >/dev/null 2>&1 && handle_nvidia; then
+    exit 0
+fi
+
+if command -v amdgpu_top >/dev/null 2>&1 && handle_amdgpu; then
+    exit 0
+fi
+
+if command -v amdgpu_top >/dev/null 2>&1; then
+    handle_radeon
+    exit 0
+fi
+
+if command -v radeontop >/dev/null 2>&1; then
+    handle_radeon
+    exit 0
+fi
+
+if [[ -n "$LAST_ERROR" ]]; then
+    printf '{"text": "N/A 󰾲", "tooltip": "%s", "class": "gpu-na"}\n' "$LAST_ERROR"
+else
+    printf '{"text": "N/A 󰾲", "tooltip": "No GPU monitoring tools available\nInstall nvidia-smi, amdgpu_top, or radeontop", "class": "gpu-na"}\n'
+fi

@@ -30,15 +30,18 @@ allow: "sudo chmod +x"
 own: "sudo chown"
 
 yt: "invidious_instance='https://vid.puffyan.us' ytfzf -t"
-tree: "tree -CAS --hyperlink"
+vmon: 'sudo systemctl start virtqemud.socket virtstoraged.socket virtnetworkd.socket virtlogd.socket virtlockd.socket'
+vmoff: 'sudo systemctl stop virtqemud.socket virtstoraged.socket virtnetworkd.socket virtlogd.socket virtlockd.socket'
 
-vmon: "sudo systemctl start libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
-vmoff: "sudo systemctl stop libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
-vmen: "sudo systemctl enable libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
-vmdis: "sudo systemctl disable libvirtd.service qemu-kvm.service virtlockd.service virtlogd.service"
-
+# vmon:  "sudo systemctl start libvirtd.socket virtqemud.socket virtlogd.socket virtlockd.socket"
+# vmoff: "sudo systemctl stop  libvirtd.socket virtqemud.socket virtlogd.socket virtlockd.socket"
+vmen:  "sudo systemctl enable libvirtd.socket virtqemud.socket virtlogd.socket virtlockd.socket"
+vmdis: "sudo systemctl disable libvirtd.socket virtqemud.socket virtlogd.socket virtlockd.socket"
+vmstat: "systemctl status libvirtd.socket virtqemud.socket virtlogd.socket virtlockd.socket --no-pager"
 ktheme: "kitty + kitten themes"
 gtheme: "ghostty +list-themes"
 
-voff: "sudo wg-quick down wg1 && sudo resolvconf -u"
-von: "sudo resolvconf -u && sudo wg-quick up wg1"
+voff: "sudo wg-quick down work && sudo resolvconf -u"
+von: "sudo resolvconf -u && sudo wg-quick up work"
+
+tree: "ls -a --tree ./cwatch/"

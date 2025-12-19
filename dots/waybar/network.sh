@@ -45,9 +45,9 @@ else
     CONN_ICON="󰈀"
 fi
 
-# Download and upload icons
-DOWN_ICON="󰇚"
-UP_ICON="󰕒"
+# Build tooltip string with literal newline tokens
+tooltip=$(printf 'Iface: %s\\nDown: %s/s\\nUp: %s/s' "$IFACE" "$SPEED_DOWN_FORMATTED" "$SPEED_UP_FORMATTED")
 
-# Output JSON for waybar with icons
-echo "{\"text\": \"${CONN_ICON}  ${DOWN_ICON} ${SPEED_DOWN_FORMATTED}  ${UP_ICON} ${SPEED_UP_FORMATTED}\", \"class\": \"${CLASS}\"}" 
+# Output JSON for waybar with icons and tooltip
+printf '{"text": "%s %s/%s", "class": "%s", "tooltip": "%s"}\n' \
+    "${CONN_ICON}" "${SPEED_DOWN_FORMATTED}" "${SPEED_UP_FORMATTED}" "${CLASS}" "${tooltip}"
