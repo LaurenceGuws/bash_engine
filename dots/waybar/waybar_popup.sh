@@ -34,11 +34,8 @@ POPUP_WIDTH=400
 POPUP_HEIGHT=460
 
 dispatch_helper() {
-    local helper="$*"
-    log "dispatch helper command: $helper"
-    local escaped
-    escaped=$(printf '%q' "$helper")
-    if hyprctl dispatch exec "bash -lc $escaped" >/dev/null 2>&1; then
+    log "dispatch helper command: $*"
+    if hyprctl dispatch exec "$@" >/dev/null 2>&1; then
         log "hyprctl dispatch exec succeeded for helper"
     else
         log "hyprctl dispatch exec failed for helper"
@@ -47,18 +44,11 @@ dispatch_helper() {
 
 launch_network_manager() {
     log "starting network manager helper"
-    if command -v nm-connection-editor >/dev/null 2>&1; then
-        dispatch_helper nm-connection-editor
-        return 0
-    fi
-    if command -v nmcli >/dev/null 2>&1; then
-        dispatch_helper "$RUN_IN_TERMINAL nmcli"
-        return 0
-    fi
     if command -v nmtui >/dev/null 2>&1; then
-        dispatch_helper "$RUN_IN_TERMINAL nmtui"
+        dispatch_helper "$RUN_IN_TERMINAL" nmtui
         return 0
     fi
+    log "nmtui missing, falling back to network menu script"
     if [[ -x "$NETWORK_MENU" ]]; then
         dispatch_helper "$NETWORK_MENU"
         return 0
@@ -130,12 +120,13 @@ popup_position() {
 run_popup() {
     log "showing popup options"
     local options=(
-        "Restart Waybar"
-        "Volume control"
-        "GPU monitor"
-        "System monitor (btop)"
-        "Network manager"
-        "Power menu"
+        "󰀻  App launcher (Wofi)"
+        "  Volume control"
+        "  Network manager"
+        "  System monitor (btop)"
+        "󰾲  GPU monitor"
+        "  Restart Waybar"
+        "  Power menu"
     )
     local selected
     selected=$(printf '%s\n' "${options[@]}" \
@@ -144,11 +135,11 @@ run_popup() {
     if [[ -n "$selected" ]]; then
         log "selected option: $selected"
         case "$selected" in
-            "Restart Waybar")
+            *"Restart Waybar")
                 log "reloading Waybar"
                 waybar --reload &
                 ;;
-            "Volume control")
+            *"Volume control")
                 log "launching volume control"
                 if command -v pavucontrol >/dev/null 2>&1; then
                     dispatch_helper pavucontrol
@@ -158,21 +149,25 @@ run_popup() {
                     log "volume control tools missing"
                 fi
                 ;;
-            "GPU monitor")
+            *"GPU monitor")
                 log "launching GPU monitor"
                 dispatch_helper "$GPU_LAUNCHER"
                 ;;
-            "System monitor (btop)")
+            *"System monitor (btop)")
                 log "launching btop via run-in-terminal"
-                dispatch_helper "$RUN_IN_TERMINAL btop"
+                dispatch_helper "$RUN_IN_TERMINAL" btop
                 ;;
-            "Network manager")
+            *"Network manager")
                 log "launching network manager"
                 launch_network_manager
                 ;;
-            "Power menu")
+            *"Power menu")
                 log "launching power menu"
                 dispatch_helper wlogout
+                ;;
+            *"App launcher (Wofi)")
+                log "launching Wofi drun"
+                dispatch_helper wofi --show drun
                 ;;
         esac
     fi
