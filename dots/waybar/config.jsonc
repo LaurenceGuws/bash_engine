@@ -25,6 +25,7 @@
         "pulseaudio",
         "power-profiles-daemon",
         "custom/power",
+        "custom/waybar-popup",
         "clock"
     ],
     // Modules configuration
@@ -231,15 +232,10 @@
         "on-click-right": "swaync-client -d -sw",
         "escape": true
     },
-    "custom/notification": {
-        "class": "notification-module",
-        "tooltip": true,
-        "format": "{} 󰂚",
-        "return-type": "json",
-        "exec-if": "which swaync-client",
-        "exec": "swaync-client -swb",
-        "on-click": "swaync-client -t -sw",
-        "on-click-right": "swaync-client -d -sw",
-        "escape": true
+    "custom/waybar-popup": {
+        "class": "custom-popup",
+        "format": "≡",
+        "tooltip": "Quick actions",
+        "on-click": "bash -c \"$HOME/.config/waybar/waybar_popup.sh\""
     }
 }
