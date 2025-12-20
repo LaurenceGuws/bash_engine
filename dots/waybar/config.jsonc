@@ -21,10 +21,6 @@
     "modules-right": [
         "tray",
         // "keyboard-state",
-        "custom/notification",
-        "pulseaudio",
-        "power-profiles-daemon",
-        "custom/power",
         "custom/waybar-popup",
         "clock"
     ],
@@ -99,8 +95,7 @@
     "tray": {
         // "icon-size": 21,
         "spacing": 10,
-        "ignore-warning": true,
-        "swap-icon-label": false
+        "ignore-warning": true
     },
     "clock": {
         // "timezone": "America/New_York",
@@ -112,8 +107,20 @@
         "exec": "$HOME/.config/waybar/scripts/cpu-usage-temp.sh",
         "return-type": "json",
         "interval": 3,
+        "format": "{text}",
+        "format-alt": "{alt}",
         "tooltip": true,
-        "on-click": "$HOME/.config/waybar/scripts/run-in-terminal.sh btop"
+        "on-click-right": "$HOME/.config/hypr/scripts/btop-popup.sh"
+    },
+    "custom/gpu": {
+        "class": "hardware-module",
+        "exec": "$HOME/.config/waybar/scripts/gpu-usage.sh",
+        "return-type": "json",
+        "format": "{text}",
+        "format-alt": "{alt}",
+        "interval": 5,
+        "tooltip": true,
+        "on-click-right": "$HOME/.config/waybar/scripts/gpu-launcher.sh"
     },
     "backlight": {
         // "device": "acpi_video1",
@@ -159,26 +166,6 @@
         "format-disconnected": "Disconnected⚠",
         "format-alt": "{ifname}:{ipaddr}/{cidr}"
     },
-    "pulseaudio": {
-        "class": "volume-module",
-        // "scroll-step": 1, // %, can be a float
-        "format": "{volume}% {icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
-    },
     "custom/media": {
         "format": "{icon} {text}",
         "return-type": "json",
@@ -191,50 +178,18 @@
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
         // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     },
-    "custom/power": {
-        "format" : "⏻",
-        "tooltip": false,
-        "on-click": "wlogout",
-        // "menu": "on-click",
-        // "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
-        "menu-actions": {
-            "shutdown": "shutdown",
-            "reboot": "reboot",
-            "suspend": "systemctl suspend",
-            "hibernate": "systemctl hibernate"
-        }
-    },
-    "custom/gpu": {
-        "class": "hardware-module",
-        "exec": "$HOME/.config/waybar/scripts/gpu-usage.sh",
-        "return-type": "json",
-        "format": "{}",
-        "interval": 5,
-        "tooltip": true,
-        "on-click": "$HOME/.config/waybar/scripts/gpu-launcher.sh"
-    },
     "custom/network": {
         "exec": "$HOME/.config/waybar/scripts/network.sh",
         "return-type": "json",
-        "format": "{}",
+        "format": "{text}",
+        "format-alt": "{alt}",
         "interval": 2,
         "tooltip": true,
-        "on-click": "$HOME/.config/waybar/scripts/network-menu.sh"
-    },
-    "custom/notification": {
-        "class": "notification-module",
-        "tooltip": true,
-        "format": "{} 󰂚",
-        "return-type": "json",
-        "exec-if": "which swaync-client",
-        "exec": "swaync-client -swb",
-        "on-click": "swaync-client -t -sw",
-        "on-click-right": "swaync-client -d -sw",
-        "escape": true
+        "on-click-right": "$HOME/.config/waybar/scripts/network-menu.sh"
     },
     "custom/waybar-popup": {
         "class": "custom-popup",
-        "format": "≡",
+        "format": "<span size=\"18pt\">≡</span>",
         "tooltip": "Quick actions",
         "on-click": "bash -c \"$HOME/.config/waybar/scripts/waybar_popup.sh\""
     }

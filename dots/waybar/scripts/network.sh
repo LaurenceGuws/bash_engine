@@ -45,9 +45,8 @@ else
     CONN_ICON="󰈀"
 fi
 
-# Build tooltip string with literal newline tokens
+alt_text=$(printf '%s %s/%s' "${CONN_ICON}" "${SPEED_DOWN_FORMATTED}" "${SPEED_UP_FORMATTED}")
 tooltip=$(printf 'Iface: %s\\nDown: %s/s\\nUp: %s/s' "$IFACE" "$SPEED_DOWN_FORMATTED" "$SPEED_UP_FORMATTED")
 
-# Output JSON for waybar with icons and tooltip
-printf '{"text": "%s %s/%s", "class": "%s", "tooltip": "%s"}\n' \
-    "${CONN_ICON}" "${SPEED_DOWN_FORMATTED}" "${SPEED_UP_FORMATTED}" "${CLASS}" "${tooltip}"
+printf '{"text": "%s", "alt": "%s", "class": "%s", "tooltip": "%s"}\n' \
+    "${CONN_ICON}" "${alt_text}" "${CLASS}" "${tooltip}"

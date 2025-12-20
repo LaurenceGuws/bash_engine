@@ -74,6 +74,7 @@ else
 fi
 
 icon=""
+alt_text=$(printf "%s %s%%/%s°C/ %s%%" "$icon" "$usage" "$temperature_text" "$mem_percent")
 tooltip="CPU usage: ${usage}%\nCPU temp: ${temperature_text}°C\nRAM usage: ${mem_percent}%"
-printf '{"text": "%s %s%%/%s°C/ %s%%", "class": "hardware-module", "tooltip": "%s"}\n' \
-    "$icon" "$usage" "$temperature_text" "$mem_percent" "$tooltip"
+printf '{"text": "%s", "alt": "%s", "class": "hardware-module", "tooltip": "%s"}\n' \
+    "$icon" "$alt_text" "$tooltip"

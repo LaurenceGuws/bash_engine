@@ -8,6 +8,12 @@ log() {
     printf '%s %s\n' "$timestamp" "$*" >> "$LOG_FILE"
 }
 
+UTILS_PATH="$HOME/.config/hypr/scripts/utils.sh"
+if [[ -r "$UTILS_PATH" ]]; then
+    # shellcheck source=/dev/null
+    . "$UTILS_PATH"
+fi
+
 required_tools=(kitty fzf jq hyprctl)
 missing=()
 for tool in "${required_tools[@]}"; do
@@ -15,7 +21,7 @@ for tool in "${required_tools[@]}"; do
 done
 
 if ((${#missing[@]})); then
-    local msg="Install ${missing[*]} to use the quick menu."
+    msg="Install ${missing[*]} to use the quick menu."
     log "missing tools: ${missing[*]}"
     if command -v notify-send >/dev/null 2>&1; then
         notify-send "Waybar popup" "$msg"
@@ -30,31 +36,37 @@ BROWSER=${BROWSER:-firefox}
 GPU_LAUNCHER="$HOME/.config/waybar/scripts/gpu-launcher.sh"
 NETWORK_MENU="$HOME/.config/waybar/scripts/network-menu.sh"
 RUN_IN_TERMINAL="$HOME/.config/waybar/scripts/run-in-terminal.sh"
+SWAYNC_HELPER="$HOME/.config/waybar/scripts/swaync-control.sh"
 POPUP_WIDTH=400
 POPUP_HEIGHT=460
 WAYBAR_POSITION=${WAYBAR_POSITION:-bottom}
 
+LOG_FUNC=log
+
 dispatch_helper() {
+    if command -v hypr_exec >/dev/null 2>&1; then
+        hypr_exec "$@"
+        return $?
+    fi
     log "dispatch helper command: $*"
     if hyprctl dispatch exec "$@" >/dev/null 2>&1; then
         log "hyprctl dispatch exec succeeded for helper"
-    else
-        log "hyprctl dispatch exec failed for helper"
+        return 0
     fi
+    log "hyprctl dispatch exec failed for helper, running command directly"
+    if command -v setsid >/dev/null 2>&1; then
+        setsid -f -- "$@" >/dev/null 2>&1 && return 0
+    fi
+    nohup "$@" >/dev/null 2>&1 &
 }
 
 launch_network_manager() {
     log "starting network manager helper"
-    if command -v nmtui >/dev/null 2>&1; then
-        dispatch_helper "$RUN_IN_TERMINAL" nmtui
-        return 0
-    fi
-    log "nmtui missing, falling back to network menu script"
     if [[ -x "$NETWORK_MENU" ]]; then
         dispatch_helper "$NETWORK_MENU"
         return 0
     fi
-    log "no network manager helpers available"
+    log "no network manager helpers available (network_menu missing)"
     return 1
 }
 waybar_geometry_for_monitor() {
@@ -189,16 +201,27 @@ run_popup() {
     log "showing popup options"
     local options=(
         "󰀻  App launcher (Wofi)"
+        "󰣇  App launcher (rich)"
+        "  Window finder"
+        "󰋜  Zoxide finder"
+        "  Package search (pacseek)"
+        "  Toggle transparency"
+        "󰕧  Toggle slideshow"
         "  Volume control"
         "  Network manager"
         "  System monitor (btop)"
         "󰾲  GPU monitor"
+        "  Notifications panel"
+        "  Clipboard manager"
         "  Restart Waybar"
         "  Power menu"
     )
     local selected
     selected=$(printf '%s\n' "${options[@]}" \
-        | fzf --layout=reverse --border --prompt=" " --header="Waybar Popup" --exit-0)
+        | fzf --layout=reverse --border --prompt=" " --header="Waybar Popup" \
+              --scroll-off=2 \
+              --bind="double-click:accept" \
+              --exit-0)
 
     if [[ -n "$selected" ]]; then
         log "selected option: $selected"
@@ -207,23 +230,41 @@ run_popup() {
                 log "reloading Waybar"
                 waybar --reload &
                 ;;
+            *"App launcher (rich)")
+                log "launching rich app launcher"
+                dispatch_helper "$RUN_IN_TERMINAL" "$HOME/.config/hypr/scripts/app-launcher.sh"
+                ;;
+            *"Window finder")
+                log "launching window finder"
+                dispatch_helper "$HOME/.config/hypr/scripts/window-finder.sh"
+                ;;
+            *"Zoxide finder")
+                log "launching zoxide finder"
+                dispatch_helper "$HOME/.config/hypr/scripts/zoxide-finder.sh"
+                ;;
+            *"Package search (pacseek)")
+                log "launching pacseek"
+                dispatch_helper "$HOME/.config/hypr/scripts/pacseek.sh"
+                ;;
+            *"Toggle transparency")
+                log "toggling transparency"
+                dispatch_helper "$HOME/.config/hypr/scripts/toggle-transparency.sh"
+                ;;
+            *"Toggle slideshow")
+                log "toggling slideshow"
+                dispatch_helper "$HOME/.config/hypr/scripts/toggle_slideshow.sh"
+                ;;
             *"Volume control")
                 log "launching volume control"
-                if command -v pavucontrol >/dev/null 2>&1; then
-                    dispatch_helper pavucontrol
-                elif command -v pamixer >/dev/null 2>&1; then
-                    dispatch_helper "pamixer -d 5"
-                else
-                    log "volume control tools missing"
-                fi
+                dispatch_helper "$HOME/.config/waybar/scripts/volume-popup.sh"
                 ;;
             *"GPU monitor")
                 log "launching GPU monitor"
                 dispatch_helper "$GPU_LAUNCHER"
                 ;;
             *"System monitor (btop)")
-                log "launching btop via run-in-terminal"
-                dispatch_helper "$RUN_IN_TERMINAL" btop
+                log "launching btop popup"
+                dispatch_helper "$HOME/.config/hypr/scripts/btop-popup.sh"
                 ;;
             *"Network manager")
                 log "launching network manager"
@@ -233,9 +274,21 @@ run_popup() {
                 log "launching power menu"
                 dispatch_helper wlogout
                 ;;
+            *"Notifications panel")
+                log "opening notification center"
+                if [[ -x "$SWAYNC_HELPER" ]]; then
+                    dispatch_helper "$SWAYNC_HELPER" toggle
+                else
+                    dispatch_helper swaync-client -t -sw
+                fi
+                ;;
+            *"Clipboard manager")
+                log "opening CopyQ"
+                dispatch_helper copyq toggle
+                ;;
             *"App launcher (Wofi)")
                 log "launching Wofi drun"
-                dispatch_helper wofi --show drun
+                dispatch_helper "wofi --show drun"
                 ;;
         esac
     fi
@@ -243,6 +296,8 @@ run_popup() {
 
 start_focus_watchdog() {
     local self_pid="$$"
+    local unfocused_ticks=0
+    local threshold_ticks=5  # 5 * 0.2s = 1s grace period
     (
         while sleep 0.2; do
             local active_json
@@ -251,9 +306,14 @@ start_focus_watchdog() {
             active_class=$(jq -r '.class // empty' <<<"$active_json")
             active_title=$(jq -r '.title // empty' <<<"$active_json")
             if [[ "$active_class" != "waybar-popup" || "$active_title" != "Waybar Popup" ]]; then
-                log "focus lost to class=${active_class:-unset} title=${active_title:-unset}, closing popup"
-                kill "$self_pid" 2>/dev/null
-                exit 0
+                unfocused_ticks=$((unfocused_ticks + 1))
+                if ((unfocused_ticks >= threshold_ticks)); then
+                    log "focus lost (>${threshold_ticks} ticks) to class=${active_class:-unset} title=${active_title:-unset}, closing popup"
+                    kill "$self_pid" 2>/dev/null
+                    exit 0
+                fi
+            else
+                unfocused_ticks=0
             fi
         done
     ) &
@@ -338,8 +398,8 @@ if [[ -z "${WAYBAR_POPUP_RUNNING:-}" ]]; then
     fi
     read -r abs_x abs_y pct_x pct_y <<< "$(popup_position)"
     log "popup position -> abs=${abs_x},${abs_y} pct=${pct_x}%,${pct_y}%"
-    dispatch_cmd="[float; size ${POPUP_WIDTH} ${POPUP_HEIGHT}]"
-    log "hyprctl dispatch: ${dispatch_cmd}"
+    dispatch_cmd="[float]"
+    log "hyprctl dispatch: ${dispatch_cmd} (size handled by Hyprland window rules)"
     log "launching popup via hyprctl exec"
     hyprctl dispatch exec "$dispatch_cmd kitty -o confirm_os_window_close=0 --detach --class waybar-popup --title 'Waybar Popup' bash -lc 'WAYBAR_POPUP_RUNNING=1 \"$SCRIPT_PATH\"'"
     if move_popup_to_abs "$abs_x" "$abs_y"; then

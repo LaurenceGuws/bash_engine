@@ -1,21 +1,27 @@
 #!/bin/bash
 
-# Ensure only one instance of the floating btop window runs
-# if [[ -z "$KITTY_WINDOW_ID" ]]; then
-    # If btop-popup is already running, close it instead of opening a new one
-    # if pgrep -fx "kitty --class pacseek-popup --title pacseek" > /dev/null; then
-        # pkill -f "kitty --class pacseek-popup --title pacseek"
-        # exit 0
-    # fi
+UTILS_PATH="$HOME/.config/hypr/scripts/utils.sh"
+if [[ -r "$UTILS_PATH" ]]; then
+    # shellcheck source=/dev/null
+    . "$UTILS_PATH"
+fi
 
-    # Launch floating Kitty window with btop and auto-close after exit
-    # hyprctl dispatch exec "[float; size 800 500] kitty --detach --class pacseek-popup --title 'pacseek' bash -c '$0'"
-    # exit 0
-# fi
+SCRIPT_PATH="$0"
+if command -v realpath >/dev/null 2>&1; then
+    SCRIPT_PATH="$(realpath "$SCRIPT_PATH")"
+elif command -v readlink >/dev/null 2>&1; then
+    SCRIPT_PATH="$(readlink -f "$SCRIPT_PATH")"
+fi
 
-# Run btop, and when it exits, force Kitty to close
+if [[ -z "${PACSEEK_RUNNING:-}" ]]; then
+    if command -v launch_kitty_popup >/dev/null 2>&1 && launch_kitty_popup "pacseek-popup" "pacseek" "" "PACSEEK_RUNNING=1 \"$SCRIPT_PATH\""; then
+        exit 0
+    fi
+    hyprctl dispatch exec "[float] kitty --detach --class pacseek-popup --title 'pacseek' bash -lc 'PACSEEK_RUNNING=1 \"$SCRIPT_PATH\"'"
+    exit 0
+fi
+
 pacseek
-# pkill -f "kitty --class pacseek-popup --title pacseek"
+pkill -f "kitty --class pacseek-popup --title pacseek"
 
-# Exit cleanly
-# exit 0
+exit 0

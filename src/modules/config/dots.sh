@@ -69,6 +69,29 @@
 # }
 
 dots_fzf() {
+  if [[ "${1:-}" == "--help" ]]; then
+    cat <<'EOF'
+Usage: dots_fzf [app1 app2 ...]
+  With args: apply specified apps without fzf.
+  Without args: open fzf to choose apps interactively.
+Subcommands:
+  --list                List configured apps and targets
+  --get <app>           Show target path for app
+  --add <app> <path>    Add or update an app entry
+  --rm <app>            Remove an app entry
+  --diff <app>          Show differences (repo dots vs target)
+EOF
+    return 0
+  fi
+
+  require_cmd() {
+    if ! command -v "$1" >/dev/null 2>&1; then
+      echo "Error: '$1' is required but not installed." >&2
+      return 1
+    fi
+  }
+
+  local preselected=("$@")
   CONFIG_FILE="${PROFILE_DIR}/config/dotfiles.yaml"
   APP_CONFIG_DIR="${PROFILE_DIR}/dots"
 
@@ -96,12 +119,81 @@ dots_fzf() {
     return
   fi
 
-  # Use fzf for multi-select (instructions embedded in header to avoid lingering help text)
-  mapfile -t selected_apps < <(echo "$apps" | \
-    fzf --multi \
-        --prompt="Applications > " \
-        --header=$'Select applications to configure | <TAB> multi-select, <ENTER> confirm, <Ctrl-A> toggle all' \
-        --border --ansi)
+  if [[ "${1:-}" == "--list" ]]; then
+    require_cmd yq || return 1
+    yq eval '.applications | to_entries[] | "\(.key)\t\(.value)"' "$CONFIG_FILE" | column -t -s $'\t'
+    return 0
+  elif [[ "${1:-}" == "--get" ]]; then
+    require_cmd yq || return 1
+    local app="${2:-}"
+    if [[ -z "$app" ]]; then
+      echo "Usage: dots_fzf --get <app>"
+      return 1
+    fi
+    yq eval ".applications.\"${app}\"" "$CONFIG_FILE"
+    return 0
+  elif [[ "${1:-}" == "--add" ]]; then
+    require_cmd yq || return 1
+    local app="${2:-}"
+    local path="${3:-}"
+    if [[ -z "$app" || -z "$path" ]]; then
+      echo "Usage: dots_fzf --add <app> <path>"
+      return 1
+    fi
+    yq -i ".applications.\"${app}\" = \"${path}\"" "$CONFIG_FILE"
+    echo "Added/updated ${app} -> ${path}"
+    return 0
+  elif [[ "${1:-}" == "--rm" ]]; then
+    require_cmd yq || return 1
+    local app="${2:-}"
+    if [[ -z "$app" ]]; then
+      echo "Usage: dots_fzf --rm <app>"
+      return 1
+    fi
+    yq -i "del(.applications.\"${app}\")" "$CONFIG_FILE"
+    echo "Removed ${app}"
+    return 0
+  elif [[ "${1:-}" == "--diff" ]]; then
+    require_cmd yq || return 1
+    local app="${2:-}"
+    if [[ -z "$app" ]]; then
+      echo "Usage: dots_fzf --diff <app>"
+      return 1
+    fi
+    local source_path="${PROFILE_DIR}/dots/${app}/"
+    local target_path
+    target_path=$(yq eval ".applications.\"${app}\"" "$CONFIG_FILE" | envsubst)
+    if [[ -z "$target_path" || "$target_path" == "null" ]]; then
+      echo "No target configured for '${app}'"
+      return 1
+    fi
+    if [[ ! -d "$source_path" ]]; then
+      echo "Source path missing: $source_path"
+      return 1
+    fi
+    if [[ ! -d "$target_path" ]]; then
+      echo "Target path missing: $target_path"
+      return 1
+    fi
+    # AI-friendly: show summary first, then unified diff with consistent paths
+    echo "Source: $source_path"
+    echo "Target: $target_path"
+    echo "Summary (added/removed/changed):"
+    diff -rq "$source_path" "$target_path" | sed 's/^/  /'
+    echo
+    echo "Unified diff:"
+    diff -ruN "$source_path" "$target_path" || true
+    return 0
+  elif [[ ${#preselected[@]} -gt 0 ]]; then
+    selected_apps=("${preselected[@]}")
+  else
+    # Use fzf for multi-select (instructions embedded in header to avoid lingering help text)
+    mapfile -t selected_apps < <(echo "$apps" | \
+      fzf --multi \
+          --prompt="Applications > " \
+          --header=$'Select applications to configure | <TAB> multi-select, <ENTER> confirm, <Ctrl-A> toggle all' \
+          --border --ansi)
+  fi
 
   if [[ ${#selected_apps[@]} -eq 0 ]]; then
     echo -e "${CTP_ROSE}No applications selected. Exiting.${CTP_RESET}"
@@ -119,7 +211,7 @@ dots_fzf() {
       shopt -s dotglob nullglob
       local files=("${source_path}"*)
       if [[ ${#files[@]} -gt 0 ]]; then
-        cp -r "${files[@]}" "$target_path"
+        cp -a "${files[@]}" "$target_path"
         echo -e "${CTP_MINT}Copied ${app} configuration to ${target_path}${CTP_RESET}"
       else
         echo -e "${CTP_BUTTER}No files found in ${source_path} for ${app}${CTP_RESET}"
@@ -131,3 +223,46 @@ dots_fzf() {
   done
 }
 
+# Bash completion for dots_fzf
+_dots_fzf_complete() {
+  local cur prev
+  COMPREPLY=()
+  cur=${COMP_WORDS[COMP_CWORD]}
+  prev=${COMP_WORDS[COMP_CWORD-1]}
+
+  local subs="--help --list --get --add --rm --diff"
+
+  # Fast-exit if yq missing
+  if ! command -v yq >/dev/null 2>&1; then
+    COMPREPLY=($(compgen -W "$subs" -- "$cur"))
+    return 0
+  fi
+
+  # Load app keys from dotfiles.yaml
+  local config_file="${PROFILE_DIR}/config/dotfiles.yaml"
+  local apps
+  apps=$(yq eval '.applications | keys | .[]' "$config_file" 2>/dev/null | tr '\n' ' ')
+
+  case "$prev" in
+    --get|--rm|--diff)
+      COMPREPLY=($(compgen -W "$apps" -- "$cur"))
+      return 0
+      ;;
+    --add)
+      # first arg after --add is app name
+      if (( COMP_CWORD == 2 )); then
+        COMPREPLY=($(compgen -W "$apps" -- "$cur"))
+      fi
+      return 0
+      ;;
+  esac
+
+  if [[ "$cur" == -* ]]; then
+    COMPREPLY=($(compgen -W "$subs" -- "$cur"))
+  else
+    COMPREPLY=($(compgen -W "$apps" -- "$cur"))
+  fi
+  return 0
+}
+
+complete -F _dots_fzf_complete dots_fzf

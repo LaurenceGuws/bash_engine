@@ -34,14 +34,14 @@ window#waybar.hidden {
   background-color: transparent;
   border-radius: 0;
   border: 0;
-  transition: all 0.3s ease;
+  transition: all 0.12s ease;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
   box-shadow: none;
   border-bottom: 3px solid rgba(164, 158, 238, 0.65);
-  background-color: rgba(30, 30, 30, 0.25);
+  background-color: rgba(50, 54, 70, 0.35);
 }
 
 #workspaces button.active {
@@ -97,7 +97,7 @@ window#waybar.hidden {
   background-color: transparent;
   border-radius: 0;
   border: 0;
-  transition: all 0.3s ease;
+  transition: all 0.12s ease;
 }
 
 /* Subtle separators between modules */
@@ -133,11 +133,13 @@ window#waybar.hidden {
 #keyboard-state:hover {
   box-shadow: none;
   border-bottom: 3px solid rgba(164, 158, 238, 0.65);
-  background-color: rgba(30, 30, 30, 0.25);
+  background-color: rgba(50, 54, 70, 0.35);
 }
 
 #custom-network {
   color: #89b4fa;
+  min-width: 40px;
+  padding: 0 12px;
 }
 
 #custom-network.wifi {
@@ -238,11 +240,16 @@ label:focus {
 
 .hardware-module {
   margin: 0 5px;
-  padding: 0 10px;
+  padding: 0 12px;
   border-radius: 999px;
   background-color: rgba(94, 108, 132, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.25s ease;
+  transition: all 0.12s ease;
+}
+
+#custom-cpu,
+#custom-gpu {
+  min-width: 40px;
 }
 
 #custom-gpu.hardware-module {

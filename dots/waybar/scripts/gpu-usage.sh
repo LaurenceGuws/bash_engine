@@ -10,8 +10,10 @@ output() {
     local tooltip=$4
     local css_class=$5
     local icon="󰾲"
-    printf '{"text": "%s %s%%/%s°C/ %s%%", "tooltip": "%s", "class": "gpu-%s"}\n' \
-        "$icon" "$usage" "$temp" "$mem_percent" "$tooltip" "$css_class"
+    local alt_text
+    alt_text=$(printf "%s %s%%/%s°C/ %s%%" "$icon" "$usage" "$temp" "$mem_percent")
+    printf '{"text": "%s", "alt": "%s", "tooltip": "%s", "class": "gpu-%s"}\n' \
+        "$icon" "$alt_text" "$tooltip" "$css_class"
 }
 
 percent() {
@@ -84,7 +86,7 @@ handle_radeon() {
         local tooltip="GPU Usage: ${usage}%\nDriver: Radeon"
         output "$usage" "--" "0" "$tooltip" "$css_class"
     else
-        printf '{"text": "N/A 󰾲", "tooltip": "GPU info unavailable", "class": "gpu-na"}\n'
+        printf '{"text": "󰾲", "alt": "N/A 󰾲", "tooltip": "GPU info unavailable", "class": "gpu-na"}\n'
     fi
 }
 
@@ -107,7 +109,7 @@ if command -v radeontop >/dev/null 2>&1; then
 fi
 
 if [[ -n "$LAST_ERROR" ]]; then
-    printf '{"text": "N/A 󰾲", "tooltip": "%s", "class": "gpu-na"}\n' "$LAST_ERROR"
+    printf '{"text": "󰾲", "alt": "N/A 󰾲", "tooltip": "%s", "class": "gpu-na"}\n' "$LAST_ERROR"
 else
-    printf '{"text": "N/A 󰾲", "tooltip": "No GPU monitoring tools available\nInstall nvidia-smi, amdgpu_top, or radeontop", "class": "gpu-na"}\n'
+    printf '{"text": "󰾲", "alt": "N/A 󰾲", "tooltip": "No GPU monitoring tools available\nInstall nvidia-smi, amdgpu_top, or radeontop", "class": "gpu-na"}\n'
 fi

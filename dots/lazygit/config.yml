@@ -32,6 +32,6 @@ gui:
     '*': '#b4befe'
 
 git:
-  paging:
-    colorArg: always
-    pager: delta --paging=never --features="line-numbers decorations"
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never --features="line-numbers decorations"

@@ -1,5 +1,18 @@
 #!/bin/bash
 
+UTILS_PATH="$HOME/.config/hypr/scripts/utils.sh"
+if [[ -r "$UTILS_PATH" ]]; then
+    # shellcheck source=/dev/null
+    . "$UTILS_PATH"
+fi
+
+SCRIPT_PATH="$0"
+if command -v realpath >/dev/null 2>&1; then
+    SCRIPT_PATH="$(realpath "$SCRIPT_PATH")"
+elif command -v readlink >/dev/null 2>&1; then
+    SCRIPT_PATH="$(readlink -f "$SCRIPT_PATH")"
+fi
+
 # App Launcher - A floating kitty terminal popup with fzf for selection for desktop applications
 # Scan all desktop applications in /usr/share/applications/ and /usr/local/share/applications/
 # Parse the .desktop files and list the applications in a kitty terminal popup with fzf for selection
@@ -167,14 +180,6 @@ launch_app_launcher() {
     trap "rm -f '$cache_file'" EXIT
 }
 
-# Check if we're running in a detached window
-if [[ -z "$APP_LAUNCHER_RUNNING" ]]; then
-    # Launch in a detached kitty window with special variable
-    hyprctl dispatch exec "[float; size 1300 600] kitty --class app-launcher-popup --title 'App Launcher' bash -c 'APP_LAUNCHER_RUNNING=1 $0'"
-    exit 0
-fi
-
-# Main execution
 main() {
     # Check if required tools are available (optimized)
     local missing_tools=()
@@ -193,6 +198,15 @@ main() {
 }
 
 # Run main function when APP_LAUNCHER_RUNNING is set
-if [[ -n "$APP_LAUNCHER_RUNNING" ]]; then
+if [[ -n "${APP_LAUNCHER_RUNNING:-}" ]]; then
     main "$@"
+fi
+
+# Entry point: always launch via the popup so Hypr window rules apply
+if [[ -z "${APP_LAUNCHER_RUNNING:-}" ]]; then
+    if command -v launch_kitty_popup >/dev/null 2>&1 && launch_kitty_popup "app-launcher-popup" "App Launcher" "" "APP_LAUNCHER_RUNNING=1 \"$SCRIPT_PATH\""; then
+        exit 0
+    fi
+    hyprctl dispatch exec "[float] kitty --class app-launcher-popup --title 'App Launcher' bash -c 'APP_LAUNCHER_RUNNING=1 \"$SCRIPT_PATH\"'"
+    exit 0
 fi
