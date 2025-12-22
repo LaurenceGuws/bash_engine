@@ -39,6 +39,7 @@ RUN_IN_TERMINAL="$HOME/.config/waybar/scripts/run-in-terminal.sh"
 SWAYNC_HELPER="$HOME/.config/waybar/scripts/swaync-control.sh"
 POPUP_WIDTH=400
 POPUP_HEIGHT=460
+POPUP_FONT_SIZE=18
 WAYBAR_POSITION=${WAYBAR_POSITION:-bottom}
 
 LOG_FUNC=log
@@ -205,6 +206,7 @@ run_popup() {
         "  Window finder"
         "󰋜  Zoxide finder"
         "  Package search (pacseek)"
+        "󰍹  Display settings"
         "  Toggle transparency"
         "󰕧  Toggle slideshow"
         "  Volume control"
@@ -245,6 +247,10 @@ run_popup() {
             *"Package search (pacseek)")
                 log "launching pacseek"
                 dispatch_helper "$HOME/.config/hypr/scripts/pacseek.sh"
+                ;;
+            *"Display settings")
+                log "launching display settings"
+                dispatch_helper wlrlui
                 ;;
             *"Toggle transparency")
                 log "toggling transparency"
@@ -401,7 +407,7 @@ if [[ -z "${WAYBAR_POPUP_RUNNING:-}" ]]; then
     dispatch_cmd="[float]"
     log "hyprctl dispatch: ${dispatch_cmd} (size handled by Hyprland window rules)"
     log "launching popup via hyprctl exec"
-    hyprctl dispatch exec "$dispatch_cmd kitty -o confirm_os_window_close=0 --detach --class waybar-popup --title 'Waybar Popup' bash -lc 'WAYBAR_POPUP_RUNNING=1 \"$SCRIPT_PATH\"'"
+    hyprctl dispatch exec "$dispatch_cmd kitty -o confirm_os_window_close=0 --override font_size=${POPUP_FONT_SIZE} --detach --class waybar-popup --title 'Waybar Popup' bash -lc 'WAYBAR_POPUP_RUNNING=1 \"$SCRIPT_PATH\"'"
     if move_popup_to_abs "$abs_x" "$abs_y"; then
         log "popup manually moved to abs=${abs_x},${abs_y}"
     else

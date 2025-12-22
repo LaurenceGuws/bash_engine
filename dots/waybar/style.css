@@ -3,7 +3,7 @@
 
 * {
   font-family: "Inter", "Cantarell", "Noto Sans", "DejaVu Sans", sans-serif;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 window#waybar {
@@ -140,6 +140,12 @@ window#waybar.hidden {
   color: #89b4fa;
   min-width: 40px;
   padding: 0 12px;
+}
+
+#custom-network,
+#custom-cpu,
+#custom-gpu {
+  font-size: 20px;
 }
 
 #custom-network.wifi {
