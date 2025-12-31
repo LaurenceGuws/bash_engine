@@ -14,11 +14,12 @@ wsl = false
 linespace=0
 
 [font]
-normal = ["JetBrainsMono Nerd Font"]
+# normal = ["JetBrainsMono Nerd Font"]
+normal = ["IosevkaTerm Nerd Font"]
 size = 14
 
 [box-drawing]
-mode = "font-glyph"
+mode = "native"
 
 [box-drawing.sizes]
 default = [2, 4]  # Thin and thick values respectively, for all sizes

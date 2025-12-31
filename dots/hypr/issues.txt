@@ -1,0 +1,4 @@
+Going from hyprland 0.52 to 0.53
+    -> Waybar not transparent anymore.
+    -> Floating windows popups are rendering wayyyy bigger. popups with specific moves are out of wack as well
+    -> hyprpaper script not working at all.

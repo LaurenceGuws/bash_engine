@@ -4,6 +4,7 @@
 format = '$os$all$character'
 # format = "$os $directory $git_branch $git_status $character"
 # format="$os$palettes$username$hostname$time$git_branch$git_commit$git_state$git_status$git_metrics$fossil_branch$cmd_duration$kubernetes$gcloud$docker_context$helm$terraform$container$directory$direnv$conda$guix_shell$nix_shell$pixi$bun$c$cpp$crystal$dart$deno$dotnet$elixir$elm$fennel$golang$gradle$haskell$haxe$java$jobs$julia$kotlin$lua$meson$nim$nodejs$ocaml$package$perl$php$pijul_channel$python$rlang$ruby$rust$scala$swift$zig$memory_usage$time$character"
+add_newline = false
 
 # Use the Catppuccin Mocha palette for custom color names
 palette = 'catppuccin_mocha'

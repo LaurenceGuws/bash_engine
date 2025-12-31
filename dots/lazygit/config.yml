@@ -1,9 +1,9 @@
 # https://github.com/jesseduffield/lazygit/wiki
 
 os:
-  edit: 'nvr --remote {{filename}}'
-  editAtLine: 'nvr --remote +{{line}} {{filename}}'
-  editAtLineAndWait: 'nvr --remote-wait +{{line}} {{filename}}'
+  edit: 'neovide-wait {{filename}}'
+  editAtLine: 'neovide-wait +{{line}} {{filename}}'
+  editAtLineAndWait: 'neovide-wait +{{line}} {{filename}}'
   editInTerminal: false
 
 gui:

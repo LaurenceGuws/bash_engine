@@ -11,7 +11,7 @@ bat: "bat -p"
 cat: "bat -p"
 # fzf: "fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 b: ${BROWSER}
-er: nvim --listen /tmp/nvimsocket
+er: neovide-wait
 e: nvim
 eg: "neovide"
 r: "source ~/.bashrc"
@@ -46,3 +46,9 @@ voff: "sudo wg-quick down work && sudo resolvconf -u"
 von: "sudo resolvconf -u && sudo wg-quick up work"
 
 tree: "ls -a --tree ./cwatch/"
+
+# nohup stuff
+nohup: 'nohup > /tmp/nohup.out 2>&1'
+tailnohup: 'tail -f /tmp/nohup.log "$@" 2>/dev/null'
+
+icon: '~/personal/bash_engine/src/modules/fun/nerd_icons_fzf/icon_finder.sh'
