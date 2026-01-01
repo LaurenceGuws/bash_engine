@@ -134,12 +134,15 @@ popup_position() {
         return 0
     fi
 
-    local mon_x mon_y mon_w mon_h reserved_bottom
+    local mon_x mon_y mon_w mon_h reserved_top reserved_right reserved_bottom reserved_left
     mon_x=$(jq -r '.x' <<<"$monitor")
     mon_y=$(jq -r '.y' <<<"$monitor")
     mon_w=$(jq -r '.width' <<<"$monitor")
     mon_h=$(jq -r '.height' <<<"$monitor")
+    reserved_top=$(jq -r '.reserved[0] // 0' <<<"$monitor")
+    reserved_right=$(jq -r '.reserved[1] // 0' <<<"$monitor")
     reserved_bottom=$(jq -r '.reserved[2] // 0' <<<"$monitor")
+    reserved_left=$(jq -r '.reserved[3] // 0' <<<"$monitor")
 
     if [[ -z "$mon_x" || -z "$mon_y" || -z "$mon_w" || -z "$mon_h" ]]; then
         printf '10 760'
@@ -148,9 +151,15 @@ popup_position() {
 
     local margin=12
     local target_x target_y
-    local placement_source="monitor-edge"
-    local max_x=$((mon_x + mon_w - POPUP_WIDTH - margin))
-    local max_y=$((mon_y + mon_h - POPUP_HEIGHT - margin))
+    local placement_source="monitor-corner"
+    local corner_left=$((mon_x + reserved_left + margin))
+    local corner_right=$((mon_x + mon_w - reserved_right - margin))
+    local corner_top=$((mon_y + reserved_top + margin))
+    local corner_bottom=$((mon_y + mon_h - reserved_bottom - margin))
+    local min_x=$corner_left
+    local max_x=$((corner_right - POPUP_WIDTH))
+    local min_y=$corner_top
+    local max_y=$((corner_bottom - POPUP_HEIGHT))
     local waybar_coords
     if waybar_coords=$(waybar_geometry_for_monitor "$monitor_name"); then
         read -r bar_x bar_y bar_w bar_h <<<"$waybar_coords"
@@ -158,40 +167,56 @@ popup_position() {
         case "$WAYBAR_POSITION" in
             top)
                 target_y=$((bar_y + bar_h + margin))
-                target_x=$((bar_x + bar_w - POPUP_WIDTH - margin))
+                target_x=$((corner_right - POPUP_WIDTH))
                 ;;
             left)
                 target_x=$((bar_x + bar_w + margin))
-                target_y=$((bar_y + margin))
+                target_y=$corner_top
                 ;;
             right)
                 target_x=$((bar_x - POPUP_WIDTH - margin))
-                target_y=$((bar_y + margin))
+                target_y=$corner_top
                 ;;
             bottom|*)
                 target_y=$((bar_y - POPUP_HEIGHT - margin))
-                target_x=$((bar_x + bar_w - POPUP_WIDTH - margin))
+                target_x=$((corner_right - POPUP_WIDTH))
                 ;;
         esac
-        placement_source="waybar"
+        placement_source="waybar-corner"
     else
-        target_x=$((mon_x + mon_w - POPUP_WIDTH - margin))
-        target_y=$((mon_y + mon_h - reserved_bottom - POPUP_HEIGHT - margin))
+        case "$WAYBAR_POSITION" in
+            top)
+                target_x=$((corner_right - POPUP_WIDTH))
+                target_y=$corner_top
+                ;;
+            left)
+                target_x=$corner_left
+                target_y=$corner_top
+                ;;
+            right)
+                target_x=$((corner_right - POPUP_WIDTH))
+                target_y=$corner_top
+                ;;
+            bottom|*)
+                target_x=$((corner_right - POPUP_WIDTH))
+                target_y=$((corner_bottom - POPUP_HEIGHT))
+                ;;
+        esac
     fi
 
     ((target_x > max_x)) && target_x=$max_x
-    ((target_x < mon_x + margin)) && target_x=$((mon_x + margin))
+    ((target_x < min_x)) && target_x=$min_x
     ((target_y > max_y)) && target_y=$max_y
-    ((target_y < mon_y + margin)) && target_y=$((mon_y + margin))
+    ((target_y < min_y)) && target_y=$min_y
 
     local rel_x=$((target_x - mon_x))
     local rel_y=$((target_y - mon_y))
     local pct_x=$((rel_x * 100 / mon_w))
     local pct_y=$((rel_y * 100 / mon_h))
 
-    local offset_right=$((mon_x + mon_w - target_x - POPUP_WIDTH))
-    local offset_bottom=$((mon_y + mon_h - reserved_bottom - target_y - POPUP_HEIGHT))
-    log "monitor summary: name=$(jq -r '.name' <<<"$monitor") geom=${mon_x},${mon_y}+${mon_w}x${mon_h} reserved_bottom=${reserved_bottom}"
+    local offset_right=$((corner_right - target_x - POPUP_WIDTH))
+    local offset_bottom=$((corner_bottom - target_y - POPUP_HEIGHT))
+    log "monitor summary: name=$(jq -r '.name' <<<"$monitor") geom=${mon_x},${mon_y}+${mon_w}x${mon_h} reserved=${reserved_top},${reserved_right},${reserved_bottom},${reserved_left}"
     log "target offsets: right=${offset_right} bottom=${offset_bottom} margin=${margin} source=${placement_source}"
 
     log "computed popup coords: abs=${target_x},${target_y} pct=${pct_x}%,${pct_y}%"

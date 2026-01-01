@@ -122,6 +122,6 @@
         "class": "custom-wofi",
         "format": "",
         "tooltip": "App launcher",
-        "on-click": "bash -c \"$HOME/.config/wofi/wofi-popup.sh\""
+        "on-click": "wofi --show drun"
     }
 }

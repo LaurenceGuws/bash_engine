@@ -1,155 +1,116 @@
-/* Catppuccin Mocha - Hyprland Flashy Glassy Theme for Wofi */
+/* Waybar-inspired Mocha theme for Wofi */
 
-@keyframes border-glow {
-    0% { border-color: rgba(245, 194, 231, 0.7); }
-    33% { border-color: rgba(203, 166, 247, 0.7); }
-    66% { border-color: rgba(137, 180, 250, 0.7); }
-    100% { border-color: rgba(245, 194, 231, 0.7); }
-}
-
-@keyframes pulse-shadow {
-    0% { box-shadow: 0 0 5px 2px rgba(203, 166, 247, 0.3), 0 10px 20px rgba(0, 0, 0, 0.4); }
-    50% { box-shadow: 0 0 12px 5px rgba(180, 190, 254, 0.4), 0 10px 20px rgba(0, 0, 0, 0.4); }
-    100% { box-shadow: 0 0 5px 2px rgba(203, 166, 247, 0.3), 0 10px 20px rgba(0, 0, 0, 0.4); }
-}
+@define-color accent #b4befe;
+@define-color text #cdd6f4;
+@define-color base rgba(15, 17, 26, 0.6);
+@define-color surface rgba(49, 50, 68, 0.35);
+@define-color surface-strong rgba(50, 54, 70, 0.5);
+@define-color border rgba(205, 214, 244, 0.35);
 
 @keyframes fade-in {
-    0% { opacity: 0; transform: translateY(-10px); }
-    100% { opacity: 1; transform: translateY(0); }
+  0% { opacity: 0; transform: translateY(-6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+* {
+  font-family: "Inter", "Cantarell", "Noto Sans", "DejaVu Sans", sans-serif;
+  font-size: 16px;
+  color: @text;
 }
 
 window {
-    background: linear-gradient(135deg, 
-                rgba(30, 30, 46, 0.65) 0%, 
-                rgba(30, 30, 46, 0.75) 100%);
-    border: 2px solid rgba(203, 166, 247, 0.7);
-    border-radius: 18px;
-    color: #cdd6f4;
-    font-family: "JetBrains Mono", "Noto Sans", sans-serif;
-    font-size: 14px;
-    margin: 0px;
-    padding: 10px;
-    box-shadow: 0 0 15px 5px rgba(203, 166, 247, 0.3), 
-                0 10px 20px rgba(0, 0, 0, 0.4);
-    animation: pulse-shadow 4s infinite ease-in-out, 
-               border-glow 8s infinite ease-in-out;
+  background-color: @base;
+  border: 1px solid @border;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 0px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  animation: fade-in 0.18s ease-out;
 }
 
 #outer-box {
-    background-color: transparent;
-    border-radius: 16px;
-    padding: 10px;
-    margin: 0px;
-    animation: fade-in 0.3s ease-out;
+  background-color: transparent;
+  padding: 6px;
+  margin: 0px;
 }
 
 #inner-box {
-    background-color: transparent;
-    border-radius: 12px;
-    margin: 5px;
-    padding: 0px;
+  background-color: transparent;
+  margin: 0px;
+  padding: 0px;
 }
 
 #scroll {
-    background-color: transparent;
-    margin: 0px;
-    padding: 5px;
+  background-color: transparent;
+  margin: 0px;
+  padding: 4px 2px;
 }
 
 #input {
-    background: linear-gradient(to right, 
-                rgba(49, 50, 68, 0.5),
-                rgba(88, 91, 112, 0.5));
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 3px rgba(203, 166, 247, 0.5),
-                inset 0 0 0 1px rgba(203, 166, 247, 0.4);
-    color: #cdd6f4;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    margin: 5px;
-    padding: 12px 16px;
-    transition: all 0.2s ease;
+  background-color: @surface;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: @text;
+  padding: 10px 12px;
+  margin: 2px 2px 8px 2px;
+  letter-spacing: 0.2px;
 }
 
 #input:focus {
-    box-shadow: 0 0 10px rgba(203, 166, 247, 0.6),
-                inset 0 0 0 1px rgba(203, 166, 247, 0.7);
-    background: linear-gradient(to right, 
-                rgba(49, 50, 68, 0.7),
-                rgba(88, 91, 112, 0.7));
+  background-color: @surface-strong;
+  border: 1px solid @border;
+  box-shadow: inset 0 -2px 0 rgba(180, 190, 254, 0.55);
 }
 
 #entry {
-    background-color: rgba(49, 50, 68, 0.2);
-    border-radius: 12px;
-    margin: 3px 0px;
-    padding: 10px 14px;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
+  background-color: transparent;
+  border-radius: 4px;
+  margin: 2px 0px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 #entry:selected {
-    background: linear-gradient(45deg, 
-                rgba(245, 194, 231, 0.7) 0%,
-                rgba(203, 166, 247, 0.7) 50%,
-                rgba(137, 180, 250, 0.7) 100%);
-    box-shadow: 0 0 8px rgba(203, 166, 247, 0.5);
-    transform: scale(1.02);
+  background-color: @surface-strong;
+  border-color: @border;
+  box-shadow: inset 0 -2px 0 rgba(180, 190, 254, 0.65);
 }
 
 #entry:hover {
-    background-color: rgba(69, 71, 90, 0.5);
-    border: 1px solid rgba(203, 166, 247, 0.4);
-    box-shadow: 0 0 5px rgba(203, 166, 247, 0.2);
-    transform: translateX(3px);
+  background-color: @surface;
+  border-color: @border;
 }
 
 #text {
-    background-color: transparent;
-    color: #cdd6f4;
-    margin: 5px;
-    padding: 0px;
-    transition: all 0.2s ease;
+  background-color: transparent;
+  margin: 0px 6px;
+  padding: 0px;
 }
 
 #entry:selected #text {
-    color: #1e1e2e;
-    font-weight: bold;
-    text-shadow: 0 0 3px rgba(30, 30, 46, 0.5);
-    letter-spacing: 0.5px;
+  color: @text;
+  font-weight: 600;
 }
 
 #img {
-    background-color: transparent;
-    margin: 5px;
-    padding: 0px;
-    transition: all 0.2s ease;
+  background-color: transparent;
+  margin: 0px 6px;
+  padding: 0px;
 }
 
-#entry:selected #img {
-    transform: scale(1.1);
-}
-
-/* Scrollbar styling */
 scrollbar {
-    background-color: transparent;
-    border-radius: 10px;
-    margin: 0 4px;
+  background-color: transparent;
+  border-radius: 4px;
+  margin: 0 2px;
 }
 
 scrollbar slider {
-    background: linear-gradient(to bottom,
-                rgba(245, 194, 231, 0.5),
-                rgba(203, 166, 247, 0.5));
-    border-radius: 10px;
-    margin: 3px;
-    transition: all 0.2s ease;
+  background-color: rgba(180, 190, 254, 0.45);
+  border-radius: 4px;
+  margin: 3px 0;
 }
 
 scrollbar slider:hover {
-    background: linear-gradient(to bottom,
-                rgba(245, 194, 231, 0.8),
-                rgba(203, 166, 247, 0.8));
-    box-shadow: 0 0 5px rgba(203, 166, 247, 0.4);
-} 
+  background-color: rgba(180, 190, 254, 0.7);
+}
