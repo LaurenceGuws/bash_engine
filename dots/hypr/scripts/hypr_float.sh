@@ -24,7 +24,7 @@ hypr_float_log() {
 }
 
 hypr_float_usage() {
-  printf 'usage: %s --exec CMD [--class CLASS] [--title-regex REGEX] [--layer-namespace NAME] [--normal|--layer] [--watchdog|--no-watchdog] [--watchdog-delay SECONDS] [--watchdog-hold] [--no-restore-focus] [--size WxH|--size-pct WxH] [--width W --height H|--width-pct P --height-pct P] [--abs-x X --abs-y Y] [tl|tr|bl|br|ct|cb|cl|cr|cc|top-left|top-right|bottom-left|bottom-right|top-center|bottom-center|center-left|center-right|center]\n' "${0##*/}" >&2
+  printf 'usage: %s --exec CMD [--class CLASS] [--title-regex REGEX] [--layer-namespace NAME] [--normal|--layer] [--watchdog|--no-watchdog] [--watchdog-delay SECONDS] [--watchdog-hold] [--no-restore-focus] [--size WxH|--size-pct WxH] [--width W --height H|--width-pct P --height-pct P] [--append-size] [--abs-x X --abs-y Y] [tl|tr|bl|br|ct|cb|cl|cr|cc|top-left|top-right|bottom-left|bottom-right|top-center|bottom-center|center-left|center-right|center]\n' "${0##*/}" >&2
 }
 
 hypr_float() {
@@ -44,6 +44,7 @@ hypr_float() {
   local focus_by_class=1
   local focus_by_class_set=0
   local exec_cmd=""
+  local append_size=0
   local window_class=""
   local title_regex=""
   local class_set=0
@@ -210,6 +211,10 @@ hypr_float() {
         desired_h_pct="$2"
         shift 2
         ;;
+      --append-size)
+        append_size=1
+        shift
+        ;;
       tl|top-left|tr|top-right|bl|bottom-left|br|bottom-right|ct|top-center|top-centre|cb|bottom-center|bottom-centre|cl|center-left|centre-left|cr|center-right|centre-right|cc|center|centre)
         corner_input="$1"
         shift
@@ -335,6 +340,11 @@ hypr_float() {
     desired_w=$((avail_w * desired_w_pct / 100))
     desired_h=$((avail_h * desired_h_pct / 100))
     hypr_float_log "percent size ${desired_w_pct}x${desired_h_pct} -> ${desired_w}x${desired_h} (avail ${avail_w}x${avail_h})"
+  fi
+
+  if [[ "$append_size" == "1" && -n "$desired_w" && -n "$desired_h" ]]; then
+    exec_cmd="${exec_cmd} --width ${desired_w} --height ${desired_h}"
+    hypr_float_log "appending size to exec: ${desired_w}x${desired_h}"
   fi
 
   local wofi_size_args=()

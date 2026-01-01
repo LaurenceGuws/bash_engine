@@ -122,6 +122,6 @@
         "class": "custom-wofi",
         "format": "",
         "tooltip": "App launcher",
-        "on-click": "bash -c \"$HOME/.config/hypr/scripts/hypr_float.sh --watchdog --normal bl --exec 'wofi --show drun --normal-window'\""
+        "on-click": "bash -c \"$HOME/.config/hypr/scripts/hypr_float.sh --watchdog --normal bl --size 40%x75% --append-size --class wofi --exec 'wofi --show drun --normal-window'\""
     }
 }
