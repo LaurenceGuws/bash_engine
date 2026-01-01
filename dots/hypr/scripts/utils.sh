@@ -211,6 +211,66 @@ hypr_waybar_geometry_for_monitor() {
   printf '%s %s %s %s' "$bar_x" "$bar_y" "$bar_w" "$bar_h"
 }
 
+hypr_popup_position_for_size() {
+  # Usage: hypr_popup_position_for_size <width> <height> [margin] [waybar_position]
+  # Prints: abs_x abs_y pct_x pct_y
+  local width="$1"
+  local height="$2"
+  local margin="${3:-12}"
+  local waybar_position="${4:-${WAYBAR_POSITION:-bottom}}"
+
+  if [[ -z "$width" || -z "$height" ]]; then
+    log_dispatch "hypr_popup_position_for_size missing width/height"
+    return 1
+  fi
+
+  local info name x y w h scale r_top r_right r_bottom r_left
+  info=$(hypr_focused_monitor_info) || return 1
+  read -r name x y w h scale r_top r_right r_bottom r_left <<<"$info"
+  if [[ -z "$name" || -z "$w" || -z "$h" ]]; then
+    return 1
+  fi
+
+  local corner_left corner_right corner_top corner_bottom
+  read -r corner_left corner_right corner_top corner_bottom <<<"$(hypr_focused_monitor_corner_bounds_with_waybar "$margin" "$waybar_position")" || return 1
+
+  local corner="br"
+  case "$waybar_position" in
+    top)
+      corner="tr"
+      ;;
+    left)
+      corner="tl"
+      ;;
+    right)
+      corner="tr"
+      ;;
+    bottom|*)
+      corner="br"
+      ;;
+  esac
+
+  local target_x target_y
+  read -r target_x target_y <<<"$(hypr_corner_target_for_size "$corner" "$width" "$height" "$margin" "$waybar_position")" || return 1
+
+  local min_x=$corner_left
+  local max_x=$((corner_right - width))
+  local min_y=$corner_top
+  local max_y=$((corner_bottom - height))
+
+  ((target_x > max_x)) && target_x=$max_x
+  ((target_x < min_x)) && target_x=$min_x
+  ((target_y > max_y)) && target_y=$max_y
+  ((target_y < min_y)) && target_y=$min_y
+
+  local rel_x=$((target_x - x))
+  local rel_y=$((target_y - y))
+  local pct_x=$((rel_x * 100 / w))
+  local pct_y=$((rel_y * 100 / h))
+
+  printf '%s %s %s %s' "$target_x" "$target_y" "$pct_x" "$pct_y"
+}
+
 hypr_focused_monitor_corner_bounds_with_waybar() {
   # Usage: hypr_focused_monitor_corner_bounds_with_waybar [margin] [waybar_position]
   # Prints: corner_left corner_right corner_top corner_bottom
@@ -397,6 +457,18 @@ hypr_client_size_by_address() {
     "$(jq -r --arg addr "$address" '.[] | select(.address==$addr) | .size[1] // empty' <<<"$clients_json")"
 }
 
+hypr_client_pid_by_address() {
+  # Usage: hypr_client_pid_by_address <address>
+  # Prints: pid
+  local address="$1"
+  local clients_json
+  clients_json=$(hyprctl clients -j 2>/dev/null) || return 1
+  if [[ -z "$clients_json" || "$clients_json" == "null" ]]; then
+    return 1
+  fi
+  jq -r --arg addr "$address" '.[] | select(.address==$addr) | .pid // empty' <<<"$clients_json"
+}
+
 hypr_client_at_by_address() {
   # Usage: hypr_client_at_by_address <address>
   # Prints: x y
@@ -409,6 +481,74 @@ hypr_client_at_by_address() {
   printf '%s %s' \
     "$(jq -r --arg addr "$address" '.[] | select(.address==$addr) | .at[0] // empty' <<<"$clients_json")" \
     "$(jq -r --arg addr "$address" '.[] | select(.address==$addr) | .at[1] // empty' <<<"$clients_json")"
+}
+
+hypr_wait_for_client_address_by_class_or_title() {
+  # Usage: hypr_wait_for_client_address_by_class_or_title <class> [title_regex] [timeout_seconds] [interval_seconds]
+  local class="$1"
+  local title_regex="${2:-}"
+  local timeout_seconds="${3:-3}"
+  local interval_seconds="${4:-0.05}"
+  local elapsed=0
+
+  if [[ -z "$class" ]]; then
+    return 1
+  fi
+
+  while (( $(awk -v e="$elapsed" -v t="$timeout_seconds" 'BEGIN { print (e < t) ? 1 : 0 }') )); do
+    local address
+    address=$(hypr_find_client_address_by_class_or_title "$class" "$title_regex" || true)
+    if [[ -n "$address" && "$address" != "null" ]]; then
+      printf '%s' "$address"
+      return 0
+    fi
+    sleep "$interval_seconds"
+    elapsed=$(awk -v e="$elapsed" -v i="$interval_seconds" 'BEGIN { printf "%.2f", (e + i) }')
+  done
+  return 1
+}
+
+hypr_close_client_by_address() {
+  # Usage: hypr_close_client_by_address <address>
+  local address="$1"
+  if [[ -z "$address" ]]; then
+    return 1
+  fi
+  if ! hyprctl dispatch closewindow address:"$address" >/dev/null 2>&1; then
+    log_dispatch "closewindow failed for address=${address}, trying killwindow"
+    hyprctl dispatch killwindow address:"$address" >/dev/null 2>&1 || true
+  fi
+  local client_pid
+  client_pid=$(hypr_client_pid_by_address "$address" || true)
+  if [[ -n "$client_pid" ]]; then
+    log_dispatch "sending SIGTERM to pid=${client_pid} for address=${address}"
+    kill "$client_pid" >/dev/null 2>&1 || true
+  fi
+}
+
+hypr_close_client_by_class_or_title() {
+  # Usage: hypr_close_client_by_class_or_title <class> [title_regex]
+  local class="$1"
+  local title_regex="${2:-}"
+  local address
+  address=$(hypr_find_client_address_by_class_or_title "$class" "$title_regex" || true)
+  if [[ -n "$address" && "$address" != "null" ]]; then
+    hypr_close_client_by_address "$address"
+    return 0
+  fi
+  return 1
+}
+
+hypr_client_exists_by_address() {
+  # Usage: hypr_client_exists_by_address <address>
+  # Returns: 0 if found, 1 otherwise
+  local address="$1"
+  local clients_json
+  clients_json=$(hyprctl clients -j 2>/dev/null) || return 1
+  if [[ -z "$clients_json" || "$clients_json" == "null" ]]; then
+    return 1
+  fi
+  jq -e --arg addr "$address" '.[] | select(.address==$addr) | .address' <<<"$clients_json" >/dev/null 2>&1
 }
 
 hypr_find_client_address_by_class_or_title() {
@@ -454,8 +594,132 @@ hypr_dispatch_movewindowpixel_exact() {
   hyprctl dispatch movewindowpixel exact "$x" "$y",address:"$address" >/dev/null 2>&1
 }
 
+hypr_move_window() {
+  # Usage: hypr_move_window <x> <y> [address]
+  local x="$1"
+  local y="$2"
+  local address="${3:-}"
+  if [[ -z "$address" ]]; then
+    address=$(hypr_active_window_address) || return 1
+  fi
+  hypr_dispatch_movewindowpixel_exact "$x" "$y" "$address"
+}
+
+hypr_resize_window() {
+  # Usage: hypr_resize_window <width> <height> [address]
+  local width="$1"
+  local height="$2"
+  local address="${3:-}"
+  if [[ -z "$address" ]]; then
+    address=$(hypr_active_window_address) || return 1
+  fi
+  hyprctl dispatch resizewindowpixel exact "$width" "$height",address:"$address" >/dev/null 2>&1
+}
+
 hypr_dispatch_focuswindow_address() {
   # Usage: hypr_dispatch_focuswindow_address <address>
   local address="$1"
   hyprctl dispatch focuswindow address:"$address" >/dev/null 2>&1
+}
+
+hypr_dispatch_focuswindow_class() {
+  # Usage: hypr_dispatch_focuswindow_class <class>
+  local class="$1"
+  hyprctl dispatch focuswindow "class:${class}" >/dev/null 2>&1
+}
+
+hypr_start_focus_watchdog() {
+  # Usage: hypr_start_focus_watchdog <class> <title> [enabled] [delay_seconds] [close_address]
+  # Kills the parent process after the active window is not the target for delay_seconds.
+  # If title is empty, match on class only.
+  local target_class="$1"
+  local target_title="$2"
+  local enabled="${3:-1}"
+  local delay_seconds="${4:-2}"
+  local close_address="${5:-}"
+
+  if [[ "$enabled" != "1" ]]; then
+    return 0
+  fi
+
+  local self_pid="$$"
+  local tick_seconds=0.2
+  local threshold_ticks
+  threshold_ticks=$(awk -v d="$delay_seconds" -v t="$tick_seconds" 'BEGIN { if (d <= 0) d = 0.2; printf "%d", (d / t + 0.5) }')
+
+  (
+    local unfocused_ticks=0
+    while sleep "$tick_seconds"; do
+      local active_class active_title
+      read -r active_class active_title <<<"$(hypr_active_window_class_title)" || continue
+      local matches=0
+      if [[ -n "$target_title" ]]; then
+        if [[ "$active_class" == "$target_class" && "$active_title" == "$target_title" ]]; then
+          matches=1
+        fi
+      else
+        if [[ "$active_class" == "$target_class" ]]; then
+          matches=1
+        fi
+      fi
+      if [[ "$matches" != "1" ]]; then
+        unfocused_ticks=$((unfocused_ticks + 1))
+        if ((unfocused_ticks >= threshold_ticks)); then
+          log_dispatch "focus lost for ${target_class}${target_title:+:${target_title}}; closing after ${delay_seconds}s"
+          if [[ -n "$close_address" ]]; then
+            hypr_close_client_by_address "$close_address"
+            exit 0
+          fi
+          kill "$self_pid" 2>/dev/null
+          exit 0
+        fi
+      else
+        unfocused_ticks=0
+      fi
+    done
+  ) &
+  WATCHDOG_PID=$!
+  trap '[[ -n "${WATCHDOG_PID:-}" ]] && kill "$WATCHDOG_PID" 2>/dev/null' EXIT
+}
+
+hypr_start_focus_watchdog_address() {
+  # Usage: hypr_start_focus_watchdog_address <address> [enabled] [delay_seconds] [close_address]
+  # Kills the parent process after the active window is not the target for delay_seconds.
+  local target_address="$1"
+  local enabled="${2:-1}"
+  local delay_seconds="${3:-2}"
+  local close_address="${4:-$target_address}"
+
+  if [[ "$enabled" != "1" || -z "$target_address" ]]; then
+    return 0
+  fi
+
+  local self_pid="$$"
+  local tick_seconds=0.2
+  local threshold_ticks
+  threshold_ticks=$(awk -v d="$delay_seconds" -v t="$tick_seconds" 'BEGIN { if (d <= 0) d = 0.2; printf "%d", (d / t + 0.5) }')
+
+  (
+    local unfocused_ticks=0
+    while sleep "$tick_seconds"; do
+      local active_address
+      active_address=$(hypr_active_window_address) || continue
+      if [[ "$active_address" != "$target_address" ]]; then
+        unfocused_ticks=$((unfocused_ticks + 1))
+        if ((unfocused_ticks >= threshold_ticks)); then
+          log_dispatch "focus lost for address=${target_address}; closing after ${delay_seconds}s"
+          if [[ -n "$close_address" ]]; then
+            hypr_close_client_by_address "$close_address"
+            exit 0
+          fi
+          kill "$self_pid" 2>/dev/null
+          exit 0
+        fi
+      else
+        unfocused_ticks=0
+      fi
+    done
+  ) &
+  WATCHDOG_PID=$!
+  trap '[[ -n "${WATCHDOG_PID:-}" ]] && kill "$WATCHDOG_PID" 2>/dev/null' EXIT
 }

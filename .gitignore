@@ -3,3 +3,6 @@
 
 # Optionally ignore specific directories containing logs
 logs/
+.code-graph-rag
+dots/hypr/.code-graph-rag
+dots/hypr/.code-graph-rag

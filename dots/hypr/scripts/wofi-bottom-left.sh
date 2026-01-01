@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-HYPR_FLOAT_PATH="$REPO_ROOT/dots/hypr/scripts/hypr_float.sh"
+HYPR_FLOAT_PATH="$HOME/.config/hypr/scripts/hypr_float.sh"
 LOG_FILE="/tmp/wofi-bottom-left-test.log"
 
 if [[ ! -r "$HYPR_FLOAT_PATH" ]]; then
