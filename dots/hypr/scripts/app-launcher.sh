@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 UTILS_PATH="$HOME/.config/hypr/scripts/utils.sh"
 if [[ -r "$UTILS_PATH" ]]; then
@@ -197,16 +198,11 @@ main() {
     launch_app_launcher
 }
 
-# Run main function when APP_LAUNCHER_RUNNING is set
-if [[ -n "${APP_LAUNCHER_RUNNING:-}" ]]; then
+run_app_launcher() {
     main "$@"
-fi
+}
 
-# Entry point: always launch via the popup so Hypr window rules apply
-if [[ -z "${APP_LAUNCHER_RUNNING:-}" ]]; then
-    if command -v launch_kitty_popup >/dev/null 2>&1 && launch_kitty_popup "app-launcher-popup" "App Launcher" "" "APP_LAUNCHER_RUNNING=1 \"$SCRIPT_PATH\""; then
-        exit 0
-    fi
-    hyprctl dispatch exec "[float] kitty --class app-launcher-popup --title 'App Launcher' bash -c 'APP_LAUNCHER_RUNNING=1 \"$SCRIPT_PATH\"'"
-    exit 0
-fi
+hypr_popup_run "APP_LAUNCHER_RUNNING" "app-launcher-popup" "App Launcher" \
+    "kitty --class app-launcher-popup --title 'App Launcher' bash -lc 'APP_LAUNCHER_RUNNING=1 \"${SCRIPT_PATH}\"'" \
+    run_app_launcher \
+    br

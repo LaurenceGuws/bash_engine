@@ -15,4 +15,4 @@ export LOG_FILE
 # shellcheck source=/dev/null
 . "$HYPR_FLOAT_PATH"
 
-hypr_float "$@"
+hypr_float --exec "wofi --show drun --normal-window" "$@"

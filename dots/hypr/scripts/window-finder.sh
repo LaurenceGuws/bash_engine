@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Window Finder - A utility to find and focus on lost windows
 # Uses kitty terminal and fzf for selection
@@ -161,16 +162,16 @@ main() {
   fi
 }
 
-mode="${1:-}"
-
-if [[ "$mode" == "--standalone" ]]; then
+if [[ -n "${WINDOW_FINDER_RUNNING:-}" ]]; then
   main
-else
-  if command -v launch_kitty_popup >/dev/null 2>&1; then
-    launch_kitty_popup "window-finder-popup" "Window Finder" "" "\"$SCRIPT_PATH\" --standalone"
-    exit 0
-  fi
-  kitty --title "Window Finder" --class "window-finder-popup" -e "$SCRIPT_PATH" --standalone
+  exit 0
 fi
 
-exit 0
+run_window_finder() {
+  main
+}
+
+hypr_popup_run "WINDOW_FINDER_RUNNING" "window-finder-popup" "Window Finder" \
+  "kitty --title 'Window Finder' --class 'window-finder-popup' bash -lc 'WINDOW_FINDER_RUNNING=1 \"${SCRIPT_PATH}\"'" \
+  run_window_finder \
+  br

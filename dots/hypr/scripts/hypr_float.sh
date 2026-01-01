@@ -24,7 +24,7 @@ hypr_float_log() {
 }
 
 hypr_float_usage() {
-  printf 'usage: %s [--exec CMD] [--class CLASS] [--title-regex REGEX] [--layer-namespace NAME] [--normal|--layer] [--watchdog|--no-watchdog] [--watchdog-delay SECONDS] [--watchdog-hold] [--no-restore-focus] [--size WxH|--size-pct WxH] [--width W --height H|--width-pct P --height-pct P] [--abs-x X --abs-y Y] [tl|tr|bl|br|ct|cb|cl|cr|cc|top-left|top-right|bottom-left|bottom-right|top-center|bottom-center|center-left|center-right|center]\n' "${0##*/}" >&2
+  printf 'usage: %s --exec CMD [--class CLASS] [--title-regex REGEX] [--layer-namespace NAME] [--normal|--layer] [--watchdog|--no-watchdog] [--watchdog-delay SECONDS] [--watchdog-hold] [--no-restore-focus] [--size WxH|--size-pct WxH] [--width W --height H|--width-pct P --height-pct P] [--abs-x X --abs-y Y] [tl|tr|bl|br|ct|cb|cl|cr|cc|top-left|top-right|bottom-left|bottom-right|top-center|bottom-center|center-left|center-right|center]\n' "${0##*/}" >&2
 }
 
 hypr_float() {
@@ -44,11 +44,11 @@ hypr_float() {
   local focus_by_class=1
   local focus_by_class_set=0
   local exec_cmd=""
-  local window_class="wofi"
-  local title_regex="wofi"
+  local window_class=""
+  local title_regex=""
   local class_set=0
   local title_set=0
-  local layer_namespace="wofi"
+  local layer_namespace=""
   local abs_x=""
   local abs_y=""
 
@@ -221,6 +221,12 @@ hypr_float() {
     esac
   done
 
+  if [[ -z "$exec_cmd" ]]; then
+    hypr_float_log "missing --exec command"
+    hypr_float_usage
+    return 1
+  fi
+
   if [[ -n "$abs_x" || -n "$abs_y" ]]; then
     if [[ -z "$abs_x" || -z "$abs_y" ]]; then
       printf 'both --abs-x and --abs-y are required\n' >&2
@@ -268,43 +274,34 @@ hypr_float() {
     return 1
   fi
 
-  local corner_label wofi_location
+  local corner_label
   case "$corner_input" in
     tl|top-left)
       corner_label="top-left"
-      wofi_location="top-left"
       ;;
     tr|top-right)
       corner_label="top-right"
-      wofi_location="top-right"
       ;;
     bl|bottom-left)
       corner_label="bottom-left"
-      wofi_location="bottom-left"
       ;;
     br|bottom-right)
       corner_label="bottom-right"
-      wofi_location="bottom-right"
       ;;
     ct|top-center|top-centre)
       corner_label="top-center"
-      wofi_location="top-left"
       ;;
     cb|bottom-center|bottom-centre)
       corner_label="bottom-center"
-      wofi_location="bottom-left"
       ;;
     cl|center-left|centre-left)
       corner_label="center-left"
-      wofi_location="top-left"
       ;;
     cr|center-right|centre-right)
       corner_label="center-right"
-      wofi_location="top-right"
       ;;
     cc|center|centre)
       corner_label="center"
-      wofi_location="top-left"
       ;;
   esac
 
@@ -347,25 +344,15 @@ hypr_float() {
   fi
 
   if [[ "$use_normal_window" == "1" ]]; then
-    local launch_cmd
-    if [[ -z "$exec_cmd" ]]; then
-      hypr_float_log "launching wofi normal window for ${corner_label}"
-      launch_cmd="wofi --show drun --normal-window ${wofi_size_args[*]} --monitor \"${mon_name}\""
-    else
-      launch_cmd="$exec_cmd"
-      hypr_float_log "launching custom command for ${corner_label}"
-    fi
-    hypr_exec "[float] ${launch_cmd}"
+    hypr_float_log "launching command for ${corner_label}"
+    hypr_exec "[float] ${exec_cmd}"
   else
-    local layer_cmd
-    if [[ -z "$exec_cmd" ]]; then
-      hypr_float_log "launching wofi layer for ${corner_label} with offsets x=${margin} y=${margin}"
-      layer_cmd="wofi --show drun --location ${wofi_location} --xoffset ${margin} --yoffset ${margin} ${wofi_size_args[*]} --monitor \"${mon_name}\""
-    else
-      layer_cmd="$exec_cmd"
-      hypr_float_log "launching custom command for ${corner_label} (layer mode)"
+    if [[ -z "$layer_namespace" ]]; then
+      hypr_float_log "missing --layer-namespace for layer mode"
+      return 1
     fi
-    hypr_exec "[float] ${layer_cmd}"
+    hypr_float_log "launching command for ${corner_label} (layer mode)"
+    hypr_exec "[float] ${exec_cmd}"
   fi
 
   sleep 0.2
@@ -375,16 +362,14 @@ hypr_float() {
     local active_class active_title active_address
     read -r active_class active_title <<<"$(hypr_active_window_class_title)"
     active_address=$(hypr_active_window_address || true)
-    if [[ -n "$exec_cmd" ]]; then
-      if [[ "$class_set" == "0" && -n "$active_class" ]]; then
-        window_class="$active_class"
-      fi
-      if [[ "$title_set" == "0" && -n "$active_title" ]]; then
-        title_regex="$active_title"
-      fi
-      if [[ "$focus_by_class_set" == "0" ]]; then
-        focus_by_class=0
-      fi
+    if [[ "$class_set" == "0" && -n "$active_class" ]]; then
+      window_class="$active_class"
+    fi
+    if [[ "$title_set" == "0" && -n "$active_title" ]]; then
+      title_regex="$active_title"
+    fi
+    if [[ "$focus_by_class_set" == "0" ]]; then
+      focus_by_class=0
     fi
     for _ in $(seq 1 20); do
       address=$(hypr_find_client_address_by_class_or_title "$window_class" "$title_regex")
@@ -404,7 +389,7 @@ hypr_float() {
     fi
 
     if [[ -z "$address" || "$address" == "null" ]]; then
-      hypr_float_log "failed to resolve window address for class=${window_class}"
+      hypr_float_log "failed to resolve window address for class=${window_class:-unset}"
       return 1
     fi
     hypr_float_log "window address=$address size=${win_w}x${win_h}"

@@ -539,6 +539,61 @@ hypr_close_client_by_class_or_title() {
   return 1
 }
 
+hypr_popup_run() {
+  # Usage: hypr_popup_run <env_var> <class> <title> <exec_cmd> <run_func> [corner]
+  local env_var="$1"
+  local popup_class="$2"
+  local popup_title="$3"
+  local exec_cmd="$4"
+  local run_func="$5"
+  local corner="${6:-}"
+
+  if [[ -z "$env_var" || -z "$popup_class" || -z "$popup_title" || -z "$exec_cmd" || -z "$run_func" ]]; then
+    log_dispatch "hypr_popup_run missing args env_var=${env_var} class=${popup_class} title=${popup_title}"
+    return 1
+  fi
+
+  local env_val="${!env_var-}"
+  if [[ -z "$env_val" ]]; then
+    if command -v hypr_close_client_by_class_or_title >/dev/null 2>&1; then
+      if hypr_close_client_by_class_or_title "$popup_class" "$popup_title"; then
+        return 0
+      fi
+    fi
+    if ! declare -F hypr_float >/dev/null 2>&1; then
+      local hypr_float_path="$HOME/.config/hypr/scripts/hypr_float.sh"
+      if [[ -r "$hypr_float_path" ]]; then
+        # shellcheck source=/dev/null
+        . "$hypr_float_path"
+      fi
+    fi
+    if ! declare -F hypr_float >/dev/null 2>&1 && ! command -v hypr_float >/dev/null 2>&1; then
+      printf 'hypr_float not available\n' >&2
+      return 1
+    fi
+    if [[ -z "${HYPR_FLOAT_QUIET:-}" ]]; then
+      HYPR_FLOAT_QUIET=1
+    fi
+    if [[ -n "$corner" ]]; then
+      hypr_float --normal "$corner" --class "$popup_class" --title-regex "$popup_title" --exec "$exec_cmd"
+    else
+      hypr_float --normal --class "$popup_class" --title-regex "$popup_title" --exec "$exec_cmd"
+    fi
+    return 0
+  fi
+
+  if ! declare -F "$run_func" >/dev/null 2>&1; then
+    log_dispatch "hypr_popup_run missing function ${run_func}"
+    return 1
+  fi
+
+  "$run_func"
+
+  if command -v hypr_close_client_by_class_or_title >/dev/null 2>&1; then
+    hypr_close_client_by_class_or_title "$popup_class" "$popup_title" || true
+  fi
+}
+
 hypr_client_exists_by_address() {
   # Usage: hypr_client_exists_by_address <address>
   # Returns: 0 if found, 1 otherwise

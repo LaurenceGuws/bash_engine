@@ -9,6 +9,7 @@ fi
 
 POPUP_CLASS="gpu-monitor"
 POPUP_TITLE="GPU Monitor"
+ENV_FLAG="GPU_MONITOR_RUNNING"
 
 monitor_cmd=""
 if command -v nvtop >/dev/null 2>&1; then
@@ -26,13 +27,22 @@ if [[ -z "$monitor_cmd" ]]; then
     exit 1
 fi
 
-if command -v launch_kitty_popup >/dev/null 2>&1; then
-    launch_kitty_popup "$POPUP_CLASS" "$POPUP_TITLE" "" "$monitor_cmd" || true
-    exit 0
+SCRIPT_PATH="$0"
+if command -v realpath >/dev/null 2>&1; then
+    SCRIPT_PATH="$(realpath "$SCRIPT_PATH")"
+elif command -v readlink >/dev/null 2>&1; then
+    SCRIPT_PATH="$(readlink -f "$SCRIPT_PATH")"
 fi
 
-if command -v hyprctl >/dev/null 2>&1; then
-    hyprctl dispatch exec "[float] kitty --detach --class ${POPUP_CLASS} --app-id ${POPUP_CLASS} --title '${POPUP_TITLE}' bash -lc '${monitor_cmd}'"
+run_gpu_monitor() {
+    "$monitor_cmd"
+}
+
+if command -v hypr_popup_run >/dev/null 2>&1; then
+    hypr_popup_run "$ENV_FLAG" "$POPUP_CLASS" "$POPUP_TITLE" \
+        "kitty --detach --class ${POPUP_CLASS} --app-id ${POPUP_CLASS} --title '${POPUP_TITLE}' bash -lc '${ENV_FLAG}=1 \"${SCRIPT_PATH}\"'" \
+        run_gpu_monitor \
+        br
     exit 0
 fi
 

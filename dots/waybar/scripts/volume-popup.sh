@@ -3,6 +3,7 @@ set -euo pipefail
 
 POPUP_CLASS="pulsemixer-popup"
 POPUP_TITLE="PulseMixer"
+ENV_FLAG="VOLUME_POPUP_RUNNING"
 
 UTILS_PATH="$HOME/.config/hypr/scripts/utils.sh"
 if [[ -r "$UTILS_PATH" ]]; then
@@ -19,19 +20,22 @@ if ! command -v pulsemixer >/dev/null 2>&1; then
   exit 1
 fi
 
-if command -v hyprctl >/dev/null 2>&1; then
-  # Toggle existing popup if present.
-  if pgrep -fx "kitty --class ${POPUP_CLASS} --title ${POPUP_TITLE}" >/dev/null; then
-    pkill -f "kitty --class ${POPUP_CLASS} --title ${POPUP_TITLE}"
-    exit 0
-  fi
+SCRIPT_PATH="$0"
+if command -v realpath >/dev/null 2>&1; then
+  SCRIPT_PATH="$(realpath "$SCRIPT_PATH")"
+elif command -v readlink >/dev/null 2>&1; then
+  SCRIPT_PATH="$(readlink -f "$SCRIPT_PATH")"
+fi
 
-  launch_cmd="[float] kitty --detach --class ${POPUP_CLASS} --title '${POPUP_TITLE}' bash -lc 'pulsemixer; pkill -f \"kitty --class ${POPUP_CLASS} --title ${POPUP_TITLE}\"'"
-  if command -v hypr_exec >/dev/null 2>&1; then
-    hypr_exec "$launch_cmd" || hyprctl dispatch exec "$launch_cmd" >/dev/null 2>&1 || true
-  else
-    hyprctl dispatch exec "$launch_cmd" >/dev/null 2>&1 || true
-  fi
+run_pulsemixer() {
+  pulsemixer
+}
+
+if command -v hypr_popup_run >/dev/null 2>&1; then
+  hypr_popup_run "$ENV_FLAG" "$POPUP_CLASS" "$POPUP_TITLE" \
+    "kitty --detach --class ${POPUP_CLASS} --title '${POPUP_TITLE}' bash -lc '${ENV_FLAG}=1 \"${SCRIPT_PATH}\"'" \
+    run_pulsemixer \
+    br
   exit 0
 fi
 

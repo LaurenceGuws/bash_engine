@@ -25,16 +25,24 @@ NMTUI_COLS_DEFAULT=110
 NMTUI_LINES=${NMTUI_LINES:-$NMTUI_LINES_DEFAULT}
 NMTUI_COLS=${NMTUI_COLS:-$NMTUI_COLS_DEFAULT}
 
-launch_in_kitty_popup() {
-    if ! command -v launch_kitty_popup >/dev/null 2>&1; then
-        return 1
-    fi
-    local env_cmd="NEWT_COLORS=${PALETTE_ESCAPED} LINES=${NMTUI_LINES} COLUMNS=${NMTUI_COLS} nmtui"
-    launch_kitty_popup "nmtui-popup" "NMTUI" "" "$env_cmd"
+ENV_FLAG="NMTUI_POPUP_RUNNING"
+SCRIPT_PATH="$0"
+if command -v realpath >/dev/null 2>&1; then
+    SCRIPT_PATH="$(realpath "$SCRIPT_PATH")"
+elif command -v readlink >/dev/null 2>&1; then
+    SCRIPT_PATH="$(readlink -f "$SCRIPT_PATH")"
+fi
+
+run_nmtui() {
+    NEWT_COLORS="$PALETTE_CONTENT" LINES="$NMTUI_LINES" COLUMNS="$NMTUI_COLS" nmtui
 }
 
 if command -v nmtui >/dev/null 2>&1; then
-    if launch_in_kitty_popup; then
+    if command -v hypr_popup_run >/dev/null 2>&1; then
+        hypr_popup_run "$ENV_FLAG" "nmtui-popup" "NMTUI" \
+            "kitty --detach --class nmtui-popup --title 'NMTUI' bash -lc 'NEWT_COLORS=${PALETTE_ESCAPED} LINES=${NMTUI_LINES} COLUMNS=${NMTUI_COLS} ${ENV_FLAG}=1 \"${SCRIPT_PATH}\"'" \
+            run_nmtui \
+            br
         exit 0
     fi
 

@@ -128,7 +128,7 @@ run_popup() {
                 ;;
             *"App launcher (rich)")
                 log "launching rich app launcher"
-                dispatch_helper "$RUN_IN_TERMINAL" "$HOME/.config/hypr/scripts/app-launcher.sh"
+                dispatch_helper "$HOME/.config/hypr/scripts/app-launcher.sh"
                 ;;
             *"Window finder")
                 log "launching window finder"
