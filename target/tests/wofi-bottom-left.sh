@@ -21,11 +21,11 @@ for arg in "$@"; do
     --normal|--normal-window)
       use_normal_window=1
       ;;
-    tl|top-left|tr|top-right|bl|bottom-left|br|bottom-right)
+    tl|top-left|tr|top-right|bl|bottom-left|br|bottom-right|ct|top-center|top-centre|cb|bottom-center|bottom-centre|cl|center-left|centre-left|cr|center-right|centre-right|cc|center|centre)
       corner_input="$arg"
       ;;
     *)
-      printf 'usage: %s [--normal|--layer] [tl|tr|bl|br|top-left|top-right|bottom-left|bottom-right]\n' "$0" >&2
+      printf 'usage: %s [--normal|--layer] [tl|tr|bl|br|ct|cb|cl|cr|cc|top-left|top-right|bottom-left|bottom-right|top-center|bottom-center|center-left|center-right|center]\n' "$0" >&2
       exit 1
       ;;
   esac
@@ -47,6 +47,26 @@ case "$corner_input" in
   br|bottom-right)
     corner_label="bottom-right"
     wofi_location="bottom-right"
+    ;;
+  ct|top-center|top-centre)
+    corner_label="top-center"
+    wofi_location="top-left"
+    ;;
+  cb|bottom-center|bottom-centre)
+    corner_label="bottom-center"
+    wofi_location="bottom-left"
+    ;;
+  cl|center-left|centre-left)
+    corner_label="center-left"
+    wofi_location="top-left"
+    ;;
+  cr|center-right|centre-right)
+    corner_label="center-right"
+    wofi_location="top-right"
+    ;;
+  cc|center|centre)
+    corner_label="center"
+    wofi_location="top-left"
     ;;
 esac
 

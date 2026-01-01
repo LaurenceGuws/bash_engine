@@ -283,17 +283,37 @@ hypr_corner_target_for_size() {
       target_x=$corner_left
       target_y=$corner_top
       ;;
+    ct|top-center|top-centre)
+      target_x=$((corner_left + (corner_right - corner_left - width) / 2))
+      target_y=$corner_top
+      ;;
     tr|top-right)
       target_x=$((corner_right - width))
       target_y=$corner_top
+      ;;
+    cl|center-left|centre-left|left-center|left-centre)
+      target_x=$corner_left
+      target_y=$((corner_top + (corner_bottom - corner_top - height) / 2))
       ;;
     bl|bottom-left)
       target_x=$corner_left
       target_y=$((corner_bottom - height))
       ;;
+    cb|bottom-center|bottom-centre)
+      target_x=$((corner_left + (corner_right - corner_left - width) / 2))
+      target_y=$((corner_bottom - height))
+      ;;
     br|bottom-right)
       target_x=$((corner_right - width))
       target_y=$((corner_bottom - height))
+      ;;
+    cr|center-right|centre-right|right-center|right-centre)
+      target_x=$((corner_right - width))
+      target_y=$((corner_top + (corner_bottom - corner_top - height) / 2))
+      ;;
+    cc|center|centre)
+      target_x=$((corner_left + (corner_right - corner_left - width) / 2))
+      target_y=$((corner_top + (corner_bottom - corner_top - height) / 2))
       ;;
     *)
       log_dispatch "hypr_corner_target_for_size unknown corner=${corner}"
