@@ -3,25 +3,24 @@
     "layer": "top", // Waybar at top layer
     "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 40, // Waybar height (matched to minimum required by modules)
-    // "width": 1280, // Waybar width
-    "spacing": 4, // Gaps between modules (4px)
+    "spacing": 0,
     "css": "./style.css",
     "exclusive": true,
     // Choose the order of the modules
     "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/window",
+        "custom/wofi",
+        "wlr/taskbar",
         "mpd"
     ],
     "modules-center": [
-        "custom/network",
-        "custom/cpu",
-        "custom/gpu"
+        "hyprland/workspaces"
     ],
     "modules-right": [
         "tray",
-        // "keyboard-state",
         "custom/waybar-popup",
+        "custom/network",
+        "custom/cpu",
+        "custom/gpu",
         "clock"
     ],
     // Modules configuration
@@ -35,29 +34,15 @@
             "urgent": "",
             "active": "󰍹",
             "default": "󰶐"
-        },
-        "on-click": "bash -c 'wofi --show drun'"
-    },
-    "hyprland/window": {
-    },
-    "keyboard-state": {
-        "numlock": true,
-        "capslock": true,
-        "format": "{name} {icon}",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
         }
     },
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
-    },
-    "sway/scratchpad": {
-        "format": "{icon} {count}",
-        "show-empty": false,
-        "format-icons": ["", ""],
-        "tooltip": true,
-        "tooltip-format": "{app}: {title}"
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 30,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "on-click-right": "minimize"
     },
     "mpd": {
         "format": "{stateIcon}{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}%",
@@ -85,20 +70,12 @@
         "tooltip-format": "MPD (connected)",
         "tooltip-format-disconnected": "MPD (disconnected)"
     },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
-    },
     "tray": {
         "icon-size": 22,
         "spacing": 10,
         "ignore-warning": true
     },
     "clock": {
-        // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
@@ -122,62 +99,6 @@
         "tooltip": true,
         "on-click-right": "$HOME/.config/waybar/scripts/gpu-launcher.sh"
     },
-    "backlight": {
-        // "device": "acpi_video1",
-        "format": "{percent}%{icon}",
-        "format-icons": ["", "", "", "", "", "", "", "", ""]
-    },
-    "battery": {
-        "class": "hardware-module",
-        "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{capacity}%{icon}",
-        "format-full": "{capacity}%{icon}",
-        "format-charging": "{capacity}%",
-        "format-plugged": "{capacity}%",
-        "format-alt": "{time}{icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "battery#bat2": {
-        "bat": "BAT2"
-    },
-    "power-profiles-daemon": {
-      "format": "{icon}",
-      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-      "tooltip": true,
-      "format-icons": {
-        "default": "",
-        "performance": "",
-        "balanced": "",
-        "power-saver": ""
-      }
-    },
-    "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid}({signalStrength}%)",
-        "format-ethernet": "{ipaddr}/{cidr}",
-        "tooltip-format": "{ifname} via {gwaddr}",
-        "format-linked": "{ifname}(No IP)",
-        "format-disconnected": "Disconnected⚠",
-        "format-alt": "{ifname}:{ipaddr}/{cidr}"
-    },
-    "custom/media": {
-        "format": "{icon} {text}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-    },
     "custom/network": {
         "exec": "$HOME/.config/waybar/scripts/network.sh",
         "return-type": "json",
@@ -189,8 +110,18 @@
     },
     "custom/waybar-popup": {
         "class": "custom-popup",
-        "format": "<span size=\"18pt\">≡</span>",
+        "exec": "bash -c \"$HOME/.config/waybar/scripts/waybar-popup-icon.sh\"",
+        "return-type": "json",
+        "format": "{text}",
+        "escape": true,
+        "interval": 1,
         "tooltip": "Quick actions",
         "on-click": "bash -c \"$HOME/.config/waybar/scripts/waybar_popup.sh\""
+    },
+    "custom/wofi": {
+        "class": "custom-wofi",
+        "format": "",
+        "tooltip": "App launcher",
+        "on-click": "bash -c \"$HOME/.config/wofi/wofi-popup.sh\""
     }
 }

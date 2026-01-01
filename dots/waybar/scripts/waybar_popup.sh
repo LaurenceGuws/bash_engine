@@ -303,7 +303,7 @@ run_popup() {
 start_focus_watchdog() {
     local self_pid="$$"
     local unfocused_ticks=0
-    local threshold_ticks=5  # 5 * 0.2s = 1s grace period
+    local threshold_ticks=10  # 10 * 0.2s = 2s grace period
     (
         while sleep 0.2; do
             local active_json

@@ -14,8 +14,8 @@ wsl = false
 linespace=0
 
 [font]
-# normal = ["JetBrainsMono Nerd Font"]
-normal = ["IosevkaTerm Nerd Font"]
+normal = ["JetBrainsMono Nerd Font"]
+# normal = ["IosevkaTerm Nerd Font"]
 size = 14
 
 [box-drawing]
