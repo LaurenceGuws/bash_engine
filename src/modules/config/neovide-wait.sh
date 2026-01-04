@@ -15,23 +15,32 @@ if [ -z "$NVIM" ]; then
   fi
 fi
 
-# Handle +LINE filename rewrites so it opens as a buffer, not in a float
+# Open diffs in a single shared instance
+FILE1=""
+FILE2=""
+COUNT=0
 for arg in "$@"; do
   case "$arg" in
-    +*)
-      LINE="${arg#+}"
-      SEND_LINE_CMD=":<cmd>call cursor(${LINE},1)\n"
-      ;;
+    +*) ;;
     *)
-      FILE="$arg"
+      COUNT=$((COUNT + 1))
+      if [ "$COUNT" -eq 1 ]; then
+        FILE1="$arg"
+      elif [ "$COUNT" -eq 2 ]; then
+        FILE2="$arg"
+      fi
       ;;
   esac
 done
 
-if [ -n "$FILE" ]; then
-  nvim --server "$SOCKET" --remote "$FILE" >/dev/null 2>&1
-fi
+escape_squote() {
+  printf "%s" "$1" | sed "s/'/'\\\\''/g"
+}
 
-if [ -n "$SEND_LINE_CMD" ]; then
-  nvim --server "$SOCKET" --remote-send "$SEND_LINE_CMD" >/dev/null 2>&1
+if [ "$COUNT" -eq 1 ]; then
+  nvim --server "$SOCKET" --remote "$FILE1" >/dev/null 2>&1
+elif [ "$COUNT" -ge 2 ]; then
+  E1="$(escape_squote "$FILE1")"
+  E2="$(escape_squote "$FILE2")"
+  nvim --server "$SOCKET" --remote-send ":tabnew | edit '$E1' | vert diffsplit '$E2' | wincmd =\n" >/dev/null 2>&1
 fi

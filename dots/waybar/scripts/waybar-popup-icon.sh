@@ -11,5 +11,5 @@ fi
 if $popup_open; then
   printf '{"text":"","class":"popup-open"}\n'
 else
-  printf '{"text":"<","class":"popup-closed"}\n'
+  printf '{"text":"","class":"popup-closed"}\n'
 fi
