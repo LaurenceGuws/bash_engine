@@ -38,6 +38,14 @@ window#waybar.hidden {
 
 #workspaces {
     margin: 0 0px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+window#waybar:hover #workspaces,
+.modules-center:hover #workspaces,
+#workspaces:hover {
+    opacity: 1;
 }
 
 .modules-left>widget:first-child>#workspaces {
